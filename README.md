@@ -6,7 +6,7 @@
 <br/>
 
 [![Live Demo](https://img.shields.io/badge/🚀_LIVE_DEMO-Visit_App-D4A574?style=for-the-badge&logoColor=white)](https://agentic-mcp-chatbot.onrender.com)
-[![Portfolio](https://img.shields.io/badge/👤_PORTFOLIO-Ambuj_Tripathi-34A853?style=for-the-badge)](https://ambuj-portfolio-v2.netlify.app/)
+[![Portfolio](https://img.shields.io/badge/👤_PORTFOLIO-Ambuj_Tripathi-34A853?style=for-the-badge)](https://ambuj-ai-portfolio.vercel.app/)
 
 <br/>
 
@@ -33,9 +33,82 @@ Unlike standard LLM chatbots, this system **thinks before acting**, orchestratin
 
 <div align="center">
 <br/>
-<img src="https://raw.githubusercontent.com/Ambuj123-lab/agentic-mcp-chatbot/main/architecture.html" alt="System Architecture Diagram" width="100%" />
+
+```mermaid
+flowchart TB
+    %% Styling
+    classDef frontend fill:#0d1117,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
+    classDef backend fill:#161b22,stroke:#3fb950,stroke-width:2px,color:#c9d1d9
+    classDef agent fill:#21262d,stroke:#d2a8ff,stroke-width:2px,color:#c9d1d9
+    classDef db fill:#0d1117,stroke:#f0883e,stroke-width:2px,color:#c9d1d9
+    classDef external fill:#161b22,stroke:#8b949e,stroke-width:2px,stroke-dasharray: 5 5,color:#c9d1d9
+
+    subgraph Client ["🖥️ Client Layer (Port 3000)"]
+        UI["Next.js App Router"]:::frontend
+        ChatBox["ChatBox.js (React State)"]:::frontend
+        
+        UI --> ChatBox
+    end
+
+    subgraph Server ["⚙️ Server Layer (Port 8000)"]
+        FastAPI["app/main.py (FastAPI)"]:::backend
+        Router["app/api/chat.py (Endpoints)"]:::backend
+        SlowAPI["Rate Limiter (SlowAPI)"]:::backend
+        
+        FastAPI --> SlowAPI
+        FastAPI --> Router
+    end
+
+    subgraph CoreAgent ["🧠 Agentic Core (LangGraph)"]
+        State["app/agent/state.py (Memory)"]:::agent
+        Graph["app/agent/graph.py (State Machine)"]:::agent
+        
+        LLM(("LLM Node\n(Gemini/OpenRouter)")):::agent
+        Action(("Action Node\n(Tool Execution)")):::agent
+        
+        Graph --> State
+        Graph --> LLM
+        LLM -- "Needs Tool" --> Action
+        Action -- "Returns Result" --> LLM
+        LLM -- "Finished" --> End((End)):::agent
+    end
+
+    subgraph Toolsets ["🛠️ Tool Registry"]
+        BuiltIn["app/agent/tools.py\n(Built-in Capabilities)"]:::agent
+        MCP["app/mcp/client.py\n(MCP Tool Registry)"]:::agent
+    end
+
+    subgraph Storage ["🗄️ Persistence Layer"]
+        Mongo[(MongoDB Atlas\nDocument Store)]:::db
+        TTL["30-Day TTL Index"]:::db
+        Mongo --- TTL
+    end
+
+    subgraph External ["🌐 External APIs & Services"]
+        Tavily["Tavily Search API"]:::external
+        Rapid["RapidAPI (Yahoo Finance)"]:::external
+        Github["GitHub REST API"]:::external
+        Gmail["Gmail IMAP/SMTP"]:::external
+        MCPServers["External MCP Servers (SSE)"]:::external
+    end
+
+    %% Connections
+    ChatBox -- "POST /api/chat" --> FastAPI
+    Router -- "Initialize & Invoke" --> Graph
+    Router -- "Read/Write History" --> Mongo
+    
+    Action -.-> BuiltIn
+    Action -.-> MCP
+    
+    BuiltIn --> Tavily
+    BuiltIn --> Rapid
+    BuiltIn --> Github
+    BuiltIn --> Gmail
+    
+    MCP -- "Server-Sent Events" --> MCPServers
+```
+
 <br/>
-<em>Note: The architecture diagram is interactive HTML in the codebase (`architecture.html`).</em>
 </div>
 
 ---
@@ -175,7 +248,7 @@ docker run -p 8000:8000 --env-file .env agentic-mcp-workspace
 | Resource | URL |
 |----------|-----|
 | **🚀 Live Application** | [Deploying Soon to Render](#) |
-| **👤 Ambuj's Portfolio** | [ambuj-portfolio-v2.netlify.app](https://ambuj-portfolio-v2.netlify.app/) |
+| **👤 Ambuj's Portfolio** | [ambuj-ai-portfolio.vercel.app](https://ambuj-ai-portfolio.vercel.app/) |
 | **📖 Financial Parser Docs** | [ambuj-rag-docs.netlify.app](https://ambuj-rag-docs.netlify.app/) |
 | **💻 Source Code** | [GitHub Repository](https://github.com/Ambuj123-lab/agentic-mcp-chatbot) |
 
@@ -188,7 +261,7 @@ GenAI Engineer & RAG Systems Specialist | LLMOps
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/ambuj-kumar-tripathi/)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github)](https://github.com/Ambuj123-lab)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-34A853?style=flat-square&logo=google-chrome&logoColor=white)](https://ambuj-portfolio-v2.netlify.app/)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-34A853?style=flat-square&logo=google-chrome&logoColor=white)](https://ambuj-ai-portfolio.vercel.app/)
 
 ---
 
