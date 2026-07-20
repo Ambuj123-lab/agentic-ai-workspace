@@ -426,37 +426,37 @@ export default function LandingPage() {
           <h2 style={{ fontSize: '32px', fontWeight: 700, textAlign: 'center', marginBottom: '60px', color: '#fff' }}>Core Capabilities</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', maxWidth: '1000px', margin: '0 auto' }}>
             
-            <div className="feature-card" style={{ animationDelay: '0s' }}>
+            <div className="feature-card">
               <TerminalSquare size={32} style={{ color: '#a855f7', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>🧠 Agentic Reasoning</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Plans actions, selects tools, evaluates results and synthesizes responses using LangGraph ReAct.</p>
             </div>
 
-            <div className="feature-card" style={{ animationDelay: '0.7s' }}>
+            <div className="feature-card">
               <Layout size={32} style={{ color: '#f59e0b', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>🔌 Dynamic MCP Tools</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Discover and invoke external tools from connected MCP servers without modifying application code.</p>
             </div>
 
-            <div className="feature-card" style={{ animationDelay: '1.4s' }}>
+            <div className="feature-card">
               <GitBranch size={32} style={{ color: '#E2E8F0', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>GitHub Integration</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Fetch repository stats, analyze pull requests, and browse commit histories securely.</p>
             </div>
             
-            <div className="feature-card" style={{ animationDelay: '2.1s' }}>
+            <div className="feature-card">
               <Mail size={32} style={{ color: '#EF4444', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>Smart Email Automation</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Read unseen emails and securely draft responses with explicit user approval.</p>
             </div>
             
-            <div className="feature-card" style={{ animationDelay: '2.8s' }}>
+            <div className="feature-card">
               <LineChart size={32} style={{ color: '#10B981', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>Live Stock Data</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Fetch real-time stock prices and financial insights through RapidAPI integrations.</p>
             </div>
             
-            <div className="feature-card" style={{ animationDelay: '3.5s' }}>
+            <div className="feature-card">
               <Globe size={32} style={{ color: '#0EA5E9', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>Web Search & Scraping</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Browse the web autonomously to find factual, up-to-date information instantly.</p>
