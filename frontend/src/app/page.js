@@ -321,23 +321,6 @@ export default function LandingPage() {
           cursor: pointer; white-space: nowrap;
           transition: border-color 0.3s;
         }
-        @keyframes card-glow {
-          0%, 100% { box-shadow: 0 0 0px rgba(59, 130, 246, 0); border-color: rgba(255,255,255,0.08); }
-          50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.15), 0 0 40px rgba(59, 130, 246, 0.05); border-color: rgba(59, 130, 246, 0.3); }
-        }
-        .cap-card {
-          background: rgba(255,255,255,0.02);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 16px;
-          padding: 30px;
-          transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-          animation: card-glow 4s ease-in-out infinite;
-        }
-        .cap-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 0 30px rgba(59, 130, 246, 0.25), 0 0 60px rgba(59, 130, 246, 0.1);
-          border-color: rgba(59, 130, 246, 0.5);
-        }
       `}</style>
 
       {/* ===== TOP STATUS BANNER ===== */}
@@ -420,37 +403,37 @@ export default function LandingPage() {
           <h2 style={{ fontSize: '32px', fontWeight: 700, textAlign: 'center', marginBottom: '60px', color: '#fff' }}>Core Capabilities</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', maxWidth: '1000px', margin: '0 auto' }}>
             
-            <div className="cap-card" style={{ animationDelay: '0s' }}>
+            <div className="feature-card" style={{ animationDelay: '0s' }}>
               <TerminalSquare size={32} style={{ color: '#a855f7', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>🧠 Agentic Reasoning</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Plans actions, selects tools, evaluates results and synthesizes responses using LangGraph ReAct.</p>
             </div>
 
-            <div className="cap-card" style={{ animationDelay: '0.7s' }}>
+            <div className="feature-card" style={{ animationDelay: '0.7s' }}>
               <Layout size={32} style={{ color: '#f59e0b', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>🔌 Dynamic MCP Tools</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Discover and invoke external tools from connected MCP servers without modifying application code.</p>
             </div>
 
-            <div className="cap-card" style={{ animationDelay: '1.4s' }}>
+            <div className="feature-card" style={{ animationDelay: '1.4s' }}>
               <GitBranch size={32} style={{ color: '#E2E8F0', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>GitHub Integration</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Fetch repository stats, analyze pull requests, and browse commit histories securely.</p>
             </div>
             
-            <div className="cap-card" style={{ animationDelay: '2.1s' }}>
+            <div className="feature-card" style={{ animationDelay: '2.1s' }}>
               <Mail size={32} style={{ color: '#EF4444', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>Smart Email Automation</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Read unseen emails and securely draft responses with explicit user approval.</p>
             </div>
             
-            <div className="cap-card" style={{ animationDelay: '2.8s' }}>
+            <div className="feature-card" style={{ animationDelay: '2.8s' }}>
               <LineChart size={32} style={{ color: '#10B981', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>Live Stock Data</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Fetch real-time stock prices and financial insights through RapidAPI integrations.</p>
             </div>
             
-            <div className="cap-card" style={{ animationDelay: '3.5s' }}>
+            <div className="feature-card" style={{ animationDelay: '3.5s' }}>
               <Globe size={32} style={{ color: '#0EA5E9', marginBottom: '20px' }} />
               <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px' }}>Web Search & Scraping</h3>
               <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6 }}>Browse the web autonomously to find factual, up-to-date information instantly.</p>
