@@ -49,7 +49,7 @@ export default function ChatBox() {
     
     const loadConversations = async () => {
       try {
-        const res = await fetch(`http://localhost:8001/api/conversations?user_id=${userId}`);
+        const res = await fetch(`/api/conversations?user_id=${userId}`);
         const data = await res.json();
         if (Array.isArray(data)) {
           setConversations(data);
@@ -75,7 +75,7 @@ export default function ChatBox() {
     setConversationId(id);
     setIsSidebarOpen(false); // Close sidebar on mobile after selection
     try {
-      const res = await fetch(`http://localhost:8001/api/conversations/${id}?user_id=${userId}`);
+      const res = await fetch(`/api/conversations/${id}?user_id=${userId}`);
       const data = await res.json();
       
       if (data.messages && data.messages.length > 0) {
@@ -97,7 +97,7 @@ export default function ChatBox() {
   const handleNewChat = async () => {
     if (!userId) return;
     try {
-      const res = await fetch(`http://localhost:8001/api/conversations/new?user_id=${userId}`, { method: "POST" });
+      const res = await fetch(`/api/conversations/new?user_id=${userId}`, { method: "POST" });
       const data = await res.json();
       setConversationId(data.id);
       setIsSidebarOpen(false);
@@ -106,7 +106,7 @@ export default function ChatBox() {
         content: "### Welcome to Ambuj Kumar Tripathi's Workspace\n\nHow can I help you today?",
       }]);
       // Refresh sidebar list
-      const listRes = await fetch(`http://localhost:8001/api/conversations?user_id=${userId}`);
+      const listRes = await fetch(`/api/conversations?user_id=${userId}`);
       setConversations(await listRes.json());
     } catch (err) {
       console.error("Failed to create new chat:", err);
@@ -120,7 +120,7 @@ export default function ChatBox() {
     if (!confirm("Are you sure you want to delete this chat?")) return;
 
     try {
-      await fetch(`http://localhost:8001/api/conversations/${id}?user_id=${userId}`, { method: "DELETE" });
+      await fetch(`/api/conversations/${id}?user_id=${userId}`, { method: "DELETE" });
       
       // Remove from UI immediately
       const newConvs = conversations.filter(c => c.id !== id);
@@ -313,6 +313,12 @@ export default function ChatBox() {
                 setCurrentTool(null);
               } else if (data.type === "error") {
                 console.error("Agent error:", data.message);
+                aiContent += `\n\n⚠️ ${data.message || "An error occurred while processing your request."}`;
+                setMessages((prev) => {
+                  const newMsgs = [...prev];
+                  newMsgs[newMsgs.length - 1].content = aiContent;
+                  return newMsgs;
+                });
                 setCurrentTool(null);
               } else if (data.type === "done") {
                 setCurrentTool(null);
@@ -361,8 +367,13 @@ export default function ChatBox() {
   // Helper to format raw tool names into human-readable strings
   const formatToolName = (name) => {
     if (!name) return "";
-    if (name === "web_search") return "Searching the web for live data...";
-    if (name === "fetch_stock_price" || name === "get_financial_data") return "Fetching live financial data...";
+    if (name === "web_search") return "🔍 Searching the web for live data...";
+    if (name === "get_stock_price") return "📊 Fetching live stock market data...";
+    if (name === "fetch_webpage") return "🌐 Reading webpage content...";
+    if (name === "calculator") return "🧮 Performing calculation...";
+    if (name === "send_email_confirmed") return "📧 Sending email via Gmail...";
+    if (name === "get_github_stats") return "🐙 Fetching GitHub repository stats...";
+    if (name === "search_github_repos") return "🐙 Searching GitHub repositories...";
     // fallback generic formatting: "my_tool_name" -> "My tool name..."
     const formatted = name.split('_').join(' ');
     return formatted.charAt(0).toUpperCase() + formatted.slice(1) + "...";

@@ -164,4 +164,4 @@ def build_agent_graph(tools: list):
     )
     graph.add_edge("tools", "agent")  # loop back after tool execution
 
-    return graph.compile()
+    return graph.compile(recursion_limit=10)
