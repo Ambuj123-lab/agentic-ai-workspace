@@ -280,17 +280,21 @@ export default function ChatBox() {
       const decoder = new TextDecoder();
       let aiContent = "";
 
+      let buffer = "";
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
 
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split("\n");
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split("\n\n");
+        buffer = events.pop(); // Keep the incomplete chunk in the buffer
 
-        for (const line of lines) {
-          if (line.startsWith("data: ")) {
+        for (const event of events) {
+          if (event.trim().startsWith("data: ")) {
             try {
-              const data = JSON.parse(line.slice(6));
+              const dataString = event.trim().substring(6);
+              if (dataString === "[DONE]") continue;
+              const data = JSON.parse(dataString);
 
               if (data.type === "conversation_id") {
                 setConversationId(data.id);
@@ -323,7 +327,9 @@ export default function ChatBox() {
               } else if (data.type === "done") {
                 setCurrentTool(null);
               }
-            } catch (err) {}
+            } catch (err) {
+              console.error("SSE JSON Parse Error for chunk:", event, err);
+            }
           }
         }
       }
