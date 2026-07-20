@@ -327,7 +327,7 @@ export default function LandingPage() {
       {/* ===== TOP STATUS BANNER ===== */}
       <div style={{ background: 'rgba(212,165,116,0.08)', borderBottom: '1px solid rgba(212,165,116,0.15)', padding: '8px 16px', textAlign: 'center', fontSize: '11px', fontWeight: 500, color: '#d4a574', letterSpacing: '0.02em', position: 'relative', zIndex: 100, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '6px' }}>
         <span>⚠️</span>
-        <span><strong>Disclaimer:</strong> Experimental Agentic Workspace by Ambuj Kumar Tripathi. Not production ready.</span>
+        <span><strong>Disclaimer:</strong> Experimental Agentic Workspace by Ambuj Kumar Tripathi. Open for constructive feedback.</span>
         <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" className="afp-status-badge">
           <span style={{ position: 'relative', width: '8px', height: '8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
             <span style={{ position: 'absolute', width: '8px', height: '8px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.4)', animation: 'sonar-ping 2s ease-out infinite' }} />
