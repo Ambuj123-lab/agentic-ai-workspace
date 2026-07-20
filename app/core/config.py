@@ -6,10 +6,9 @@ class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
     # --- LLM Configuration ---
-    LLM_PROVIDER: str = "openrouter"  # "openrouter" or "gemini"
-    OPENROUTER_API_KEY: str = ""
+    LLM_PROVIDER: str = "gemini"
     GEMINI_API_KEY: str = ""
-    LLM_MODEL: str = "" # Set in .env
+    LLM_MODEL: str = "gemini-3.1-flash-lite-preview"
     LLM_TEMPERATURE: float = 0.7
 
     # --- Database (MongoDB) ---
