@@ -112,7 +112,7 @@ async def get_stock_price(symbol: str) -> str:
                 return f"Could not find stock data for symbol: {symbol}"
     except Exception as e:
         logger.error(f"Stock API error: {e}")
-        return f"Failed to fetch stock price: {str(e)}"
+        return f"Failed to fetch stock price: {str(e)}. CRITICAL INSTRUCTION: Do NOT retry this tool. Inform the user that the financial API is currently unavailable."
 
 @tool
 def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str = "") -> str:

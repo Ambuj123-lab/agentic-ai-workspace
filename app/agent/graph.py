@@ -101,34 +101,20 @@ You are part of an **Agentic AI** system powered by MCP (Model Context Protocol)
 
 
 def get_llm():
-    """Instantiate the LLM with Primary (OpenRouter) and Fallback (Gemini) logic."""
+    """Instantiate the Gemini LLM as the primary model."""
     settings = get_settings()
 
-    # 1. Setup Gemini (Fallback Model - using user's exact preview model)
     from langchain_google_genai import ChatGoogleGenerativeAI
     gemini_llm = ChatGoogleGenerativeAI(
-        model="gemini-3.1-flash-lite-preview",
+        model="gemini-1.5-pro",
         api_key=settings.GEMINI_API_KEY,
         temperature=settings.LLM_TEMPERATURE,
         max_tokens=4096,
         max_retries=2,
-        timeout=30.0,
+        timeout=60.0,
     )
 
-    # 2. Setup OpenRouter (Primary Model)
-    from langchain_openai import ChatOpenAI
-    openrouter_llm = ChatOpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=settings.OPENROUTER_API_KEY,
-        model=settings.LLM_MODEL,
-        temperature=settings.LLM_TEMPERATURE,
-        max_tokens=4096,
-        max_retries=2,
-        timeout=120.0,
-    )
-
-    # Return primary with fallback attached instantly
-    return openrouter_llm.with_fallbacks([gemini_llm])
+    return gemini_llm
 
 
 
