@@ -205,7 +205,7 @@ export default function LandingPage() {
       title: "1. The Agentic Workflow",
       desc: "Users interact via Next.js. FastAPI backend orchestrates LangGraph agents. Agents discover and use MCP tools automatically.",
       content: (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', padding: '40px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'nowrap', padding: '40px 0' }}>
           <FlowNode icon="👤" title="User" color="#9CA3AF" />
           <FlowArrow label="Chat" width="30px" />
           <FlowNode icon="💻" title="Next.js" color="#0EA5E9" />
@@ -222,7 +222,7 @@ export default function LandingPage() {
       title: "2. Tool Discovery",
       desc: "The LangGraph agent queries connected MCP servers dynamically to discover available tools (e.g., GitHub API) without hardcoded schemas.",
       content: (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '40px 0', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '40px 0', flexWrap: 'nowrap' }}>
           <FlowNode icon="🧠" title="Agent" color="#A855F7" subtitle="Needs capability" />
           <FlowArrow label="List Tools" width="50px" />
           <FlowNode icon="🔌" title="MCP Client" color="#0EA5E9" />
@@ -238,14 +238,14 @@ export default function LandingPage() {
       desc: "The LLM decides to use a discovered tool. The MCP client routes the request, executes it, and returns the result for the agent to synthesize.",
       content: (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', alignItems: 'center', padding: '20px 0' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', flexWrap: 'nowrap' }}>
             <FlowNode icon="🤖" title="LLM Decision" color="#A855F7" subtitle="Use get_repos()" />
             <FlowArrow label="CallToolRequest" width="60px" />
             <FlowNode icon="🔌" title="MCP Client" color="#0EA5E9" />
             <FlowArrow label="Execute" width="50px" />
             <FlowNode icon="🐙" title="GitHub API" color="#F59E0B" variant="focus" subtitle="External Call" />
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', opacity: 0.9, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', opacity: 0.9, flexWrap: 'nowrap' }}>
             <FlowNode icon="🐙" title="GitHub API" color="#F59E0B" />
             <FlowArrow label="ToolResult (JSON)" width="60px" />
             <FlowNode icon="🧠" title="Agent" color="#A855F7" />
@@ -259,7 +259,7 @@ export default function LandingPage() {
       title: "4. Human-in-the-Loop",
       desc: "For sensitive actions like sending emails, the agent drafts a response and waits for explicit user approval before executing.",
       content: (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', padding: '40px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', flexWrap: 'nowrap', padding: '40px 0' }}>
           <FlowNode icon="🧠" title="Agent" subtitle="Task: Send Email" color="#A855F7" />
           <FlowArrow label="Drafts" width="40px" />
           <FlowNode icon="📝" title="Email Draft" color="#6366F1" />
@@ -275,7 +275,7 @@ export default function LandingPage() {
       desc: "Complete flow of memory management: Load context from DB, run LangGraph loop, save updated context, and apply 30-Day TTL retention.",
       content: (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', alignItems: 'center', padding: '20px 0' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'nowrap' }}>
             <FlowNode icon="👤" title="User" color="#9CA3AF" />
             <FlowArrow label="" width="20px" />
             <FlowNode icon="⚡" title="FastAPI" color="#10B981" />
@@ -284,7 +284,7 @@ export default function LandingPage() {
             <FlowArrow label="" width="20px" />
             <FlowNode icon="🧠" title="LangGraph" color="#A855F7" />
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'nowrap' }}>
             <FlowNode icon="🧠" title="LangGraph" color="#A855F7" />
             <FlowArrow label="Save Updated Memory" width="100px" />
             <FlowNode icon="🗄️" title="MongoDB" color="#F59E0B" />
@@ -495,8 +495,10 @@ export default function LandingPage() {
                 </button>
 
                 {/* Diagram */}
-                <div style={{ width: '100%', maxWidth: '850px', display: 'flex', justifyContent: 'center' }}>
-                  {howItWorksSlides[activeSlide].content}
+                <div style={{ width: '100%', maxWidth: '850px', display: 'flex', justifyContent: 'flex-start', overflowX: 'auto', paddingBottom: '20px' }}>
+                  <div style={{ minWidth: 'min-content', margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
+                    {howItWorksSlides[activeSlide].content}
+                  </div>
                 </div>
                 
                 {/* Next Button */}
