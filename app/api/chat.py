@@ -105,9 +105,24 @@ async def chat(request: Request, body: ChatRequest):
                     chunk = event.get("data", {}).get("chunk")
                     if chunk and hasattr(chunk, "content") and chunk.content:
                         content = chunk.content
+                        extracted_text = ""
+                        
                         if isinstance(content, str):
-                            full_response += content
-                            yield f"data: {json.dumps({'type': 'token', 'content': content})}\n\n"
+                            extracted_text = content
+                        elif isinstance(content, list):
+                            # Handle Gemini 3.1 list-based chunks
+                            for item in content:
+                                if isinstance(item, dict) and "text" in item:
+                                    extracted_text += item["text"]
+                                elif isinstance(item, str):
+                                    extracted_text += item
+                        else:
+                            # Fallback for unknown formats
+                            extracted_text = str(content)
+                            
+                        if extracted_text:
+                            full_response += extracted_text
+                            yield f"data: {json.dumps({'type': 'token', 'content': extracted_text})}\n\n"
 
                 elif kind == "on_tool_start":
                     tool_name = event.get("name", "unknown")
