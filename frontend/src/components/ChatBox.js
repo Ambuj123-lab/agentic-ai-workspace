@@ -189,7 +189,7 @@ export default function ChatBox() {
     setMessages((prev) => [...prev, { role: "ai", content: "" }]);
 
     try {
-      const response = await fetch("http://localhost:8001/api/chat", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -264,7 +264,7 @@ export default function ChatBox() {
     setMessages((prev) => [...prev, { role: "ai", content: "" }]);
 
     try {
-      const response = await fetch("http://localhost:8001/api/chat", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -295,7 +295,7 @@ export default function ChatBox() {
               if (data.type === "conversation_id") {
                 setConversationId(data.id);
                 // Trigger sidebar refresh to update the new chat title if it was a new chat
-                fetch(`http://localhost:8001/api/conversations?user_id=${userId}`)
+                fetch(`/api/conversations?user_id=${userId}`)
                   .then(res => res.json())
                   .then(list => {
                     if (Array.isArray(list)) setConversations(list);
