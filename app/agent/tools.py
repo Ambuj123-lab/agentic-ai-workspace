@@ -87,11 +87,11 @@ async def get_stock_price(symbol: str) -> str:
     if not settings.RAPIDAPI_KEY:
         return "Error: RAPIDAPI_KEY is missing."
 
-    url = "https://yh-finance.p.rapidapi.com/market/v2/get-quotes"
+    url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes"
     querystring = {"region": "US", "symbols": symbol}
     headers = {
         "X-RapidAPI-Key": settings.RAPIDAPI_KEY,
-        "X-RapidAPI-Host": "yh-finance.p.rapidapi.com"
+        "X-RapidAPI-Host": "apidojo-yahoo-finance-v1.p.rapidapi.com"
     }
 
     try:
