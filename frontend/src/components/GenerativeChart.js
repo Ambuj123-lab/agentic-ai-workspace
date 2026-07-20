@@ -84,11 +84,12 @@ export default function GenerativeChart({ config }) {
       background: 'rgba(255,255,255,0.02)',
       border: '1px solid rgba(255,255,255,0.1)',
       borderRadius: '12px',
-      padding: '20px',
+      padding: '16px 12px',
       marginTop: '16px',
       marginBottom: '16px',
       width: '100%',
       maxWidth: '600px',
+      overflowX: 'auto',
       display: 'flex',
       flexDirection: 'column'
     }}>
@@ -103,7 +104,7 @@ export default function GenerativeChart({ config }) {
           {title}
         </h4>
       )}
-      <div style={{ width: '100%', height: '300px' }}>
+      <div style={{ width: '100%', minWidth: '280px', height: '300px' }}>
         <ResponsiveContainer width="100%" height="100%">
           {renderChart()}
         </ResponsiveContainer>
