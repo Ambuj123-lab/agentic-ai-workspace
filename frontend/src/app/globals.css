@@ -282,8 +282,9 @@
      resize: none;
      max-height: 200px;
      overflow-y: auto;
-     min-height: 24px;
-     padding: 8px 12px;
+     min-height: 40px;
+     padding: 9px 12px;
+     box-sizing: border-box;
    }
    
    .chat-textarea:focus {
@@ -481,12 +482,9 @@
      .chat-textarea {
        font-size: 16px;
      }
-     .built-by-badge {
-       top: 12px;
-       right: 12px;
-       font-size: 10px;
-       padding: 4px 10px;
-     }
+      .built-by-badge {
+        display: none;
+      }
      .avatar {
        width: 28px;
        height: 28px;
