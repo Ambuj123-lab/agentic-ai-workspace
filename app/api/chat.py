@@ -108,6 +108,17 @@ async def chat(request: Request, body: ChatRequest):
                         if isinstance(content, str):
                             full_response += content
                             yield f"data: {json.dumps({'type': 'token', 'content': content})}\n\n"
+                        elif isinstance(content, list):
+                            # Handle case where content is a list of blocks
+                            text_content = "".join([c.get("text", "") for c in content if isinstance(c, dict) and "text" in c])
+                            if text_content:
+                                full_response += text_content
+                                yield f"data: {json.dumps({'type': 'token', 'content': text_content})}\n\n"
+                        else:
+                            logger.warning(f"Unexpected chunk content type: {type(content)} - {content}")
+                    elif chunk:
+                        # Log if we get a chunk without content to see what it is
+                        pass
 
                 elif kind == "on_tool_start":
                     tool_name = event.get("name", "unknown")
