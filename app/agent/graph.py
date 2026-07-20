@@ -106,9 +106,9 @@ def get_llm():
 
     if settings.LLM_PROVIDER.lower() == "gemini":
         from langchain_google_genai import ChatGoogleGenerativeAI
-        # Using gemini-1.5-flash which is completely free under limits and excellent at Tool Calling
+        # Using the exact preview model specified by the user
         return ChatGoogleGenerativeAI(
-            model=settings.LLM_MODEL or "gemini-1.5-flash",
+            model=settings.LLM_MODEL or "gemini-3.1-flash-lite-preview",
             api_key=settings.GEMINI_API_KEY,
             temperature=settings.LLM_TEMPERATURE,
             max_tokens=4096,
