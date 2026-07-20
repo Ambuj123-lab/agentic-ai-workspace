@@ -335,7 +335,10 @@ export default function ChatBox() {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    // On mobile, Enter should add a new line. On desktop, Enter sends the message.
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    
+    if (e.key === "Enter" && !e.shiftKey && !isMobile) {
       e.preventDefault();
       handleSubmit(e);
     }
