@@ -1,41 +1,52 @@
 # =============================================
-# Stage 1: Build Frontend (Next.js Static Export)
+# Stage 1: Build Frontend (Next.js Node Server)
 # =============================================
 FROM node:20-alpine AS frontend-build
 
 WORKDIR /app/frontend
 
-# Install dependencies (cached layer)
+# Install dependencies
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 
-# Build static export (output → /app/frontend/out)
+# Build the Next.js app (creates .next/ directory)
 COPY frontend/ ./
 ENV NEXT_PUBLIC_API_URL=""
 RUN npm run build
 
 
 # =============================================
-# Stage 2: Backend (FastAPI — serves everything)
+# Stage 2: Final Production Image (FastAPI + Next.js)
 # =============================================
-FROM python:3.11-slim AS backend
+FROM python:3.11-slim AS production
+
+# Install Node.js v20 in the Python image
+RUN apt-get update && apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Install python dependencies
+# 1. Setup Backend
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy backend code
 COPY app/ ./app/
 
-# Copy built frontend from Stage 1
-COPY --from=frontend-build /app/frontend/out ./frontend/out
+# 2. Setup Frontend (copy built files from Stage 1)
+COPY --from=frontend-build /app/frontend ./frontend
+
+# 3. Setup Startup Script
+COPY start.sh .
+RUN chmod +x start.sh
 
 # Environment
 ENV PYTHONUNBUFFERED=1
+ENV NODE_ENV=production
 
+# Render assigns $PORT dynamically, we expose it
 EXPOSE 8000
+EXPOSE 3000
 
-# Start server (shell form for Render's dynamic $PORT)
-CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+# Start both FastAPI and Next.js concurrently
+CMD ["./start.sh"]
