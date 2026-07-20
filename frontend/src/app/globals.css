@@ -649,13 +649,45 @@
      border-color: rgba(255, 255, 255, 0.2);
    }
 
-   /* Multi-colored glows for each card */
-   .feature-card:nth-child(1):hover { box-shadow: 0 16px 48px rgba(168, 85, 247, 0.25), 0 0 0 1px rgba(168, 85, 247, 0.5); border-color: rgba(168, 85, 247, 0.5); }
-   .feature-card:nth-child(2):hover { box-shadow: 0 16px 48px rgba(245, 158, 11, 0.25), 0 0 0 1px rgba(245, 158, 11, 0.5); border-color: rgba(245, 158, 11, 0.5); }
-   .feature-card:nth-child(3):hover { box-shadow: 0 16px 48px rgba(148, 163, 184, 0.25), 0 0 0 1px rgba(148, 163, 184, 0.5); border-color: rgba(148, 163, 184, 0.5); }
-   .feature-card:nth-child(4):hover { box-shadow: 0 16px 48px rgba(239, 68, 68, 0.25), 0 0 0 1px rgba(239, 68, 68, 0.5); border-color: rgba(239, 68, 68, 0.5); }
-   .feature-card:nth-child(5):hover { box-shadow: 0 16px 48px rgba(16, 185, 129, 0.25), 0 0 0 1px rgba(16, 185, 129, 0.5); border-color: rgba(16, 185, 129, 0.5); }
-   .feature-card:nth-child(6):hover { box-shadow: 0 16px 48px rgba(14, 165, 233, 0.25), 0 0 0 1px rgba(14, 165, 233, 0.5); border-color: rgba(14, 165, 233, 0.5); }
+   /* Continuous Multi-colored glows for each card */
+   .feature-card:nth-child(1) { animation: glow-1 4s ease-in-out infinite; }
+   .feature-card:nth-child(2) { animation: glow-2 4s ease-in-out infinite; animation-delay: -0.6s; }
+   .feature-card:nth-child(3) { animation: glow-3 4s ease-in-out infinite; animation-delay: -1.2s; }
+   .feature-card:nth-child(4) { animation: glow-4 4s ease-in-out infinite; animation-delay: -1.8s; }
+   .feature-card:nth-child(5) { animation: glow-5 4s ease-in-out infinite; animation-delay: -2.4s; }
+   .feature-card:nth-child(6) { animation: glow-6 4s ease-in-out infinite; animation-delay: -3.0s; }
+
+   .feature-card:nth-child(1):hover { animation: card-jiggle 0.4s ease forwards, glow-1 4s ease-in-out infinite; }
+   .feature-card:nth-child(2):hover { animation: card-jiggle 0.4s ease forwards, glow-2 4s ease-in-out infinite; }
+   .feature-card:nth-child(3):hover { animation: card-jiggle 0.4s ease forwards, glow-3 4s ease-in-out infinite; }
+   .feature-card:nth-child(4):hover { animation: card-jiggle 0.4s ease forwards, glow-4 4s ease-in-out infinite; }
+   .feature-card:nth-child(5):hover { animation: card-jiggle 0.4s ease forwards, glow-5 4s ease-in-out infinite; }
+   .feature-card:nth-child(6):hover { animation: card-jiggle 0.4s ease forwards, glow-6 4s ease-in-out infinite; }
+
+   @keyframes glow-1 {
+     0%, 100% { box-shadow: 0 0 0px rgba(168, 85, 247, 0); border-color: rgba(255,255,255,0.08); }
+     50% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), inset 0 0 10px rgba(168, 85, 247, 0.2); border-color: rgba(168, 85, 247, 0.5); }
+   }
+   @keyframes glow-2 {
+     0%, 100% { box-shadow: 0 0 0px rgba(245, 158, 11, 0); border-color: rgba(255,255,255,0.08); }
+     50% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.4), inset 0 0 10px rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.5); }
+   }
+   @keyframes glow-3 {
+     0%, 100% { box-shadow: 0 0 0px rgba(226, 232, 240, 0); border-color: rgba(255,255,255,0.08); }
+     50% { box-shadow: 0 0 20px rgba(226, 232, 240, 0.4), inset 0 0 10px rgba(226, 232, 240, 0.2); border-color: rgba(226, 232, 240, 0.5); }
+   }
+   @keyframes glow-4 {
+     0%, 100% { box-shadow: 0 0 0px rgba(239, 68, 68, 0); border-color: rgba(255,255,255,0.08); }
+     50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), inset 0 0 10px rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); }
+   }
+   @keyframes glow-5 {
+     0%, 100% { box-shadow: 0 0 0px rgba(16, 185, 129, 0); border-color: rgba(255,255,255,0.08); }
+     50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), inset 0 0 10px rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.5); }
+   }
+   @keyframes glow-6 {
+     0%, 100% { box-shadow: 0 0 0px rgba(14, 165, 233, 0); border-color: rgba(255,255,255,0.08); }
+     50% { box-shadow: 0 0 20px rgba(14, 165, 233, 0.4), inset 0 0 10px rgba(14, 165, 233, 0.2); border-color: rgba(14, 165, 233, 0.5); }
+   }
 
    @keyframes card-jiggle {
      0%   { transform: translateY(0)    rotate(0deg); }
