@@ -637,17 +637,35 @@
      padding: 24px;
      backdrop-filter: var(--blur-lg);
      -webkit-backdrop-filter: var(--blur-lg);
-     transition: all 0.3s ease;
+     transition: border-color 0.3s, box-shadow 0.3s;
+     will-change: transform;
      display: flex;
      flex-direction: column;
      align-items: center;
      text-align: center;
+     cursor: default;
    }
 
    .feature-card:hover {
-     transform: translateY(-5px);
-     border-color: rgba(14, 165, 233, 0.4);
-     box-shadow: 0 10px 30px rgba(14, 165, 233, 0.1);
+     animation: card-jiggle 0.4s ease forwards;
+     border-color: rgba(255, 255, 255, 0.2);
+   }
+
+   /* Multi-colored glows for each card */
+   .feature-card:nth-child(1):hover { box-shadow: 0 16px 48px rgba(168, 85, 247, 0.25), 0 0 0 1px rgba(168, 85, 247, 0.5); border-color: rgba(168, 85, 247, 0.5); }
+   .feature-card:nth-child(2):hover { box-shadow: 0 16px 48px rgba(245, 158, 11, 0.25), 0 0 0 1px rgba(245, 158, 11, 0.5); border-color: rgba(245, 158, 11, 0.5); }
+   .feature-card:nth-child(3):hover { box-shadow: 0 16px 48px rgba(148, 163, 184, 0.25), 0 0 0 1px rgba(148, 163, 184, 0.5); border-color: rgba(148, 163, 184, 0.5); }
+   .feature-card:nth-child(4):hover { box-shadow: 0 16px 48px rgba(239, 68, 68, 0.25), 0 0 0 1px rgba(239, 68, 68, 0.5); border-color: rgba(239, 68, 68, 0.5); }
+   .feature-card:nth-child(5):hover { box-shadow: 0 16px 48px rgba(16, 185, 129, 0.25), 0 0 0 1px rgba(16, 185, 129, 0.5); border-color: rgba(16, 185, 129, 0.5); }
+   .feature-card:nth-child(6):hover { box-shadow: 0 16px 48px rgba(14, 165, 233, 0.25), 0 0 0 1px rgba(14, 165, 233, 0.5); border-color: rgba(14, 165, 233, 0.5); }
+
+   @keyframes card-jiggle {
+     0%   { transform: translateY(0)    rotate(0deg); }
+     20%  { transform: translateY(-4px) rotate(-1.5deg); }
+     40%  { transform: translateY(-7px) rotate(1.5deg); }
+     60%  { transform: translateY(-6px) rotate(-0.8deg); }
+     80%  { transform: translateY(-7px) rotate(0.4deg); }
+     100% { transform: translateY(-7px) rotate(0deg); }
    }
 
    .feature-icon {
