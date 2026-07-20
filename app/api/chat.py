@@ -96,6 +96,7 @@ async def chat(request: Request, body: ChatRequest):
 
             async for event in agent.astream_events(
                 {"messages": lc_messages},
+                config={"recursion_limit": 10},
                 version="v2",
             ):
                 kind = event.get("event", "")
