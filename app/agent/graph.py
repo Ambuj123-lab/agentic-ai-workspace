@@ -101,32 +101,34 @@ You are part of an **Agentic AI** system powered by MCP (Model Context Protocol)
 
 
 def get_llm():
-    """Instantiate the LLM based on configured provider."""
+    """Instantiate the LLM with Primary (OpenRouter) and Fallback (Gemini) logic."""
     settings = get_settings()
 
-    if settings.LLM_PROVIDER.lower() == "gemini":
-        from langchain_google_genai import ChatGoogleGenerativeAI
-        # Using the exact preview model specified by the user
-        return ChatGoogleGenerativeAI(
-            model=settings.LLM_MODEL or "gemini-3.1-flash-lite-preview",
-            api_key=settings.GEMINI_API_KEY,
-            temperature=settings.LLM_TEMPERATURE,
-            max_tokens=4096,
-            max_retries=2,
-            timeout=30.0,
-        )
-    else:
-        # OpenRouter (Requires Paid Credits unless using specific :free models)
-        from langchain_openai import ChatOpenAI
-        return ChatOpenAI(
-            base_url="https://openrouter.ai/api/v1",
-            api_key=settings.OPENROUTER_API_KEY,
-            model=settings.LLM_MODEL,
-            temperature=settings.LLM_TEMPERATURE,
-            max_tokens=4096,
-            max_retries=2,
-            timeout=120.0,
-        )
+    # 1. Setup Gemini (Fallback Model - using user's exact preview model)
+    from langchain_google_genai import ChatGoogleGenerativeAI
+    gemini_llm = ChatGoogleGenerativeAI(
+        model="gemini-3.1-flash-lite-preview",
+        api_key=settings.GEMINI_API_KEY,
+        temperature=settings.LLM_TEMPERATURE,
+        max_tokens=4096,
+        max_retries=2,
+        timeout=30.0,
+    )
+
+    # 2. Setup OpenRouter (Primary Model)
+    from langchain_openai import ChatOpenAI
+    openrouter_llm = ChatOpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=settings.OPENROUTER_API_KEY,
+        model=settings.LLM_MODEL,
+        temperature=settings.LLM_TEMPERATURE,
+        max_tokens=4096,
+        max_retries=2,
+        timeout=120.0,
+    )
+
+    # Return primary with fallback attached instantly
+    return openrouter_llm.with_fallbacks([gemini_llm])
 
 
 
