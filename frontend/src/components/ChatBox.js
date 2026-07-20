@@ -482,17 +482,36 @@ export default function ChatBox() {
         </div>
 
         {/* User Actions */}
-        <div style={{ padding: '20px', borderTop: '1px solid #333', paddingBottom: 'calc(20px + env(safe-area-inset-bottom))' }}>
+        <div style={{ padding: '16px 20px', borderTop: '1px solid #333', paddingBottom: 'calc(20px + env(safe-area-inset-bottom))' }}>
+          {session?.user && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', padding: '8px', borderRadius: '8px', background: 'rgba(255,255,255,0.03)' }}>
+              {session.user.image ? (
+                <img src={session.user.image} alt="Profile" style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }} />
+              ) : (
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#58a6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold' }}>
+                  {session.user.name?.charAt(0) || 'U'}
+                </div>
+              )}
+              <div style={{ overflow: 'hidden' }}>
+                <div style={{ fontSize: '14px', fontWeight: '500', color: '#e6edf3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {session.user.name || 'User'}
+                </div>
+                <div style={{ fontSize: '12px', color: '#7d8590', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {session.user.email}
+                </div>
+              </div>
+            </div>
+          )}
           <button 
             onClick={() => signOut({ callbackUrl: '/' })}
             style={{
-              display: 'flex', alignItems: 'center', gap: '10px', width: '100%',
-              background: 'transparent', border: 'none', color: '#A0A0A0',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%',
+              background: '#21262d', border: '1px solid #30363d', color: '#c9d1d9',
               cursor: 'pointer', fontFamily: 'Outfit', fontSize: '14px',
-              padding: '10px', borderRadius: '8px', transition: 'background 0.2s'
+              padding: '10px', borderRadius: '8px', transition: 'all 0.2s ease'
             }}
-            onMouseOver={(e) => e.currentTarget.style.background = '#222'}
-            onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+            onMouseOver={(e) => { e.currentTarget.style.background = '#30363d'; e.currentTarget.style.borderColor = '#8b949e'; }}
+            onMouseOut={(e) => { e.currentTarget.style.background = '#21262d'; e.currentTarget.style.borderColor = '#30363d'; }}
           >
             <LogOut size={16} />
             Sign Out
