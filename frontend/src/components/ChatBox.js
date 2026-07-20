@@ -368,12 +368,17 @@ export default function ChatBox() {
   const formatToolName = (name) => {
     if (!name) return "";
     if (name === "web_search") return "🔍 Searching the web for live data...";
-    if (name === "get_stock_price") return "📊 Fetching live stock market data...";
     if (name === "fetch_webpage") return "🌐 Reading webpage content...";
-    if (name === "calculator") return "🧮 Performing calculation...";
+    if (name === "calculator") return "🧮 Performing mathematical calculation...";
+    if (name === "get_stock_price") return "📊 Fetching live stock market data...";
     if (name === "send_email_confirmed") return "📧 Sending email via Gmail...";
-    if (name === "get_github_stats") return "🐙 Fetching GitHub repository stats...";
-    if (name === "search_github_repos") return "🐙 Searching GitHub repositories...";
+    if (name === "read_emails") return "📥 Reading inbox via Gmail...";
+    if (name === "get_github_repo_stats") return "🐙 Fetching GitHub repository stats...";
+    if (name === "get_github_pull_requests") return "🐙 Fetching GitHub PRs...";
+    if (name === "get_github_user_profile") return "🐙 Fetching GitHub user profile...";
+    if (name === "search_github_repositories") return "🐙 Searching GitHub repositories...";
+    if (name === "get_github_latest_commits") return "🐙 Fetching latest GitHub commits...";
+    if (name === "get_github_repo_contributors") return "🐙 Fetching GitHub repo contributors...";
     // fallback generic formatting: "my_tool_name" -> "My tool name..."
     const formatted = name.split('_').join(' ');
     return formatted.charAt(0).toUpperCase() + formatted.slice(1) + "...";
@@ -389,7 +394,7 @@ export default function ChatBox() {
       />
 
       {/* ── DYNAMIC SIDEBAR ── */}
-      <aside className={`sidebar ${isSidebarOpen ? 'mobile-open' : ''}`} style={{ display: 'flex', flexDirection: 'column', height: '100vh', justifyContent: 'space-between', width: '260px', flexShrink: 0, borderRight: '1px solid #222' }}>
+      <aside className={`sidebar ${isSidebarOpen ? 'mobile-open' : ''}`} style={{ display: 'flex', flexDirection: 'column', height: '100dvh', maxHeight: '100dvh', justifyContent: 'space-between', width: '260px', flexShrink: 0, borderRight: '1px solid #222', zIndex: 9999 }}>
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
           
           <div className="branding" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -477,7 +482,7 @@ export default function ChatBox() {
         </div>
 
         {/* User Actions */}
-        <div style={{ padding: '20px', borderTop: '1px solid #333' }}>
+        <div style={{ padding: '20px', borderTop: '1px solid #333', paddingBottom: 'calc(20px + env(safe-area-inset-bottom))' }}>
           <button 
             onClick={() => signOut({ callbackUrl: '/' })}
             style={{
