@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Node / Next.js
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+.npm
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Personal Notes / Specs
+FUTURE_MCP_IDEAS.md
+architecture-dig
+architecture.html
+capabilities-MCP-NEW
+*.md
+!README.md
+!AGENTS.md
+!CLAUDE.md
