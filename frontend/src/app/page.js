@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Bot, Mail, LineChart, Globe, GitBranch, Shield, Lock, Trash2, Layout, TerminalSquare, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { Bot, Mail, LineChart, Globe, GitBranch, Shield, Lock, Trash2, Layout, TerminalSquare, ChevronLeft, ChevronRight, X, Menu } from 'lucide-react';
 import { FaLinkedin, FaXTwitter, FaGithub } from 'react-icons/fa6';
 import { useSession, signIn } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
@@ -173,6 +173,7 @@ export default function LandingPage() {
   const [uptimeData, setUptimeData] = useState(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -340,7 +341,17 @@ export default function LandingPage() {
       </div>
 
       {/* ===== NAVBAR ===== */}
-      <nav style={{
+      <style>{`
+        .desktop-nav { display: flex; align-items: center; gap: 24px; }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: white; cursor: pointer; }
+        .mobile-dropdown { display: none; flex-direction: column; gap: 16px; padding: 16px 20px; background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        @media (max-width: 768px) {
+          .desktop-nav { display: none; }
+          .mobile-menu-btn { display: flex; }
+          .nav-container { padding: 12px 20px !important; }
+        }
+      `}</style>
+      <nav className="nav-container" style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '16px 40px',
         borderBottom: '1px solid rgba(255,255,255,0.05)',
@@ -351,17 +362,29 @@ export default function LandingPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <img src="/icon.jpg" alt="Logo" style={{ width: '32px', borderRadius: '8px' }} />
           <span style={{ fontWeight: 700, fontFamily: 'Outfit', fontSize: '1.05rem', letterSpacing: '-0.3px' }}>
-            Ambuj Kumar Tripathi's Workspace
+            Ambuj's Workspace
           </span>
         </div>
         
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+        <div className="desktop-nav">
           <Link href="#workspace" className="nav-link">Home</Link>
           <button onClick={() => setIsHowItWorksOpen(true)} className="nav-link" style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 'inherit', padding: 0, fontFamily: 'inherit', color: 'inherit' }}>How it works</button>
           <Link href="#architecture" className="nav-link">Architecture</Link>
           <Link href="#capabilities" className="nav-link">Capabilities</Link>
         </div>
+
+        <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </nav>
+      {isMobileMenuOpen && (
+        <div className="mobile-dropdown" style={{ display: 'flex', position: 'sticky', top: '65px', zIndex: 9998 }}>
+          <Link href="#workspace" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+          <button onClick={() => { setIsHowItWorksOpen(true); setIsMobileMenuOpen(false); }} className="nav-link" style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 'inherit', padding: 0, fontFamily: 'inherit', color: 'inherit', textAlign: 'left' }}>How it works</button>
+          <Link href="#architecture" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Architecture</Link>
+          <Link href="#capabilities" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Capabilities</Link>
+        </div>
+      )}
 
       <main>
         {/* ── HERO SECTION ── */}
@@ -525,7 +548,13 @@ export default function LandingPage() {
       </main>
 
       {/* ══════════════════ FAT FOOTER ══════════════════ */}
-      <footer id="about" style={{ padding: '5rem 4rem 3rem 4rem', background: '#030303', borderTop: '1px solid rgba(255, 255, 255, 0.05)', color: '#9CA3AF', fontSize: '0.9rem' }}>
+      <style>{`
+        .fat-footer { padding: 5rem 4rem 3rem 4rem; }
+        @media (max-width: 768px) {
+          .fat-footer { padding: 3rem 1.5rem 2rem 1.5rem; }
+        }
+      `}</style>
+      <footer id="about" className="fat-footer" style={{ background: '#030303', borderTop: '1px solid rgba(255, 255, 255, 0.05)', color: '#9CA3AF', fontSize: '0.9rem' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: '3rem' }}>
           
           {/* Left Column: Logo & Copyright */}
