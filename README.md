@@ -5,7 +5,7 @@
 
 <br/>
 
-[![Live Demo](https://img.shields.io/badge/🚀_LIVE_DEMO-Visit_App-D4A574?style=for-the-badge&logoColor=white)](https://agentic-mcp-chatbot.onrender.com)
+[![Live Demo](https://img.shields.io/badge/🚀_LIVE_DEMO-Visit_App-D4A574?style=for-the-badge&logoColor=white)](https://agentic-ai-workspace.onrender.com)
 [![Portfolio](https://img.shields.io/badge/👤_PORTFOLIO-Ambuj_Tripathi-34A853?style=for-the-badge)](https://ambuj-portfolio-v2.netlify.app/)
 
 <br/>
@@ -174,7 +174,7 @@ docker run -p 8000:8000 --env-file .env agentic-mcp-workspace
 
 | Resource | URL |
 |----------|-----|
-| **🚀 Live Application** | [Deploying Soon to Render](#) |
+| **🚀 Live Application** | [agentic-ai-workspace.onrender.com](https://agentic-ai-workspace.onrender.com) |
 | **👤 Ambuj's Portfolio** | [ambuj-portfolio-v2.netlify.app](https://ambuj-portfolio-v2.netlify.app/) |
 | **📖 Financial Parser Docs** | [ambuj-rag-docs.netlify.app](https://ambuj-rag-docs.netlify.app/) |
 | **💻 Source Code** | [GitHub Repository](https://github.com/Ambuj123-lab/agentic-mcp-chatbot) |
