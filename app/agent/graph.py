@@ -139,13 +139,15 @@ def build_agent_graph(tools: list):
     llm = get_llm()
     llm_with_tools = llm.bind_tools(tools)
 
-    async def agent_node(state: AgentState):
+    from langchain_core.runnables.config import RunnableConfig
+
+    def agent_node(state: AgentState, config: RunnableConfig):
         """Node 1 — The Brain: reasons about the query and decides actions."""
         messages = list(state["messages"])
         # Inject system prompt at the start of every invocation
         if not any(isinstance(m, SystemMessage) for m in messages):
             messages = [SystemMessage(content=SYSTEM_PROMPT)] + messages
-        response = await llm_with_tools.ainvoke(messages)
+        response = llm_with_tools.invoke(messages, config)
         return {"messages": [response]}
 
     # Node 2 — The Hands: executes tool calls from the agent
