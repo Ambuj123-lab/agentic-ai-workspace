@@ -95,6 +95,7 @@ app.include_router(chat_module.router, prefix="/api", tags=["Chat"])
 
 # ── Health Check ─────────────────────────────────────────────────────
 @app.get("/health", tags=["System"])
+@app.head("/health", tags=["System"])
 def health():
     from app.agent.tools import get_builtin_tools
     from app.mcp.client import mcp_registry
