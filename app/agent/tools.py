@@ -134,7 +134,7 @@ def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str =
     msg.attach(MIMEText(body, 'plain'))
 
     try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server = smtplib.SMTP('smtp.gmail.com', 587, timeout=10)
         server.starttls()
         server.login(settings.GMAIL_SENDER_EMAIL, settings.GMAIL_APP_PASSWORD)
         

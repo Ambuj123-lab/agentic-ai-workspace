@@ -82,6 +82,27 @@ async def chat(request: Request, body: ChatRequest):
         elif m["role"] == "ai":
             lc_messages.append(AIMessage(content=m["content"]))
 
+    # ── SANITIZE MESSAGE HISTORY ──────────────────────────────────────
+    # Gemini requires strict Human/AI message alternation.
+    # If previous AI responses failed to save (e.g. stream errors),
+    # MongoDB may have consecutive human messages → Gemini silently
+    # returns blank. Fix: merge consecutive same-role messages.
+    if len(lc_messages) > 1:
+        sanitized = [lc_messages[0]]
+        for msg in lc_messages[1:]:
+            if type(sanitized[-1]) == type(msg):
+                # Merge consecutive same-role messages
+                sanitized[-1] = type(msg)(
+                    content=sanitized[-1].content + "\n\n" + msg.content
+                )
+            else:
+                sanitized.append(msg)
+        lc_messages = sanitized
+
+    # Ensure conversation starts with HumanMessage (Gemini requirement)
+    if lc_messages and isinstance(lc_messages[0], AIMessage):
+        lc_messages = lc_messages[1:]
+
     # Gather all tools (built-in + any MCP tools)
     all_tools = get_builtin_tools() + mcp_registry.tools
 

@@ -139,22 +139,13 @@ def build_agent_graph(tools: list):
     llm = get_llm()
     llm_with_tools = llm.bind_tools(tools)
 
-    from langchain_core.runnables.config import RunnableConfig
-
-    def agent_node(state: AgentState, config: RunnableConfig):
+    def agent_node(state: AgentState):
         """Node 1 — The Brain: reasons about the query and decides actions."""
         messages = list(state["messages"])
         # Inject system prompt at the start of every invocation
         if not any(isinstance(m, SystemMessage) for m in messages):
             messages = [SystemMessage(content=SYSTEM_PROMPT)] + messages
-            
-        # FIX for Gemini Flash-Lite: If the last message is a ToolMessage, Gemini sometimes gets stuck.
-        # We explicitly add a prompt asking it to synthesize the final answer.
-        from langchain_core.messages import ToolMessage, HumanMessage
-        if isinstance(messages[-1], ToolMessage):
-            messages.append(HumanMessage(content="Tool execution finished. Please provide the final answer to the user based on the tool results."))
-            
-        response = llm_with_tools.invoke(messages, config)
+        response = llm_with_tools.invoke(messages)
         return {"messages": [response]}
 
     # Node 2 — The Hands: executes tool calls from the agent
