@@ -147,6 +147,13 @@ def build_agent_graph(tools: list):
         # Inject system prompt at the start of every invocation
         if not any(isinstance(m, SystemMessage) for m in messages):
             messages = [SystemMessage(content=SYSTEM_PROMPT)] + messages
+            
+        # FIX for Gemini Flash-Lite: If the last message is a ToolMessage, Gemini sometimes gets stuck.
+        # We explicitly add a prompt asking it to synthesize the final answer.
+        from langchain_core.messages import ToolMessage, HumanMessage
+        if isinstance(messages[-1], ToolMessage):
+            messages.append(HumanMessage(content="Tool execution finished. Please provide the final answer to the user based on the tool results."))
+            
         response = llm_with_tools.invoke(messages, config)
         return {"messages": [response]}
 
