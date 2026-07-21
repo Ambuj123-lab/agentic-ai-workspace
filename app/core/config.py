@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     # --- LLM Configuration ---
     LLM_PROVIDER: str = "gemini"
     GEMINI_API_KEY: str = ""
+    OPENROUTER_API_KEY: str = ""
     LLM_MODEL: str = "gemini-3.1-flash-lite-preview"
     LLM_TEMPERATURE: float = 0.7
 

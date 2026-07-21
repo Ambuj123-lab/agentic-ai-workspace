@@ -101,11 +101,12 @@ You are part of an **Agentic AI** system powered by MCP (Model Context Protocol)
 
 
 def get_llm():
-    """Instantiate the Gemini LLM as the primary model."""
+    """Instantiate OpenRouter Nemotron as primary, with Gemini as fallback."""
     settings = get_settings()
 
+    # Fallback Model: Native Google Gemini
     from langchain_google_genai import ChatGoogleGenerativeAI
-    gemini_llm = ChatGoogleGenerativeAI(
+    gemini_fallback = ChatGoogleGenerativeAI(
         model="gemini-3.1-flash-lite-preview",
         api_key=settings.GEMINI_API_KEY,
         temperature=settings.LLM_TEMPERATURE,
@@ -114,7 +115,20 @@ def get_llm():
         timeout=60.0,
     )
 
-    return gemini_llm
+    # Primary Model: OpenRouter Nemotron
+    from langchain_openai import ChatOpenAI
+    nemotron_llm = ChatOpenAI(
+        model="nvidia/nemotron-3-super-120b-a12b:free",
+        openai_api_key=settings.OPENROUTER_API_KEY,
+        openai_api_base="https://openrouter.ai/api/v1",
+        temperature=settings.LLM_TEMPERATURE,
+        max_tokens=4096,
+        max_retries=1, # Fail fast so fallback kicks in
+        timeout=45.0,
+    )
+
+    # Combine them using LangChain's fallback logic
+    return nemotron_llm.with_fallbacks([gemini_fallback])
 
 
 
