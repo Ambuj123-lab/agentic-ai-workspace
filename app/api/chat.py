@@ -134,12 +134,16 @@ async def chat(request: Request, body: ChatRequest):
                     yield f"data: {json.dumps({'type': 'tool_end', 'name': tool_name})}\n\n"
 
             # Save AI response to MongoDB
-            if full_response:
-                new_ai_msg = {"role": "ai", "content": full_response, "timestamp": datetime.now().isoformat()}
-                await conv_collection.update_one(
-                    {"id": conv_id},
-                    {"$push": {"messages": new_ai_msg}}
-                )
+            if not full_response:
+                fallback_msg = "I'm sorry, I couldn't generate a response for that. Please try rephrasing or asking something else."
+                full_response = fallback_msg
+                yield f"data: {json.dumps({'type': 'token', 'content': fallback_msg})}\n\n"
+
+            new_ai_msg = {"role": "ai", "content": full_response, "timestamp": datetime.now().isoformat()}
+            await conv_collection.update_one(
+                {"id": conv_id},
+                {"$push": {"messages": new_ai_msg}}
+            )
 
             yield f"data: {json.dumps({'type': 'done'})}\n\n"
 

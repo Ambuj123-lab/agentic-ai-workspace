@@ -9,7 +9,7 @@ import GenerativeChart from "./GenerativeChart";
 export default function ChatBox() {
   const { data: session } = useSession();
   const userId = session?.user?.email;
-  
+
   const [messages, setMessages] = useState([
     {
       role: "ai",
@@ -20,7 +20,7 @@ export default function ChatBox() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentTool, setCurrentTool] = useState(null);
   const [conversationId, setConversationId] = useState(null);
-  
+
   // Sidebar states
   const [conversations, setConversations] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -46,7 +46,7 @@ export default function ChatBox() {
   // ── FETCH CONVERSATIONS ON LOAD ──
   useEffect(() => {
     if (!userId) return;
-    
+
     const loadConversations = async () => {
       try {
         const res = await fetch(`/api/conversations?user_id=${userId}`);
@@ -64,7 +64,7 @@ export default function ChatBox() {
         console.error("Failed to load conversations:", err);
       }
     };
-    
+
     loadConversations();
   }, [userId]);
 
@@ -77,7 +77,7 @@ export default function ChatBox() {
     try {
       const res = await fetch(`/api/conversations/${id}?user_id=${userId}`);
       const data = await res.json();
-      
+
       if (data.messages && data.messages.length > 0) {
         setMessages(data.messages);
       } else {
@@ -121,7 +121,7 @@ export default function ChatBox() {
 
     try {
       await fetch(`/api/conversations/${id}?user_id=${userId}`, { method: "DELETE" });
-      
+
       // Remove from UI immediately
       const newConvs = conversations.filter(c => c.id !== id);
       setConversations(newConvs);
@@ -146,7 +146,7 @@ export default function ChatBox() {
       try {
         const data = JSON.parse(match[1]);
         if (data.type === "GMAIL_DRAFT") return data;
-      } catch (e) {}
+      } catch (e) { }
     }
     return null;
   };
@@ -159,7 +159,7 @@ export default function ChatBox() {
       try {
         const data = JSON.parse(match[1]);
         if (data.type === "UI_CHART") charts.push(data);
-      } catch (e) {}
+      } catch (e) { }
     }
     return charts.length > 0 ? charts : null;
   };
@@ -231,7 +231,7 @@ export default function ChatBox() {
               } else if (data.type === "tool_end") {
                 setCurrentTool(null);
               }
-            } catch (err) {}
+            } catch (err) { }
           }
         }
       }
@@ -256,7 +256,7 @@ export default function ChatBox() {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
-    
+
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setIsLoading(true);
     setCurrentTool(null);
@@ -349,7 +349,7 @@ export default function ChatBox() {
   const handleKeyDown = (e) => {
     // On mobile, Enter should add a new line. On desktop, Enter sends the message.
     const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-    
+
     if (e.key === "Enter" && !e.shiftKey && !isMobile) {
       e.preventDefault();
       handleSubmit(e);
@@ -362,10 +362,10 @@ export default function ChatBox() {
     if (idx > 0 && messages[idx - 1].role === "user" || messages[idx - 1].role === "human") {
       previousUserMessage = messages[idx - 1].content;
     }
-    
+
     const textToCopy = `User Query:\n${previousUserMessage}\n\nAgent Response:\n${aiContent}`;
     navigator.clipboard.writeText(textToCopy);
-    
+
     setCopiedIndex(idx);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
@@ -392,17 +392,17 @@ export default function ChatBox() {
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100vh', overflow: 'hidden' }}>
-      
+
       {/* ── MOBILE OVERLAY ── */}
-      <div 
-        className={`sidebar-overlay ${isSidebarOpen ? 'mobile-open' : ''}`} 
+      <div
+        className={`sidebar-overlay ${isSidebarOpen ? 'mobile-open' : ''}`}
         onClick={() => setIsSidebarOpen(false)}
       />
 
       {/* ── DYNAMIC SIDEBAR ── */}
       <aside className={`sidebar ${isSidebarOpen ? 'mobile-open' : ''}`} style={{ display: 'flex', flexDirection: 'column', height: '100dvh', maxHeight: '100dvh', justifyContent: 'space-between', width: '260px', flexShrink: 0, borderRight: '1px solid #222', zIndex: 9999 }}>
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
-          
+
           <div className="branding" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <img src="/icon.jpg" alt="Logo" className="branding-logo-img" />
@@ -416,7 +416,7 @@ export default function ChatBox() {
               <X size={20} />
             </button>
           </div>
-          
+
           <button onClick={handleNewChat} className="new-chat-btn" style={{ margin: '0 20px 20px', cursor: 'pointer' }}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -458,9 +458,9 @@ export default function ChatBox() {
                     <MessageSquare size={16} style={{ flexShrink: 0 }} />
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{conv.title || "New Chat"}</span>
                   </button>
-                  
+
                   {/* Delete Button */}
-                  <button 
+                  <button
                     onClick={(e) => deleteConversation(e, conv.id)}
                     style={{
                       position: 'absolute',
@@ -508,7 +508,7 @@ export default function ChatBox() {
               </div>
             </div>
           )}
-          <button 
+          <button
             onClick={() => signOut({ callbackUrl: '/' })}
             style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%',
@@ -527,7 +527,7 @@ export default function ChatBox() {
 
       {/* ── CHAT INTERFACE ── */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative', width: '100%', overflow: 'hidden' }}>
-        
+
         {/* MOBILE HEADER (only visible on small screens) */}
         <div className="mobile-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -552,83 +552,84 @@ export default function ChatBox() {
             }
 
             return (
-            <div key={idx} className={`message-wrapper ${displayRole}`} style={{ position: 'relative' }}>
-              <div className={`avatar ${displayRole}-avatar`}>
-                {displayRole === "ai" ? <img src="/icon.jpg" alt="AI" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} /> : <User size={20} />}
-              </div>
-              <div className="message-bubble">
-                {displayRole === "ai" ? (
-                  <>
-                    <div className="markdown-body">
-                      <Markdown
-                        options={{
-                          overrides: {
-                            a: {
-                              component: (props) => (
-                                <a {...props} target="_blank" rel="noopener noreferrer" style={{ color: '#58a6ff', textDecoration: 'underline' }} />
-                              ),
+              <div key={idx} className={`message-wrapper ${displayRole}`} style={{ position: 'relative' }}>
+                <div className={`avatar ${displayRole}-avatar`}>
+                  {displayRole === "ai" ? <img src="/icon.jpg" alt="AI" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} /> : <User size={20} />}
+                </div>
+                <div className="message-bubble">
+                  {displayRole === "ai" ? (
+                    <>
+                      <div className="markdown-body">
+                        <Markdown
+                          options={{
+                            overrides: {
+                              a: {
+                                component: (props) => (
+                                  <a {...props} target="_blank" rel="noopener noreferrer" style={{ color: '#58a6ff', textDecoration: 'underline' }} />
+                                ),
+                              },
                             },
-                          },
-                        }}
-                      >
-                        {displayContent}
-                      </Markdown>
-                    </div>
-                    {draft && (
-                      <div className="gmail-draft-card">
-                        <div className="gmail-draft-header">
-                          <div><span className="label">To:</span> {draft.to}</div>
-                          {draft.cc && <div><span className="label">CC:</span> {draft.cc}</div>}
-                          <div><span className="label">Subject:</span> {draft.subject}</div>
-                        </div>
-                        <div className="gmail-draft-body">
-                          {draft.body.split('\n').map((line, i) => <p key={i} style={{margin: '4px 0'}}>{line}</p>)}
-                        </div>
-                        <div className="gmail-draft-actions">
-                          <button className="btn-cancel" onClick={cancelEmail} disabled={isLoading}>
-                            Cancel
-                          </button>
-                          <button className="btn-send-gmail" onClick={() => confirmSendEmail(draft)} disabled={isLoading}>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Gmail" className="gmail-icon" />
-                            Send via Gmail
-                          </button>
-                        </div>
+                          }}
+                        >
+                          {displayContent}
+                        </Markdown>
                       </div>
-                    )}
-                    
-                    {chartsData && chartsData.map((chart, i) => (
-                      <GenerativeChart key={i} config={chart} />
-                    ))}
-                    
-                    {/* Copy Button for AI Messages */}
-                    <div style={{ marginTop: '12px', display: 'flex', justifyContent: 'flex-start' }}>
-                      <button 
-                        onClick={() => copyToClipboard(displayContent, idx)}
-                        style={{
-                          display: 'flex', alignItems: 'center', gap: '6px',
-                          background: 'transparent', border: '1px solid #333', 
-                          color: '#A0A0A0', padding: '4px 10px', 
-                          borderRadius: '6px', cursor: 'pointer',
-                          fontSize: '12px', fontFamily: 'Inter',
-                          transition: 'all 0.2s ease'
-                        }}
-                        onMouseOver={(e) => { e.currentTarget.style.background = '#222'; e.currentTarget.style.color = '#fff'; }}
-                        onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#A0A0A0'; }}
-                      >
-                        {copiedIndex === idx ? (
-                          <><Check size={14} color="#10B981" /> Copied!</>
-                        ) : (
-                          <><Copy size={14} /> Copy Response & Query</>
-                        )}
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  displayContent
-                )}
+                      {draft && (
+                        <div className="gmail-draft-card">
+                          <div className="gmail-draft-header">
+                            <div><span className="label">To:</span> {draft.to}</div>
+                            {draft.cc && <div><span className="label">CC:</span> {draft.cc}</div>}
+                            <div><span className="label">Subject:</span> {draft.subject}</div>
+                          </div>
+                          <div className="gmail-draft-body">
+                            {draft.body.split('\n').map((line, i) => <p key={i} style={{ margin: '4px 0' }}>{line}</p>)}
+                          </div>
+                          <div className="gmail-draft-actions">
+                            <button className="btn-cancel" onClick={cancelEmail} disabled={isLoading}>
+                              Cancel
+                            </button>
+                            <button className="btn-send-gmail" onClick={() => confirmSendEmail(draft)} disabled={isLoading}>
+                              <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Gmail" className="gmail-icon" />
+                              Send via Gmail
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {chartsData && chartsData.map((chart, i) => (
+                        <GenerativeChart key={i} config={chart} />
+                      ))}
+
+                      {/* Copy Button for AI Messages */}
+                      <div style={{ marginTop: '12px', display: 'flex', justifyContent: 'flex-start' }}>
+                        <button
+                          onClick={() => copyToClipboard(displayContent, idx)}
+                          style={{
+                            display: 'flex', alignItems: 'center', gap: '6px',
+                            background: 'transparent', border: '1px solid #333',
+                            color: '#A0A0A0', padding: '4px 10px',
+                            borderRadius: '6px', cursor: 'pointer',
+                            fontSize: '12px', fontFamily: 'Inter',
+                            transition: 'all 0.2s ease'
+                          }}
+                          onMouseOver={(e) => { e.currentTarget.style.background = '#222'; e.currentTarget.style.color = '#fff'; }}
+                          onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#A0A0A0'; }}
+                        >
+                          {copiedIndex === idx ? (
+                            <><Check size={14} color="#10B981" /> Copied!</>
+                          ) : (
+                            <><Copy size={14} /> Copy Response & Query</>
+                          )}
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    displayContent
+                  )}
+                </div>
               </div>
-            </div>
-          )})}
+            )
+          })}
 
           {/* FIX 1: Dedicated Tool Indicator with its own avatar */}
           {currentTool && (
