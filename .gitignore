@@ -28,13 +28,3 @@ Thumbs.db
 
 # Logs
 *.log
-
-# Personal Notes / Specs
-FUTURE_MCP_IDEAS.md
-architecture-dig
-architecture.html
-capabilities-MCP-NEW
-*.md
-!README.md
-!AGENTS.md
-!CLAUDE.md

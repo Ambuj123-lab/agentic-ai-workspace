@@ -84,27 +84,26 @@ export default function GenerativeChart({ config }) {
       background: 'rgba(255,255,255,0.02)',
       border: '1px solid rgba(255,255,255,0.1)',
       borderRadius: '12px',
-      padding: '16px 12px',
+      padding: '20px',
       marginTop: '16px',
       marginBottom: '16px',
       width: '100%',
       maxWidth: '600px',
-      overflowX: 'auto',
       display: 'flex',
       flexDirection: 'column'
     }}>
       {title && (
-        <h4 style={{ 
-          margin: '0 0 20px 0', 
-          color: '#fff', 
-          fontSize: '16px', 
+        <h4 style={{
+          margin: '0 0 20px 0',
+          color: '#fff',
+          fontSize: '16px',
           fontWeight: 600,
           textAlign: 'center'
         }}>
           {title}
         </h4>
       )}
-      <div style={{ width: '100%', minWidth: '280px', height: '300px' }}>
+      <div style={{ width: '100%', height: '300px' }}>
         <ResponsiveContainer width="100%" height="100%">
           {renderChart()}
         </ResponsiveContainer>

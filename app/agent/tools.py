@@ -115,32 +115,71 @@ async def get_stock_price(symbol: str) -> str:
         return f"Failed to fetch stock price: {str(e)}. CRITICAL INSTRUCTION: Do NOT retry this tool. Inform the user that the financial API is currently unavailable."
 
 @tool
-def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str = "") -> str:
+def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str = "", template_style: str = "none") -> str:
     """Send an email using Gmail SMTP. ONLY call this tool after the user has explicitly clicked the 'Approve & Send' button."""
     import smtplib
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
+    import os
     
     settings = get_settings()
     if not settings.GMAIL_SENDER_EMAIL or not settings.GMAIL_APP_PASSWORD:
         return "Error: GMAIL_SENDER_EMAIL or GMAIL_APP_PASSWORD not configured."
 
-    msg = MIMEMultipart()
+    # Default template to dark_corporate if none or empty
+    if not template_style or template_style == "none":
+        template_style = "dark_corporate"
+
+    # Handle HTML Template injection if requested
+    final_html = None
+    if template_style and template_style != "none":
+        template_path = os.path.join(os.path.dirname(__file__), "..", "templates", f"{template_style}.html")
+        if os.path.exists(template_path):
+            with open(template_path, "r", encoding="utf-8") as f:
+                template_content = f.read()
+                # Simple replacement for formatting
+                formatted_body = body.replace("\n", "<br>") if "<" not in body else body
+                final_html = template_content.replace("{{BODY}}", formatted_body)
+
+    msg = MIMEMultipart('mixed')
     msg['From'] = settings.GMAIL_SENDER_EMAIL
     msg['To'] = to_email
-    if cc_email:
-        msg['Cc'] = cc_email
+    if cc_email and cc_email.strip():
+        msg['Cc'] = cc_email.strip()
     msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
+    
+    msg_body = MIMEMultipart('alternative')
+    import re
+    # Create plain text fallback by stripping tags
+    plain_text = re.sub('<[^<]+>', '', body)
+    msg_body.attach(MIMEText(plain_text, 'plain', 'utf-8'))
+    
+    # Attach HTML part if template was used, else check if body has HTML
+    if final_html:
+        msg_body.attach(MIMEText(final_html, 'html', 'utf-8'))
+    elif "<html" in body.lower() or "<div" in body.lower() or "<p>" in body.lower() or "<br" in body.lower() or "<table" in body.lower():
+        msg_body.attach(MIMEText(body, 'html', 'utf-8'))
+
+    msg.attach(msg_body)
+
+    # Automatically attach Resume for professional applications
+    if template_style == "dark_corporate":
+        resume_path = r"C:\Users\AMBUJ\OneDrive\Desktop\Ambuj_Kumar_Tripathi_GenAI_Resume.pdf"
+        if os.path.exists(resume_path):
+            from email.mime.application import MIMEApplication
+            with open(resume_path, "rb") as f:
+                pdf_attachment = MIMEApplication(f.read(), _subtype="pdf")
+            pdf_attachment.add_header('Content-Disposition', 'attachment', filename='Ambuj_Kumar_Tripathi_GenAI_Resume.pdf')
+            msg.attach(pdf_attachment)
 
     try:
-        server = smtplib.SMTP('smtp.gmail.com', 587, timeout=10)
+        server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login(settings.GMAIL_SENDER_EMAIL, settings.GMAIL_APP_PASSWORD)
         
         recipients = [to_email]
-        if cc_email:
-            recipients.extend([email.strip() for email in cc_email.split(",")])
+        if cc_email and cc_email.strip():
+            recipients.extend([e.strip() for e in cc_email.split(",") if e.strip()])
             
         server.sendmail(settings.GMAIL_SENDER_EMAIL, recipients, msg.as_string())
         server.quit()

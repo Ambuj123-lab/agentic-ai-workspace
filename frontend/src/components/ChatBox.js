@@ -172,7 +172,8 @@ export default function ChatBox() {
 
   const confirmSendEmail = (draft) => {
     if (isLoading) return;
-    const cmd = `CONFIRM_SEND_EMAIL: {"to": "${draft.to}", "cc": "${draft.cc || ''}", "subject": "${draft.subject}", "body": ${JSON.stringify(draft.body)}}`;
+    const template_style = draft.template_style || "none";
+    const cmd = `CONFIRM_SEND_EMAIL: {"to": "${draft.to}", "cc": "${draft.cc || ''}", "subject": "${draft.subject}", "body": ${JSON.stringify(draft.body)}, "template_style": "${template_style}"}`;
     submitHiddenMessage(cmd, `Sending email to ${draft.to}...`);
   };
 
