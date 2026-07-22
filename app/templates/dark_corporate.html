@@ -79,6 +79,13 @@
     font-size: 11px;
     text-transform: uppercase;
   }
+  @media screen and (max-width: 600px) {
+    .container { width: 100% !important; border-radius: 0 !important; border-left: none; border-right: none; }
+    body { padding: 0; }
+    .header, .content, .projects-section, .footer { padding: 20px !important; }
+    .hide-mobile { display: none !important; }
+    .stack-mobile { display: block !important; width: 100% !important; text-align: left !important; padding-top: 10px !important; }
+  }
   @keyframes sonar-ping { 0% { transform: scale(1); opacity: 0.8; } 70% { transform: scale(3.5); opacity: 0; } 100% { transform: scale(3.5); opacity: 0; } }
   @keyframes ecg-draw { 0% { stroke-dashoffset: 60; } 100% { stroke-dashoffset: -60; } }
   @keyframes red-heartbeat-glow {
@@ -128,40 +135,80 @@
   </div>
 
   <div class="projects-section" style="padding: 0 30px 25px 30px;">
-    <h3 style="color: #bda852; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">Featured Agentic AI Projects</h3>
+    <h3 style="color: #888; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 20px;">Featured Production Systems</h3>
     
-    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+    <!-- PROJECT 1 -->
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #0d0d0d; border-radius: 12px; border: 1px solid #333; margin-bottom: 16px;">
       <tr>
-        <td style="width: 33.33%; padding: 10px; vertical-align: top; background: #0d0d0d; border: 1px solid #222; border-radius: 6px;">
-          <h4 style="margin: 0 0 8px 0; font-size: 13px; color: #f5f5f5;">Agentic ReAct AI with LangGraph & MCP</h4>
-          <p style="margin: 0 0 10px 0; font-size: 11px; color: #888;">Autonomous tool orchestration with real-time web search, financial data, and robust state machines.</p>
-          <a href="https://agentic-ai-workspace.onrender.com" style="display: inline-block; margin-bottom: 12px; font-size: 11px; color: #bda852; text-decoration: none; font-weight: bold;">View Live ↗</a>
-          <div style="font-size: 10px; color: #000;">
-            <span style="background: #bda852; padding: 2px 5px; border-radius: 3px; margin-right: 4px; display: inline-block; margin-bottom: 4px;">LangGraph</span>
-            <span style="background: #bda852; padding: 2px 5px; border-radius: 3px; margin-right: 4px; display: inline-block; margin-bottom: 4px;">MCP</span>
-            <span style="background: #bda852; padding: 2px 5px; border-radius: 3px; display: inline-block; margin-bottom: 4px;">FastAPI</span>
+        <td style="padding: 24px 28px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+              <td valign="middle">
+                <div style="font-size: 16px; font-weight: 700; color: #f5f5f5; letter-spacing: -0.3px;">Agentic AI Workspace</div>
+              </td>
+              <td class="stack-mobile" width="100" align="right" valign="middle">
+                <a href="https://agentic-ai-workspace.onrender.com" target="_blank" style="display: inline-block; background-color: #bda852; color: #000; font-size: 11px; font-weight: 700; padding: 7px 16px; border-radius: 6px; text-decoration: none;">LIVE DEMO &#8599;</a>
+              </td>
+            </tr>
+          </table>
+          <div style="font-size: 13px; color: #888; line-height: 1.6; margin-top: 12px; margin-bottom: 16px;">
+            Production ReAct agent with FastMCP server orchestration, autonomous tool discovery, real-time APIs, and secure HITL Gmail operations.
+          </div>
+          <div>
+            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">LangGraph</span>
+            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">MCP</span>
+            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">FastAPI</span>
           </div>
         </td>
-        
-        <td style="width: 33.33%; padding: 10px; vertical-align: top; background: #141414; border-top: 1px solid #222; border-bottom: 1px solid #222;">
-          <h4 style="margin: 0 0 8px 0; font-size: 13px; color: #f5f5f5;">Adaptive ReAct Omnichannel RAG</h4>
-          <p style="margin: 0 0 10px 0; font-size: 11px; color: #888;">Multi-channel conversational AI with Generative UI delivery across Web and WhatsApp Cloud API.</p>
-          <a href="https://agentic-rag-financial-parser.onrender.com" style="display: inline-block; margin-bottom: 12px; font-size: 11px; color: #bda852; text-decoration: none; font-weight: bold;">View Live ↗</a>
-          <div style="font-size: 10px; color: #000;">
-            <span style="background: #bda852; padding: 2px 5px; border-radius: 3px; margin-right: 4px; display: inline-block; margin-bottom: 4px;">RAG</span>
-            <span style="background: #bda852; padding: 2px 5px; border-radius: 3px; margin-right: 4px; display: inline-block; margin-bottom: 4px;">WhatsApp API</span>
-            <span style="background: #bda852; padding: 2px 5px; border-radius: 3px; display: inline-block; margin-bottom: 4px;">Next.js</span>
+      </tr>
+    </table>
+
+    <!-- PROJECT 2 -->
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #0d0d0d; border-radius: 12px; border: 1px solid #333; margin-bottom: 16px;">
+      <tr>
+        <td style="padding: 24px 28px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+              <td valign="middle">
+                <div style="font-size: 16px; font-weight: 700; color: #f5f5f5; letter-spacing: -0.3px;">Adaptive ReAct RAG</div>
+              </td>
+              <td class="stack-mobile" width="100" align="right" valign="middle">
+                <a href="https://agentic-rag-financial-parser.onrender.com" target="_blank" style="display: inline-block; background-color: #bda852; color: #000; font-size: 11px; font-weight: 700; padding: 7px 16px; border-radius: 6px; text-decoration: none;">LIVE DEMO &#8599;</a>
+              </td>
+            </tr>
+          </table>
+          <div style="font-size: 13px; color: #888; line-height: 1.6; margin-top: 12px; margin-bottom: 16px;">
+            10-Node Multi-channel conversational AI with hybrid vector retrieval, LLM Function Calling, and autonomous CRON-driven agents.
+          </div>
+          <div>
+            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">Pinecone</span>
+            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">WhatsApp Cloud API</span>
           </div>
         </td>
-        
-        <td style="width: 33.33%; padding: 10px; vertical-align: top; background: #0d0d0d; border: 1px solid #222; border-radius: 6px;">
-          <h4 style="margin: 0 0 8px 0; font-size: 13px; color: #f5f5f5;">Agentic Legal AI (HITL Routing)</h4>
-          <p style="margin: 0 0 10px 0; font-size: 11px; color: #888;">Confidence-gated Intent Routing and Human-in-the-loop workflows over 31k+ complex document chunks.</p>
-          <a href="https://indian-legal-ai-expert.onrender.com" style="display: inline-block; margin-bottom: 12px; font-size: 11px; color: #bda852; text-decoration: none; font-weight: bold;">View Live ↗</a>
-          <div style="font-size: 10px; color: #000;">
-            <span style="background: #bda852; padding: 2px 5px; border-radius: 3px; margin-right: 4px; display: inline-block; margin-bottom: 4px;">LLM Routing</span>
-            <span style="background: #bda852; padding: 2px 5px; border-radius: 3px; margin-right: 4px; display: inline-block; margin-bottom: 4px;">HITL</span>
-            <span style="background: #bda852; padding: 2px 5px; border-radius: 3px; display: inline-block; margin-bottom: 4px;">Pinecone</span>
+      </tr>
+    </table>
+
+    <!-- PROJECT 3 -->
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #0d0d0d; border-radius: 12px; border: 1px solid #333; margin-bottom: 16px;">
+      <tr>
+        <td style="padding: 24px 28px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+              <td valign="middle">
+                <div style="font-size: 16px; font-weight: 700; color: #f5f5f5; letter-spacing: -0.3px;">Agentic Legal AI</div>
+              </td>
+              <td class="stack-mobile" width="100" align="right" valign="middle">
+                <a href="https://indian-legal-ai-expert.onrender.com" target="_blank" style="display: inline-block; background-color: #bda852; color: #000; font-size: 11px; font-weight: 700; padding: 7px 16px; border-radius: 6px; text-decoration: none;">LIVE DEMO &#8599;</a>
+              </td>
+            </tr>
+          </table>
+          <div style="font-size: 13px; color: #888; line-height: 1.6; margin-top: 12px; margin-bottom: 16px;">
+            Processed 31,500+ chunks across 20+ Indian acts. OAuth 2.0 multi-tenant vector search on Qdrant with 5.6K+ HuggingFace downloads.
+          </div>
+          <div>
+            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">Qdrant</span>
+            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">OAuth 2.0</span>
+            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">HuggingFace</span>
           </div>
         </td>
       </tr>
