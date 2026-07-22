@@ -79,15 +79,43 @@
     font-size: 11px;
     text-transform: uppercase;
   }
+  @keyframes sonar-ping { 0% { transform: scale(1); opacity: 0.8; } 70% { transform: scale(3.5); opacity: 0; } 100% { transform: scale(3.5); opacity: 0; } }
+  @keyframes ecg-draw { 0% { stroke-dashoffset: 60; } 100% { stroke-dashoffset: -60; } }
+  @keyframes red-heartbeat-glow {
+    0%   { box-shadow: 0 0 0px rgba(185, 28, 28, 0); border-color: rgba(255, 255, 255, 0.1); }
+    30%  { box-shadow: 0 0 0px rgba(185, 28, 28, 0); border-color: rgba(255, 255, 255, 0.1); }
+    40%  { box-shadow: 0 0 25px rgba(185, 28, 28, 0.8), inset 0 0 8px rgba(153, 27, 27, 0.4); border-color: rgba(185, 28, 28, 0.9); }
+    45%  { box-shadow: 0 0 8px rgba(185, 28, 28, 0.3); border-color: rgba(185, 28, 28, 0.4); }
+    55%  { box-shadow: 0 0 40px rgba(153, 27, 27, 1), inset 0 0 15px rgba(153, 27, 27, 0.8); border-color: #dc2626; }
+    70%  { box-shadow: 0 0 0px rgba(185, 28, 28, 0); border-color: rgba(255, 255, 255, 0.1); }
+    100% { box-shadow: 0 0 0px rgba(185, 28, 28, 0); border-color: rgba(255, 255, 255, 0.1); }
+  }
+  .afp-status-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px;
+    background: #000000;
+    animation: red-heartbeat-glow 4s ease-in-out infinite;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px; text-decoration: none; color: #ffffff;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+    cursor: pointer; white-space: nowrap;
+    transition: border-color 0.3s;
+  }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="header" style="position: relative;">
     <div style="position: absolute; top: 25px; right: 30px;" class="hide-mobile">
-      <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" style="display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 6px 14px; border-radius: 20px; text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-        <span style="display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 6px; box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);"></span>
-        <span style="color: #10b981; font-size: 12px; font-weight: bold; letter-spacing: 0.3px;">System: 99.98% Uptime</span>
+      <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" class="afp-status-badge">
+        <span style="position: relative; width: 8px; height: 8px; display: inline-flex; align-items: center; justify-content: center;">
+          <span style="position: absolute; width: 8px; height: 8px; border-radius: 50%; background: rgba(185, 28, 28, 0.4); animation: sonar-ping 2s ease-out infinite;"></span>
+          <span style="position: relative; width: 6px; height: 6px; border-radius: 50%; background: #b91c1c; box-shadow: 0 0 6px rgba(185, 28, 28, 0.6);"></span>
+        </span>
+        <svg width="28" height="12" viewBox="0 0 28 12" style="overflow: visible; margin-left: -2px;">
+          <path d="M0,6 L6,6 L8,2 L10,10 L12,4 L14,8 L16,6 L28,6" fill="none" stroke="#dc2626" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray: 30; stroke-dashoffset: 0; animation: ecg-draw 2s linear infinite;"></path>
+        </svg>
+        99.99% &bull; 268ms
       </a>
     </div>
     <h1>Ambuj Kumar Tripathi</h1>
