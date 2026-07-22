@@ -28,3 +28,9 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Scratch / Local Files
+FUTURE_MCP_IDEAS.md
+architecture-dig
+architecture.html
+capabilities-MCP-NEW
