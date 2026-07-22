@@ -137,8 +137,14 @@ def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str =
         if os.path.exists(template_path):
             with open(template_path, "r", encoding="utf-8") as f:
                 template_content = f.read()
-                # Simple replacement for formatting
-                formatted_body = body.replace("\n", "<br>") if "<" not in body else body
+                # Simple replacement for formatting (Markdown to HTML)
+                if "<" not in body:
+                    import re
+                    formatted_body = re.sub(r'\*\*(.+?)\*\*', r'<strong style="color:#ffffff;">\1</strong>', body)
+                    formatted_body = re.sub(r'\*(.+?)\*', r'<em>\1</em>', formatted_body)
+                    formatted_body = formatted_body.replace("\n", "<br>")
+                else:
+                    formatted_body = body
                 final_html = template_content.replace("{{BODY}}", formatted_body)
 
     msg = MIMEMultipart('mixed')
@@ -163,7 +169,7 @@ def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str =
     msg.attach(msg_body)
 
     # Automatically attach Resume for professional applications
-    if template_style == "dark_corporate":
+    if template_style in ("dark_corporate", "midnight_pro"):
         resume_path = r"C:\Users\AMBUJ\OneDrive\Desktop\Ambuj_Kumar_Tripathi_GenAI_Resume.pdf"
         if os.path.exists(resume_path):
             from email.mime.application import MIMEApplication

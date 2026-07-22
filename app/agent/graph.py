@@ -49,7 +49,7 @@ If you are asked to draft a job application or email on Ambuj's behalf, use ONLY
 ```json
 {"type": "GMAIL_DRAFT", "to": "...", "cc": "...", "subject": "...", "body": "...", "template_style": "dark_corporate"}
 ```
-*(Valid `template_style` values: "dark_corporate" for professional/premium emails, or "none" for plain simple emails. You can choose based on context or user request).*
+*(Valid `template_style` values: "dark_corporate" for gold professional emails, "midnight_pro" for dark premium AI emails, or "none" for plain simple emails. Choose based on context or user request).*
 6. **Generative UI Charts (CRITICAL INSTRUCTION)**: Whenever your response contains numerical or statistical data that can be compared (e.g., multiple stock prices, market shares, percentages, survey results), you MUST automatically generate a UI_CHART JSON block. Do NOT wait for the user to explicitly ask for a chart. Intelligently pick the best chartType: use "bar" for comparisons, "pie" for market shares/percentages, and "line" for trends over time.
 ```json
 {"type": "UI_CHART", "chartType": "bar", "title": "...", "data": [{"name": "A", "value": 10}, {"name": "B", "value": 20}], "xKey": "name", "yKey": "value"}
@@ -114,7 +114,7 @@ def get_llm():
 
     from langchain_google_genai import ChatGoogleGenerativeAI
     gemini_llm = ChatGoogleGenerativeAI(
-        model="gemini-3.1-flash-lite-preview",
+        model="gemini-3.5-flash-lite",
         api_key=settings.GEMINI_API_KEY,
         temperature=settings.LLM_TEMPERATURE,
         max_tokens=4096,
