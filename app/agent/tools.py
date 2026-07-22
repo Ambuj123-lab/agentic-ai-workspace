@@ -139,7 +139,9 @@ def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str =
                 template_content = f.read()
                 try:
                     import markdown
-                    formatted_body = markdown.markdown(body, extensions=['extra', 'nl2br'])
+                    # If the string contains literal backslash-n, replace it with actual newlines
+                    processed_body = body.replace("\\n", "\n")
+                    formatted_body = markdown.markdown(processed_body, extensions=['extra', 'nl2br'])
                 except ImportError:
                     # Fallback to naive replacement if markdown lib is missing
                     import re
