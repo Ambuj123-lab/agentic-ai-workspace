@@ -410,9 +410,14 @@
      align-items: center;
      justify-content: space-between;
      padding: 12px 20px;
-     background: var(--bg-glass);
+     background: rgba(15, 17, 21, 0.95);
      border-bottom: 1px solid var(--border-glass);
      backdrop-filter: var(--blur-md);
+     -webkit-backdrop-filter: var(--blur-md);
+     position: sticky;
+     top: 0;
+     z-index: 30;
+     flex-shrink: 0;
    }
 
    .menu-btn {
@@ -436,55 +441,77 @@
      background: rgba(0, 0, 0, 0.7);
      z-index: 40;
      backdrop-filter: blur(2px);
+     -webkit-backdrop-filter: blur(2px);
    }
 
+   /* ══════════════════════════════════════════════════════════
+      MOBILE & TABLET RESPONSIVE — Dashboard / Chat Page
+      ══════════════════════════════════════════════════════════ */
+
+   /* ── Tablets (≤1024px) ── */
+   @media (max-width: 1024px) {
+     .sidebar {
+       width: 240px;
+     }
+     .message-wrapper {
+       max-width: 95%;
+     }
+   }
+
+   /* ── Mobile (≤768px) ── */
    @media (max-width: 768px) {
+     /* Show mobile header with hamburger */
      .mobile-header {
        display: flex;
      }
+
+     /* Sidebar: hidden off-screen, slides in on toggle */
      .sidebar {
        position: fixed;
        top: 0;
        bottom: 0;
        left: -300px;
        width: 280px;
-       transition: left 0.3s ease;
+       transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
        z-index: 50;
-       background: #0f1115; /* solid bg on mobile */
+       background: #0f1115;
      }
      .sidebar.mobile-open {
        left: 0;
      }
+
+     /* Sidebar close button — override the inline display:none */
+     .sidebar .menu-btn.d-md-none {
+       display: flex !important;
+     }
+
+     /* Dark overlay behind sidebar */
      .sidebar-overlay.mobile-open {
        display: block;
      }
+
+     /* Hide desktop watermark badge */
+     .built-by-badge {
+       display: none;
+     }
+
+     /* Chat messages: full width, tighter spacing */
      .message-wrapper {
        max-width: 100%;
-       padding: 8px 12px;
-       gap: 12px;
+       padding: 4px 0;
+       gap: 10px;
      }
      .message-bubble {
-       max-width: 90%;
-       padding: 12px 16px;
-       font-size: 16px;
+       max-width: 92%;
+       padding: 10px 14px;
+       font-size: 15px;
+       line-height: 1.6;
      }
-     .chat-container {
-       padding: 24px 12px;
+     .message-wrapper.user .message-bubble {
+       font-size: 15px;
      }
-     .input-area {
-       padding: 12px;
-     }
-     .input-wrapper {
-       max-width: 100%;
-       padding: 8px;
-       border-radius: 16px;
-     }
-     .chat-textarea {
-       font-size: 16px;
-     }
-      .built-by-badge {
-        display: none;
-      }
+
+     /* Avatars smaller on mobile */
      .avatar {
        width: 28px;
        height: 28px;
@@ -493,7 +520,109 @@
        width: 28px;
        height: 28px;
      }
+
+     /* Chat container: proper scroll containment */
+     .chat-container {
+       padding: 16px 12px;
+       flex: 1;
+       overflow-y: auto;
+       -webkit-overflow-scrolling: touch;
      }
+
+     /* Input area: always visible at bottom */
+     .input-area {
+       padding: 10px 12px;
+       padding-bottom: calc(10px + env(safe-area-inset-bottom));
+       flex-shrink: 0;
+       background: rgba(0, 0, 0, 0.95);
+       border-top: 1px solid var(--border-glass);
+     }
+     .input-wrapper {
+       max-width: 100%;
+       padding: 8px;
+       border-radius: 14px;
+     }
+     .chat-textarea {
+       font-size: 16px; /* prevent iOS zoom on focus */
+       min-height: 36px;
+       padding: 7px 10px;
+     }
+     .send-btn {
+       width: 36px;
+       height: 36px;
+       margin-left: 8px;
+     }
+
+     /* Gmail Draft card: prevent horizontal overflow */
+     .gmail-draft-card {
+       max-width: 100%;
+     }
+     .gmail-draft-actions {
+       flex-direction: column;
+       gap: 8px;
+     }
+     .gmail-draft-actions button {
+       width: 100%;
+       justify-content: center;
+     }
+
+     /* Tool indicator */
+     .tool-indicator {
+       font-size: 12px;
+       padding: 6px 10px;
+     }
+
+     /* Markdown content */
+     .markdown-body pre {
+       font-size: 13px;
+       padding: 12px;
+       max-width: calc(100vw - 80px);
+       overflow-x: auto;
+     }
+     .markdown-body table {
+       display: block;
+       overflow-x: auto;
+       max-width: calc(100vw - 80px);
+       font-size: 13px;
+     }
+
+     /* Branding text in sidebar */
+     .branding-text h1 {
+       font-size: 14px;
+     }
+   }
+
+   /* ── Small phones (≤480px) ── */
+   @media (max-width: 480px) {
+     .mobile-header span {
+       font-size: 12px !important;
+     }
+     .mobile-header img {
+       width: 24px !important;
+       height: 24px !important;
+     }
+     .message-bubble {
+       max-width: 95%;
+       padding: 8px 12px;
+       font-size: 14px;
+     }
+     .avatar {
+       width: 24px;
+       height: 24px;
+     }
+     .avatar.ai-avatar img {
+       width: 24px;
+       height: 24px;
+     }
+     .chat-container {
+       padding: 12px 8px;
+       gap: 16px;
+     }
+     .input-area {
+       padding: 8px;
+       padding-bottom: calc(8px + env(safe-area-inset-bottom));
+     }
+   }
 
      /* --- Gmail Draft UI --- */
    .gmail-draft-card {
