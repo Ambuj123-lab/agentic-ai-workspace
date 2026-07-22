@@ -137,14 +137,15 @@ def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str =
         if os.path.exists(template_path):
             with open(template_path, "r", encoding="utf-8") as f:
                 template_content = f.read()
-                # Simple replacement for formatting (Markdown to HTML)
-                if "<" not in body:
+                try:
+                    import markdown
+                    formatted_body = markdown.markdown(body, extensions=['extra', 'nl2br'])
+                except ImportError:
+                    # Fallback to naive replacement if markdown lib is missing
                     import re
                     formatted_body = re.sub(r'\*\*(.+?)\*\*', r'<strong style="color:#ffffff;">\1</strong>', body)
                     formatted_body = re.sub(r'\*(.+?)\*', r'<em>\1</em>', formatted_body)
                     formatted_body = formatted_body.replace("\n", "<br>")
-                else:
-                    formatted_body = body
                 final_html = template_content.replace("{{BODY}}", formatted_body)
 
     msg = MIMEMultipart('mixed')
