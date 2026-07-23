@@ -141,7 +141,25 @@ def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str =
                     import markdown
                     # If the string contains literal backslash-n, replace it with actual newlines
                     processed_body = body.replace("\\n", "\n")
-                    formatted_body = markdown.markdown(processed_body, extensions=['extra', 'nl2br'])
+                    formatted_body = markdown.markdown(processed_body, extensions=['extra', 'nl2br', 'tables'])
+                    # Post-process: inject inline styles for email-safe tables
+                    import re as _re
+                    formatted_body = formatted_body.replace(
+                        "<table>",
+                        '<table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;">'
+                    )
+                    formatted_body = _re.sub(
+                        r'<th(?=>| )',
+                        '<th style="background:#27272a;color:#fafafa;padding:10px 14px;text-align:left;border:1px solid #3f3f46;font-weight:600;font-size:13px;"',
+                        formatted_body
+                    )
+                    formatted_body = _re.sub(
+                        r'<td(?=>| )',
+                        '<td style="padding:10px 14px;border:1px solid #3f3f46;color:#d4d4d8;font-size:13px;"',
+                        formatted_body
+                    )
+                    # Style bold/strong for white text in dark templates
+                    formatted_body = formatted_body.replace("<strong>", '<strong style="color:#ffffff;">')
                 except ImportError:
                     # Fallback to naive replacement if markdown lib is missing
                     import re
