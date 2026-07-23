@@ -5,11 +5,8 @@ const nextConfig = {
   },
   async rewrites() {
     return [
-      // Proxy these specific backend endpoints to FastAPI
-      {
-        source: '/api/chat',
-        destination: 'http://127.0.0.1:8000/api/chat',
-      },
+      // /api/chat is handled by a custom Next.js API route (src/app/api/chat/route.js)
+      // that properly streams SSE without buffering
       {
         source: '/api/conversations/:path*',
         destination: 'http://127.0.0.1:8000/api/conversations/:path*',

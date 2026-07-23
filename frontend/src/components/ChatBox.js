@@ -6,6 +6,9 @@ import { Send, Bot, User, Activity, LogOut, MessageSquare, Trash2, Menu, X, Copy
 import { useSession, signOut } from "next-auth/react";
 import GenerativeChart from "./GenerativeChart";
 
+// Direct API base — bypasses Next.js proxy so SSE streams in real-time
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
+
 export default function ChatBox() {
   const { data: session } = useSession();
   const userId = session?.user?.email;
@@ -49,7 +52,7 @@ export default function ChatBox() {
 
     const loadConversations = async () => {
       try {
-        const res = await fetch(`/api/conversations?user_id=${userId}`);
+        const res = await fetch(`${API_BASE}/api/conversations?user_id=${userId}`);
         const data = await res.json();
         if (Array.isArray(data)) {
           setConversations(data);
@@ -75,7 +78,7 @@ export default function ChatBox() {
     setConversationId(id);
     setIsSidebarOpen(false); // Close sidebar on mobile after selection
     try {
-      const res = await fetch(`/api/conversations/${id}?user_id=${userId}`);
+      const res = await fetch(`${API_BASE}/api/conversations/${id}?user_id=${userId}`);
       const data = await res.json();
 
       if (data.messages && data.messages.length > 0) {
@@ -97,7 +100,7 @@ export default function ChatBox() {
   const handleNewChat = async () => {
     if (!userId) return;
     try {
-      const res = await fetch(`/api/conversations/new?user_id=${userId}`, { method: "POST" });
+      const res = await fetch(`${API_BASE}/api/conversations/new?user_id=${userId}`, { method: "POST" });
       const data = await res.json();
       setConversationId(data.id);
       setIsSidebarOpen(false);
@@ -106,7 +109,7 @@ export default function ChatBox() {
         content: "### Welcome to Ambuj Kumar Tripathi's Workspace\n\nHow can I help you today?",
       }]);
       // Refresh sidebar list
-      const listRes = await fetch(`/api/conversations?user_id=${userId}`);
+      const listRes = await fetch(`${API_BASE}/api/conversations?user_id=${userId}`);
       setConversations(await listRes.json());
     } catch (err) {
       console.error("Failed to create new chat:", err);
@@ -120,7 +123,7 @@ export default function ChatBox() {
     if (!confirm("Are you sure you want to delete this chat?")) return;
 
     try {
-      await fetch(`/api/conversations/${id}?user_id=${userId}`, { method: "DELETE" });
+      await fetch(`${API_BASE}/api/conversations/${id}?user_id=${userId}`, { method: "DELETE" });
 
       // Remove from UI immediately
       const newConvs = conversations.filter(c => c.id !== id);
@@ -300,7 +303,7 @@ export default function ChatBox() {
               if (data.type === "conversation_id") {
                 setConversationId(data.id);
                 // Trigger sidebar refresh to update the new chat title if it was a new chat
-                fetch(`/api/conversations?user_id=${userId}`)
+                fetch(`${API_BASE}/api/conversations?user_id=${userId}`)
                   .then(res => res.json())
                   .then(list => {
                     if (Array.isArray(list)) setConversations(list);
