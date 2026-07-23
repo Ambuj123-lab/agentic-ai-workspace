@@ -493,12 +493,20 @@ export default function ChatBox() {
           {session?.user && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', padding: '8px', borderRadius: '8px', background: 'rgba(255,255,255,0.03)' }}>
               {session.user.image ? (
-                <img src={session.user.image} alt="Profile" style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }} />
-              ) : (
-                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#58a6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold' }}>
-                  {session.user.name?.charAt(0) || 'U'}
-                </div>
-              )}
+                <img
+                  src={session.user.image}
+                  alt="Profile"
+                  style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }}
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+              ) : null}
+              <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', display: session.user.image ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold', fontSize: '16px' }}>
+                {session.user.name?.charAt(0)?.toUpperCase() || 'U'}
+              </div>
               <div style={{ overflow: 'hidden' }}>
                 <div style={{ fontSize: '14px', fontWeight: '500', color: '#e6edf3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {session.user.name || 'User'}
