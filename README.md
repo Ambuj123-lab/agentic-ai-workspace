@@ -33,9 +33,9 @@ Unlike standard LLM chatbots, this system **thinks before acting**, orchestratin
 
 <div align="center">
 <br/>
-<img src="https://raw.githubusercontent.com/Ambuj123-lab/agentic-mcp-chatbot/main/architecture.html" alt="System Architecture Diagram" width="100%" />
+<img src="frontend/public/agentic_mcp_architecture_animated.svg" alt="System Architecture Diagram" width="100%" />
 <br/>
-<em>Note: The architecture diagram is interactive HTML in the codebase (`architecture.html`).</em>
+<em>Note: The architecture diagram is a native animated SVG.</em>
 </div>
 
 ---

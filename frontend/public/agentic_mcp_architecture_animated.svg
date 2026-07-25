@@ -1,0 +1,252 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#121218" />
+      <stop offset="100%" stop-color="#050508" />
+    </radialGradient>
+
+    <!-- Node Gradients -->
+    <linearGradient id="gradBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a2b4c" />
+      <stop offset="100%" stop-color="#0d1b38" />
+    </linearGradient>
+    <linearGradient id="gradPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2a164c" />
+      <stop offset="100%" stop-color="#1a0d36" />
+    </linearGradient>
+    <linearGradient id="gradCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a3c42" />
+      <stop offset="100%" stop-color="#052428" />
+    </linearGradient>
+    <linearGradient id="gradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1e24" />
+      <stop offset="100%" stop-color="#121216" />
+    </linearGradient>
+
+    <!-- Flow Paths for animation -->
+    <path id="pathUserToFront" d="M 600 130 L 600 170" fill="none" stroke="none" />
+    <path id="pathFrontToBack" d="M 600 230 L 600 270" fill="none" stroke="none" />
+    <path id="pathBackToAgent" d="M 600 330 L 600 380 L 400 380 L 400 420" fill="none" stroke="none" />
+    <path id="pathAgentToTools" d="M 470 450 L 530 450" fill="none" stroke="none" />
+    <path id="pathToolsToAgent" d="M 530 480 L 470 480" fill="none" stroke="none" />
+    <path id="pathAgentToEnd" d="M 400 490 L 400 530" fill="none" stroke="none" />
+    <path id="pathBackToMCP" d="M 600 330 L 600 380 L 800 380 L 800 420" fill="none" stroke="none" />
+  </defs>
+
+  <style>
+    /* Continuous Flowing Lines Animation */
+    @keyframes flowLine {
+      to { stroke-dashoffset: -20; }
+    }
+    
+    .flowing-path {
+      fill: none;
+      stroke-width: 2;
+      stroke-dasharray: 8 6;
+      animation: flowLine 1s linear infinite;
+    }
+
+    /* Glow Pulses */
+    @keyframes pulseBlue { 0%, 100% { filter: drop-shadow(0 0 2px #3b82f6); } 50% { filter: drop-shadow(0 0 10px #3b82f6); } }
+    @keyframes pulsePurple { 0%, 100% { filter: drop-shadow(0 0 2px #a855f7); } 50% { filter: drop-shadow(0 0 10px #a855f7); } }
+    @keyframes pulseCyan { 0%, 100% { filter: drop-shadow(0 0 2px #06b6d4); } 50% { filter: drop-shadow(0 0 10px #06b6d4); } }
+    
+    .anim-blue { animation: pulseBlue 3s infinite; }
+    .anim-purple { animation: pulsePurple 3.5s infinite; }
+    .anim-cyan { animation: pulseCyan 2.5s infinite; }
+
+    /* Text Styles */
+    .title { font-family: 'Inter', 'Segoe UI', sans-serif; font-size: 24px; font-weight: bold; fill: #ffffff; }
+    .subtitle { font-family: 'Inter', 'Segoe UI', sans-serif; font-size: 11px; fill: #8a8a9a; letter-spacing: 1px; }
+    .credit-text { font-family: 'Inter', 'Segoe UI', sans-serif; font-size: 11px; fill: #8a8a9a; text-anchor: end; }
+    .credit-highlight { fill: #ffffff; font-weight: bold; }
+    
+    .node-title { font-family: 'Inter', 'Segoe UI', sans-serif; font-size: 14px; font-weight: bold; fill: #ffffff; text-anchor: middle; }
+    .node-sub { font-family: 'Inter', 'Segoe UI', sans-serif; font-size: 10px; fill: #9ca3af; text-anchor: middle; }
+    
+    .group-title { font-family: 'Inter', 'Segoe UI', sans-serif; font-size: 11px; fill: #6b7280; letter-spacing: 1.5px; }
+    .group-note { font-family: 'Inter', 'Segoe UI', sans-serif; font-size: 10px; fill: #6b7280; text-anchor: end; font-style: italic; }
+
+    /* Path Colors */
+    .path-blue { stroke: #3b82f6; opacity: 0.7; }
+    .path-green { stroke: #10b981; opacity: 0.7; }
+    .path-purple { stroke: #a855f7; opacity: 0.7; }
+  </style>
+
+  <rect width="1200" height="900" fill="url(#bgGrad)" />
+
+  <!-- HEADER -->
+  <text x="50" y="50" class="title">Agentic AI Workspace</text>
+  <text x="50" y="70" class="subtitle">LANGGRAPH REACT AGENT • MCP • MEMORY • HITL • OBSERVABILITY</text>
+  
+  <text x="1150" y="50" class="credit-text">Architected by <tspan class="credit-highlight">Ambuj Kumar Tripathi</tspan></text>
+  <text x="1150" y="70" class="credit-text">Next.js • FastAPI • LangGraph • MongoDB • Docker</text>
+
+  <!-- ==================== FLOWING PATHS ==================== -->
+  <path class="flowing-path path-blue" d="M 600 130 L 600 170" />
+  <path class="flowing-path path-blue" d="M 600 230 L 600 270" />
+  <path class="flowing-path path-blue" d="M 600 330 L 600 380 L 400 380 L 400 420" /> <!-- To Agent -->
+  <path class="flowing-path path-green" d="M 600 330 L 600 380 L 800 380 L 800 420" /> <!-- To MCP -->
+  
+  <path class="flowing-path path-purple" d="M 470 450 L 530 450" /> <!-- Agent to Tools -->
+  <path class="flowing-path path-purple" d="M 530 470 L 470 470" /> <!-- Tools to Agent -->
+  <path class="flowing-path path-cyan" d="M 400 490 L 400 530" /> <!-- Agent to END -->
+  
+  <!-- From Agent Tools to Built-in Tools -->
+  <path class="flowing-path path-purple" stroke-dasharray="2 4" opacity="0.4" d="M 400 570 L 400 600 L 250 600 L 250 640" />
+  <path class="flowing-path path-purple" stroke-dasharray="2 4" opacity="0.4" d="M 400 570 L 400 640" />
+  <path class="flowing-path path-purple" stroke-dasharray="2 4" opacity="0.4" d="M 400 570 L 400 600 L 550 600 L 550 640" />
+
+  <!-- Moving Dots for core flow -->
+  <circle r="4" fill="#3b82f6"><animateMotion dur="1s" repeatCount="indefinite"><mpath xlink:href="#pathUserToFront" href="#pathUserToFront" /></animateMotion></circle>
+  <circle r="4" fill="#3b82f6"><animateMotion dur="1.5s" repeatCount="indefinite"><mpath xlink:href="#pathFrontToBack" href="#pathFrontToBack" /></animateMotion></circle>
+  <circle r="4" fill="#a855f7"><animateMotion dur="2s" repeatCount="indefinite"><mpath xlink:href="#pathBackToAgent" href="#pathBackToAgent" /></animateMotion></circle>
+  <circle r="4" fill="#10b981"><animateMotion dur="2s" repeatCount="indefinite"><mpath xlink:href="#pathBackToMCP" href="#pathBackToMCP" /></animateMotion></circle>
+
+
+  <!-- ==================== TOP INFRA ==================== -->
+  
+  <!-- End User -->
+  <rect x="525" y="90" width="150" height="40" rx="20" fill="url(#gradBlue)" stroke="#3b82f6" stroke-width="1.5" />
+  <text x="600" y="110" class="node-title">End User</text>
+  <text x="600" y="123" class="node-sub">Browser session</text>
+
+  <!-- Frontend -->
+  <rect x="475" y="170" width="250" height="60" rx="25" fill="url(#gradBlue)" stroke="#3b82f6" stroke-width="1.5" class="anim-blue" />
+  <text x="600" y="200" class="node-title">Next.js 14 Frontend</text>
+  <text x="600" y="218" class="node-sub">SSE streaming • HITL cards • Recharts • Markdown</text>
+
+  <!-- Backend -->
+  <rect x="450" y="270" width="300" height="60" rx="25" fill="url(#gradBlue)" stroke="#3b82f6" stroke-width="1.5" class="anim-blue" />
+  <text x="600" y="300" class="node-title">FastAPI Backend • Python 3.11 (async)</text>
+  <text x="600" y="318" class="node-sub">/api/chat • /api/chat/stream (SSE) • /api/health</text>
+
+
+  <!-- ==================== LANGGRAPH CORE ==================== -->
+  
+  <rect x="250" y="400" width="400" height="190" rx="15" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 5" />
+  <text x="260" y="415" class="group-title">LANGGRAPH REACT — AGENT CORE</text>
+
+  <!-- Agent Node -->
+  <rect x="330" y="430" width="140" height="50" rx="20" fill="url(#gradPurple)" stroke="#a855f7" stroke-width="1.5" class="anim-purple" />
+  <text x="400" y="455" class="node-title">"agent" node</text>
+  <text x="400" y="470" class="node-sub">Calls LLM with message history</text>
+
+  <!-- Tools Node -->
+  <rect x="530" y="430" width="100" height="50" rx="20" fill="url(#gradPurple)" stroke="#a855f7" stroke-width="1.5" />
+  <text x="580" y="455" class="node-title">"tools" node</text>
+  <text x="580" y="470" class="node-sub">LangGraph ToolNode</text>
+  
+  <!-- Loop text -->
+  <text x="460" y="500" class="node-sub" font-size="9px">loop while tool_calls present</text>
+  <text x="460" y="515" class="node-sub" font-size="9px">state: AgentState (add_messages reducer)</text>
+
+  <!-- END Node -->
+  <rect x="330" y="530" width="140" height="50" rx="20" fill="url(#gradCyan)" stroke="#06b6d4" stroke-width="1.5" class="anim-cyan" />
+  <text x="400" y="555" class="node-title">END → response</text>
+  <text x="400" y="570" class="node-sub">streamed back to user (SSE)</text>
+
+
+  <!-- ==================== MCP SERVERS ==================== -->
+  
+  <rect x="680" y="400" width="280" height="190" rx="15" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 5" />
+  <text x="690" y="415" class="group-title">MCP • JSON-RPC 2.0 over SSE</text>
+
+  <!-- GitHub -->
+  <rect x="700" y="430" width="240" height="40" rx="15" fill="url(#gradDark)" stroke="#10b981" stroke-width="1.2" />
+  <text x="820" y="450" class="node-title">GitHub MCP Server</text>
+  <text x="820" y="463" class="node-sub">repos • user stats • commit history</text>
+
+  <!-- Gmail -->
+  <rect x="700" y="480" width="240" height="40" rx="15" fill="url(#gradDark)" stroke="#f59e0b" stroke-width="1.2" />
+  <text x="820" y="500" class="node-title">Gmail MCP Server</text>
+  <text x="820" y="513" class="node-sub">SMTP / IMAP • read, draft, send</text>
+
+  <!-- FastMCP -->
+  <rect x="700" y="530" width="240" height="40" rx="15" fill="url(#gradDark)" stroke="#3b82f6" stroke-width="1.2" />
+  <text x="820" y="550" class="node-title">FastMCP Stateless Server</text>
+  <text x="820" y="563" class="node-sub">custom base • dynamic tool registration</text>
+
+  <text x="950" y="585" class="group-note">no code change to add new MCP servers</text>
+
+
+  <!-- ==================== BUILT-IN TOOLS ==================== -->
+  
+  <rect x="250" y="610" width="400" height="110" rx="15" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 5" />
+  <text x="260" y="625" class="group-title">BUILT-IN TOOLS (5)</text>
+
+  <rect x="260" y="640" width="100" height="35" rx="10" fill="url(#gradDark)" stroke="#10b981" />
+  <text x="310" y="656" class="node-title" font-size="12px">web_search</text>
+  <text x="310" y="668" class="node-sub" font-size="9px">Tavily • max 5</text>
+
+  <rect x="370" y="640" width="130" height="35" rx="10" fill="url(#gradDark)" stroke="#10b981" />
+  <text x="435" y="656" class="node-title" font-size="12px">fetch_webpage</text>
+  <text x="435" y="668" class="node-sub" font-size="9px">httpx • 8000 char cap</text>
+
+  <rect x="510" y="640" width="120" height="35" rx="10" fill="url(#gradDark)" stroke="#10b981" />
+  <text x="570" y="656" class="node-title" font-size="12px">calculator</text>
+  <text x="570" y="668" class="node-sub" font-size="9px">sanitized eval()</text>
+
+  <rect x="260" y="680" width="150" height="35" rx="10" fill="url(#gradDark)" stroke="#10b981" />
+  <text x="335" y="696" class="node-title" font-size="12px">get_stock_price</text>
+  <text x="335" y="708" class="node-sub" font-size="9px">RapidAPI • Yahoo Finance</text>
+
+  <rect x="420" y="680" width="210" height="35" rx="10" fill="url(#gradDark)" stroke="#f59e0b" />
+  <text x="525" y="696" class="node-title" font-size="12px">Gmail draft + send (HITL guarded)</text>
+  <text x="525" y="708" class="node-sub" font-size="9px">Draft shown → user approves → send_email</text>
+
+
+  <!-- ==================== MEMORY · OBS · DEPLOY ==================== -->
+  
+  <rect x="250" y="740" width="710" height="80" rx="15" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 5" />
+  <text x="260" y="755" class="group-title">MEMORY · OBSERVABILITY · DEPLOY</text>
+
+  <rect x="270" y="770" width="150" height="40" rx="15" fill="url(#gradDark)" stroke="#10b981" stroke-width="1.2" />
+  <text x="345" y="790" class="node-title">MongoDB Atlas</text>
+  <text x="345" y="803" class="node-sub">thread-isolated • 30-day TTL</text>
+
+  <rect x="440" y="770" width="150" height="40" rx="15" fill="url(#gradDark)" stroke="#f59e0b" stroke-width="1.2" />
+  <text x="515" y="790" class="node-title">LangSmith</text>
+  <text x="515" y="803" class="node-sub">tracing • token &amp; cost per run</text>
+
+  <rect x="610" y="770" width="150" height="40" rx="15" fill="url(#gradDark)" stroke="#06b6d4" stroke-width="1.2" />
+  <text x="685" y="790" class="node-title">Docker (multi-stage)</text>
+  <text x="685" y="803" class="node-sub">FastAPI + static build</text>
+
+  <rect x="780" y="770" width="150" height="40" rx="15" fill="url(#gradDark)" stroke="#a855f7" stroke-width="1.2" />
+  <text x="855" y="790" class="node-title">Render.com</text>
+  <text x="855" y="803" class="node-sub">live deployment</text>
+
+
+  <!-- ==================== KEY DESIGN METRICS (RIGHT PANEL) ==================== -->
+  
+  <rect x="1000" y="270" width="150" height="320" rx="15" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 5" />
+  <text x="1010" y="285" class="group-title">KEY DESIGN</text>
+
+  <!-- Metric 1 -->
+  <rect x="1010" y="300" width="130" height="50" rx="10" fill="url(#gradDark)" stroke="#10b981" />
+  <text x="1025" y="325" class="title" fill="#10b981">12+</text>
+  <text x="1025" y="340" class="node-sub" font-size="9px" text-anchor="start">Total Tools (5+7)</text>
+
+  <!-- Metric 2 -->
+  <rect x="1010" y="360" width="130" height="50" rx="10" fill="url(#gradDark)" stroke="#a855f7" />
+  <text x="1025" y="385" class="title" fill="#a855f7">ReAct</text>
+  <text x="1025" y="400" class="node-sub" font-size="9px" text-anchor="start">Agent Pattern</text>
+
+  <!-- Metric 3 -->
+  <rect x="1010" y="420" width="130" height="50" rx="10" fill="url(#gradDark)" stroke="#f59e0b" />
+  <text x="1025" y="445" class="title" fill="#f59e0b">HITL</text>
+  <text x="1025" y="460" class="node-sub" font-size="9px" text-anchor="start">Email Guard</text>
+
+  <!-- Metric 4 -->
+  <rect x="1010" y="480" width="130" height="50" rx="10" fill="url(#gradDark)" stroke="#06b6d4" />
+  <text x="1025" y="505" class="title" fill="#06b6d4">30d</text>
+  <text x="1025" y="520" class="node-sub" font-size="9px" text-anchor="start">Memory TTL</text>
+
+
+  <!-- FOOTER -->
+  <text x="50" y="860" class="credit-text" text-anchor="start">Production Agentic AI • Generative UI • MCP-native tool discovery</text>
+  <text x="1150" y="860" class="credit-text">github.com/Ambuj123-lab</text>
+
+</svg>
