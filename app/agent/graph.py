@@ -109,11 +109,21 @@ You are part of an **Agentic AI** system powered by MCP (Model Context Protocol)
 
 
 def get_llm():
-    """Instantiate the Gemini LLM as the primary model."""
+    """Instantiate the Gemini LLM as primary, with Gemini fallback.
+    
+    Flow:
+      Primary:  gemini-3.5-flash-lite (Google Gemini API)
+      Fallback: gemini-3.1-flash-lite-preview (Google Gemini API)
+      
+    If primary returns 503/429/any error, LangChain's .with_fallbacks()
+    automatically routes to the fallback model. Zero impact on existing code.
+    """
     settings = get_settings()
 
     from langchain_google_genai import ChatGoogleGenerativeAI
-    gemini_llm = ChatGoogleGenerativeAI(
+
+    # --- Primary: Gemini 3.5 Flash Lite ---
+    gemini_primary = ChatGoogleGenerativeAI(
         model="gemini-3.5-flash-lite",
         api_key=settings.GEMINI_API_KEY,
         temperature=settings.LLM_TEMPERATURE,
@@ -122,7 +132,18 @@ def get_llm():
         timeout=60.0,
     )
 
-    return gemini_llm
+    # --- Fallback: Gemini 3.1 Flash Lite Preview ---
+    gemini_fallback = ChatGoogleGenerativeAI(
+        model="gemini-3.1-flash-lite-preview",
+        api_key=settings.GEMINI_API_KEY,
+        temperature=settings.LLM_TEMPERATURE,
+        max_tokens=4096,
+        max_retries=2,
+        timeout=60.0,
+    )
+
+    logger.info("✅ Fallback LLM configured: Gemini 3.1 Flash Lite Preview")
+    return gemini_primary.with_fallbacks([gemini_fallback])
 
 
 

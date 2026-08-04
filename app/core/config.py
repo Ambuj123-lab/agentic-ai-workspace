@@ -11,6 +11,9 @@ class Settings(BaseSettings):
     LLM_MODEL: str = "gemini-3.1-flash-lite-preview"
     LLM_TEMPERATURE: float = 0.7
 
+    # --- Fallback LLM (OpenRouter) ---
+    OPENROUTER_API_KEY: str = ""
+
     # --- Database (MongoDB) ---
     MONGODB_URI: str = ""
     MONGODB_DB_NAME: str = "Agentic_MCP_Chatbot_DB"

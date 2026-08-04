@@ -141,6 +141,13 @@ def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str =
                     import markdown
                     # If the string contains literal backslash-n, replace it with actual newlines
                     processed_body = body.replace("\\n", "\n")
+                    
+                    import re as _re
+                    # Robust fix: Markdown strictly requires an empty line before a table.
+                    # This regex finds a line that doesn't start with a pipe, followed immediately by a line that DOES start with a pipe,
+                    # and inserts an extra newline between them.
+                    processed_body = _re.sub(r'(?m)^([^\|\n].*)\n(\s*\|)', r'\1\n\n\2', processed_body)
+                    
                     formatted_body = markdown.markdown(processed_body, extensions=['extra', 'nl2br', 'tables'])
                     # Post-process: inject inline styles for email-safe tables
                     import re as _re
