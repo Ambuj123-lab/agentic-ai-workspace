@@ -115,9 +115,24 @@ async def chat(request: Request, body: ChatRequest):
             full_response = ""
             yield f"data: {json.dumps({'type': 'conversation_id', 'id': conv_id})}\n\n"
 
+            # Setup Langfuse Callback if keys are provided
+            callbacks = []
+            settings = get_settings()
+            if settings.LANGFUSE_SECRET_KEY and settings.LANGFUSE_PUBLIC_KEY:
+                try:
+                    from langfuse.callback import CallbackHandler
+                    langfuse_handler = CallbackHandler(
+                        secret_key=settings.LANGFUSE_SECRET_KEY,
+                        public_key=settings.LANGFUSE_PUBLIC_KEY,
+                        host=settings.LANGFUSE_HOST
+                    )
+                    callbacks.append(langfuse_handler)
+                except ImportError:
+                    logger.warning("langfuse package not installed. Skipping Langfuse tracing.")
+
             async for event in agent.astream_events(
                 {"messages": lc_messages},
-                config={"recursion_limit": 10},
+                config={"recursion_limit": 10, "callbacks": callbacks},
                 version="v2",
             ):
                 kind = event.get("event", "")

@@ -29,6 +29,11 @@ class Settings(BaseSettings):
     # --- GitHub API ---
     GITHUB_TOKEN: str = ""
 
+    # --- Observability (Langfuse) ---
+    LANGFUSE_SECRET_KEY: str = ""
+    LANGFUSE_PUBLIC_KEY: str = ""
+    LANGFUSE_HOST: str = "https://us.cloud.langfuse.com"
+
     # --- MCP Servers (JSON string) ---
     # Format: [{"name": "my-server", "url": "http://localhost:8001/sse"}]
     MCP_SERVERS_CONFIG: str = "[]"
