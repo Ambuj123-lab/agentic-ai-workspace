@@ -187,6 +187,12 @@ async def chat(request: Request, body: ChatRequest):
         except Exception as e:
             logger.error(f"Chat stream error: {e}", exc_info=True)
             yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+        
+        finally:
+            # Ensure Langfuse traces are flushed before the generator exits
+            for cb in callbacks:
+                if hasattr(cb, 'flush'):
+                    cb.flush()
 
     return StreamingResponse(
         event_stream(),
