@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     GMAIL_SENDER_EMAIL: str = ""
     GMAIL_APP_PASSWORD: str = ""
 
+    # --- GitHub API ---
+    GITHUB_TOKEN: str = ""
+
     # --- MCP Servers (JSON string) ---
     # Format: [{"name": "my-server", "url": "http://localhost:8001/sse"}]
     MCP_SERVERS_CONFIG: str = "[]"

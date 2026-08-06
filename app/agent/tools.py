@@ -12,6 +12,19 @@ from app.core.config import get_settings
 logger = logging.getLogger(__name__)
 
 
+def _github_headers() -> dict:
+    """Build GitHub API headers with optional token authentication.
+    Unauthenticated: 60 req/hr. Authenticated: 5,000 req/hr."""
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    try:
+        settings = get_settings()
+        if settings.GITHUB_TOKEN:
+            headers["Authorization"] = f"Bearer {settings.GITHUB_TOKEN}"
+    except Exception:
+        pass
+    return headers
+
+
 @tool
 async def web_search(query: str) -> str:
     """Search the web for current information, news, facts, or any real-time data.
@@ -300,8 +313,7 @@ def get_github_repo_stats(owner: str, repo: str) -> str:
     logger.info(f"🐙 Fetching GitHub Stats for: {owner}/{repo}")
     try:
         url = f"https://api.github.com/repos/{owner}/{repo}"
-        headers = {"Accept": "application/vnd.github.v3+json"}
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=_github_headers(), timeout=10)
         
         if response.status_code != 200:
              return f"Failed to fetch repo stats. GitHub returned status {response.status_code}."
@@ -336,9 +348,8 @@ def get_github_pull_requests(owner: str, repo: str) -> str:
     logger.info(f"🐙 Fetching GitHub PRs for: {owner}/{repo}")
     try:
         url = f"https://api.github.com/repos/{owner}/{repo}/pulls"
-        headers = {"Accept": "application/vnd.github.v3+json"}
         querystring = {"state": "open", "sort": "created", "direction": "desc", "per_page": 5}
-        response = requests.get(url, headers=headers, params=querystring, timeout=10)
+        response = requests.get(url, headers=_github_headers(), params=querystring, timeout=10)
         
         if response.status_code != 200:
              return f"Failed to fetch PRs. GitHub returned status {response.status_code}."
@@ -368,8 +379,7 @@ def get_github_user_profile(username: str) -> str:
     logger.info(f"🐙 Fetching GitHub Profile for: {username}")
     try:
         url = f"https://api.github.com/users/{username}"
-        headers = {"Accept": "application/vnd.github.v3+json"}
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=_github_headers(), timeout=10)
         
         if response.status_code != 200:
              return f"Failed to fetch profile. GitHub returned status {response.status_code}."
@@ -405,14 +415,13 @@ def search_github_repositories(query: str, language: str = "") -> str:
     logger.info(f"🐙 Searching GitHub Repos for: {query} (Lang: {language})")
     try:
         url = "https://api.github.com/search/repositories"
-        headers = {"Accept": "application/vnd.github.v3+json"}
         
         q_param = query
         if language:
              q_param += f" language:{language}"
              
         querystring = {"q": q_param, "sort": "stars", "order": "desc", "per_page": 5}
-        response = requests.get(url, headers=headers, params=querystring, timeout=10)
+        response = requests.get(url, headers=_github_headers(), params=querystring, timeout=10)
         
         if response.status_code != 200:
              return f"Failed to search repositories. GitHub returned status {response.status_code}."
@@ -446,9 +455,8 @@ def get_github_latest_commits(owner: str, repo: str) -> str:
     logger.info(f"🐙 Fetching latest commits for: {owner}/{repo}")
     try:
         url = f"https://api.github.com/repos/{owner}/{repo}/commits"
-        headers = {"Accept": "application/vnd.github.v3+json"}
         querystring = {"per_page": 5}
-        response = requests.get(url, headers=headers, params=querystring, timeout=10)
+        response = requests.get(url, headers=_github_headers(), params=querystring, timeout=10)
         
         if response.status_code != 200:
              return f"Failed to fetch commits. GitHub returned status {response.status_code}."
@@ -483,9 +491,8 @@ def get_github_repo_contributors(owner: str, repo: str) -> str:
     logger.info(f"🐙 Fetching contributors for: {owner}/{repo}")
     try:
         url = f"https://api.github.com/repos/{owner}/{repo}/contributors"
-        headers = {"Accept": "application/vnd.github.v3+json"}
         querystring = {"per_page": 5}
-        response = requests.get(url, headers=headers, params=querystring, timeout=10)
+        response = requests.get(url, headers=_github_headers(), params=querystring, timeout=10)
         
         if response.status_code != 200:
              return f"Failed to fetch contributors. GitHub returned status {response.status_code}."
