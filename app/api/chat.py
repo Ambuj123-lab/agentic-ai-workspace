@@ -23,6 +23,7 @@ from app.agent.tools import get_builtin_tools
 from app.mcp.client import mcp_registry
 from app.db import get_db
 from app.core.limiter import limiter
+from app.core.config import get_settings
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
