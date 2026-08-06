@@ -130,10 +130,24 @@ async def chat(request: Request, body: ChatRequest):
                     callbacks.append(langfuse_handler)
                 except ImportError:
                     logger.warning("langfuse package not installed. Skipping Langfuse tracing.")
+                    
+            run_config = {"recursion_limit": 10}
+            if callbacks:
+                # If we explicitly pass callbacks, LangChain might disable the global LangSmith tracer. 
+                # Re-add it explicitly just to be safe.
+                import os
+                if str(os.environ.get("LANGCHAIN_TRACING_V2", "")).lower() == "true":
+                    try:
+                        from langchain_core.tracers.langchain import LangChainTracer
+                        callbacks.append(LangChainTracer())
+                    except ImportError:
+                        pass
+                
+                run_config["callbacks"] = callbacks
 
             async for event in agent.astream_events(
                 {"messages": lc_messages},
-                config={"recursion_limit": 10, "callbacks": callbacks},
+                config=run_config,
                 version="v2",
             ):
                 kind = event.get("event", "")
