@@ -247,3 +247,17 @@ async def new_conversation(user_id: str):
     }
     await db["conversations"].insert_one(conv)
     return {"id": conv_id, "title": "New Chat"}
+
+@router.post("/mcp/refresh")
+async def refresh_mcp_servers():
+    """Manually trigger discovery and registration of MCP servers without restarting."""
+    try:
+        await mcp_registry.discover_and_register()
+        return {
+            "status": "success", 
+            "connected_servers": mcp_registry.connected_servers,
+            "tool_count": len(mcp_registry.tools)
+        }
+    except Exception as e:
+        logger.error(f"Failed to refresh MCP servers: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

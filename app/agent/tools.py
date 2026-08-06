@@ -55,24 +55,23 @@ async def web_search(query: str) -> str:
 @tool
 async def fetch_webpage(url: str) -> str:
     """Fetch and read the text content of a specific webpage URL.
-    Use this when you need to read a specific article or page in detail."""
+    Use this when you need to read a specific article or page in detail.
+    Powered by Jina Reader API for clean Markdown extraction."""
     import httpx
 
     try:
-        async with httpx.AsyncClient(follow_redirects=True, timeout=15.0) as client:
-            response = await client.get(url, headers={"User-Agent": "Mozilla/5.0"})
+        jina_url = f"https://r.jina.ai/{url}"
+        async with httpx.AsyncClient(follow_redirects=True, timeout=20.0) as client:
+            # Jina returns beautiful markdown by default
+            response = await client.get(jina_url)
             response.raise_for_status()
 
             text = response.text
-            # Strip script/style tags and HTML markup
-            text = re.sub(r"<script[^>]*>.*?</script>", "", text, flags=re.DOTALL)
-            text = re.sub(r"<style[^>]*>.*?</style>", "", text, flags=re.DOTALL)
-            text = re.sub(r"<[^>]+>", " ", text)
-            text = re.sub(r"\s+", " ", text).strip()
-
-            # Truncate to avoid blowing up LLM context
-            return text[:8000] if len(text) > 8000 else text
+            
+            # Truncate to avoid blowing up LLM context, but give it more room since it's dense markdown
+            return text[:15000] if len(text) > 15000 else text
     except Exception as e:
+        logger.error(f"Jina Reader failed: {e}")
         return f"Failed to fetch webpage: {str(e)}"
 
 
