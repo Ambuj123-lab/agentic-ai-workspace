@@ -348,23 +348,6 @@ export default function LandingPage() {
         </div>
 
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {/* UptimeRobot Official SLA Dark Badge */}
-          <a
-            href="https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral"
-            target="_blank"
-            rel="noreferrer"
-            style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', transition: 'opacity 0.2s ease' }}
-            onMouseOver={e => e.currentTarget.style.opacity = '0.85'}
-            onMouseOut={e => e.currentTarget.style.opacity = '1'}
-            title="UptimeRobot Verified 99.998% SLA"
-          >
-            <img
-              src="https://badge.uptimerobot.com/sla/18a544b11fc4799a468704cc7acccedb.svg?theme=dark"
-              alt="Uptime SLA 99.998%"
-              style={{ height: '22px', width: 'auto', borderRadius: '4px', verticalAlign: 'middle', display: 'block' }}
-            />
-          </a>
-
           {/* Original Live Heartbeat Status Badge */}
           <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" className="afp-status-badge">
             <span style={{ position: 'relative', width: '8px', height: '8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
