@@ -1,0 +1,56 @@
+{
+  "name": "agentic-ai-workspace",
+  "version": "1.0.0",
+  "description": "Autonomous AI Workspace MCP Server featuring real-time Tavily search, Yahoo Finance market data, deep GitHub analytics, AST safe math computation, and styled email formatting.",
+  "author": "Ambuj Kumar Tripathi",
+  "license": "MIT",
+  "homepage": "https://agentic-ai-workspace.onrender.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ambuj123-lab/agentic-ai-workspace.git"
+  },
+  "mcp": {
+    "command": "python",
+    "args": ["-m", "mcp_server.server"],
+    "transport": "stdio",
+    "env": {
+      "TAVILY_API_KEY": "${TAVILY_API_KEY}",
+      "RAPIDAPI_KEY": "${RAPIDAPI_KEY}",
+      "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+    }
+  },
+  "tools": [
+    {
+      "name": "web_search",
+      "description": "Search the web for current information, news, facts, or real-time data using Tavily API."
+    },
+    {
+      "name": "fetch_webpage",
+      "description": "Fetch and extract clean text content from a specific webpage URL."
+    },
+    {
+      "name": "get_stock_price",
+      "description": "Get real-time stock price, day range, market cap, and valuation metrics for a ticker symbol."
+    },
+    {
+      "name": "get_github_repo_stats",
+      "description": "Fetches real-time statistics for a public GitHub repository including stars, forks, and open issues."
+    },
+    {
+      "name": "search_github_repositories",
+      "description": "Searches for public GitHub repositories based on keywords and language."
+    },
+    {
+      "name": "get_github_user_profile",
+      "description": "Fetches public profile statistics for a GitHub developer."
+    },
+    {
+      "name": "calculate_expression",
+      "description": "Safely evaluates a mathematical expression using an Abstract Syntax Tree (AST)."
+    },
+    {
+      "name": "format_email_template",
+      "description": "Formats raw text or markdown email content into an HTML email template."
+    }
+  ]
+}

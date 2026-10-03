@@ -18,6 +18,8 @@
 [![LangGraph](https://img.shields.io/badge/LangGraph-ReAct_Agent-FF6B35?style=flat-square)](https://langchain-ai.github.io/langgraph/)
 [![MCP](https://img.shields.io/badge/MCP-Model_Context_Protocol-6B46C1?style=flat-square)](https://modelcontextprotocol.io)
 [![Docker](https://img.shields.io/badge/Docker-Multi--Stage-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+[![Privacy Policy](https://img.shields.io/badge/Privacy-Strict_Governance-brightgreen?style=flat-square)](PRIVACY.md)
 
 </div>
 
@@ -126,6 +128,47 @@ Unlike standard LLM chatbots, this system **thinks before acting**, orchestratin
 
 ---
 
+---
+
+## ⚡ Model Context Protocol (FastMCP) Server
+
+This repository includes a standalone, production-ready **Model Context Protocol (FastMCP) Server** located in `mcp-server/`. It enables AI agents, **Claude Desktop**, and **Cursor** to directly execute our workspace tools over standard Stdio transport.
+
+### Available MCP Tools
+
+| MCP Tool | Functionality |
+|---|---|
+| `web_search` | Real-time web browsing and factual search with citations via Tavily |
+| `fetch_webpage` | Clean HTML-to-text webpage extractor for RAG retrieval |
+| `get_stock_price` | Real-time equity market data, day ranges, and valuations |
+| `get_github_repo_stats` | Repository stars, forks, open issues, language, and metadata |
+| `search_github_repositories` | Semantic repository search filtered by programming language |
+| `get_github_user_profile` | Developer profile metrics, follower counts, and public repos |
+| `calculate_expression` | Safe mathematical expression evaluation using Python AST |
+| `format_email_template` | Formats raw text/markdown into responsive HTML email templates |
+
+### Configure in Claude Desktop
+
+Add the following to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "agentic-ai-workspace": {
+      "command": "python",
+      "args": ["-m", "mcp-server.server"],
+      "env": {
+        "TAVILY_API_KEY": "your_tavily_api_key",
+        "RAPIDAPI_KEY": "your_rapidapi_key",
+        "GITHUB_TOKEN": "your_github_token"
+      }
+    }
+  }
+}
+```
+
+---
+
 ## 🚀 Quick Start (Local Setup)
 
 ### Prerequisites
@@ -182,6 +225,9 @@ docker run -p 8000:8000 --env-file .env agentic-mcp-workspace
 | **👤 Ambuj's Portfolio** | [ambuj-ai-portfolio.vercel.app](https://ambuj-ai-portfolio.vercel.app/) |
 | **📖 Financial Parser Docs** | [ambuj-rag-docs.netlify.app](https://ambuj-rag-docs.netlify.app/) |
 | **💻 Source Code** | [GitHub Repository](https://github.com/Ambuj123-lab/agentic-ai-workspace) |
+| **🛡️ Privacy Policy** | [PRIVACY.md](PRIVACY.md) |
+| **📜 License (MIT)** | [LICENSE](LICENSE) |
+| **⚡ FastMCP Manifest** | [mcp.json](mcp.json) |
 
 ---
 

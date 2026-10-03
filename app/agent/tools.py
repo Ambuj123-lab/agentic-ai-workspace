@@ -75,16 +75,55 @@ async def fetch_webpage(url: str) -> str:
         return f"Failed to fetch webpage: {str(e)}"
 
 
+import ast
+import operator
+
+_SAFE_MATH_OPERATORS = {
+    ast.Add: operator.add,
+    ast.Sub: operator.sub,
+    ast.Mult: operator.mul,
+    ast.Div: operator.truediv,
+    ast.FloorDiv: operator.floordiv,
+    ast.Mod: operator.mod,
+    ast.Pow: operator.pow,
+    ast.USub: operator.neg,
+    ast.UAdd: operator.pos,
+}
+
+
+def _safe_eval_ast(node):
+    if isinstance(node, ast.Expression):
+        return _safe_eval_ast(node.body)
+    elif isinstance(node, ast.Constant):
+        if isinstance(node.value, (int, float)):
+            return node.value
+        raise TypeError("Only integer and float numeric constants are supported.")
+    elif isinstance(node, ast.BinOp):
+        left = _safe_eval_ast(node.left)
+        right = _safe_eval_ast(node.right)
+        op_type = type(node.op)
+        if op_type in _SAFE_MATH_OPERATORS:
+            return _SAFE_MATH_OPERATORS[op_type](left, right)
+        raise ValueError(f"Operator {op_type.__name__} is not allowed.")
+    elif isinstance(node, ast.UnaryOp):
+        operand = _safe_eval_ast(node.operand)
+        op_type = type(node.op)
+        if op_type in _SAFE_MATH_OPERATORS:
+            return _SAFE_MATH_OPERATORS[op_type](operand)
+        raise ValueError(f"Unary operator {op_type.__name__} is not allowed.")
+    else:
+        raise TypeError(f"Unsupported syntax tree element: {type(node).__name__}")
+
+
 @tool
 def calculator(expression: str) -> str:
-    """Evaluate a mathematical expression safely.
+    """Evaluate a mathematical expression safely without code execution risks.
     Examples: '2 + 2 * 3', '(100 / 5) ** 2', '3.14 * 10 ** 2'."""
     try:
-        allowed = set("0123456789+-*/.() eE")
-        if not all(c in allowed for c in expression):
-            return "Error: Only numeric values and basic math operators (+, -, *, /, **, ()) are allowed."
-        result = eval(expression)  # noqa: S307 — input is sanitized above
-        return f"{result}"
+        clean_expr = expression.strip()
+        parsed = ast.parse(clean_expr, mode="eval")
+        result = _safe_eval_ast(parsed)
+        return str(result)
     except Exception as e:
         return f"Calculation error: {str(e)}"
 
@@ -210,12 +249,12 @@ def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str =
 
     # Automatically attach Resume for professional applications
     if template_style in ("dark_corporate", "midnight_pro"):
-        resume_path = r"C:\Users\AMBUJ\OneDrive\Desktop\Ambuj_Kumar_Tripathi_GenAI_Resume.pdf"
-        if os.path.exists(resume_path):
+        resume_path = os.getenv("RESUME_PDF_PATH", "").strip()
+        if resume_path and os.path.exists(resume_path):
             from email.mime.application import MIMEApplication
             with open(resume_path, "rb") as f:
                 pdf_attachment = MIMEApplication(f.read(), _subtype="pdf")
-            pdf_attachment.add_header('Content-Disposition', 'attachment', filename='Ambuj_Kumar_Tripathi_GenAI_Resume.pdf')
+            pdf_attachment.add_header('Content-Disposition', 'attachment', filename=os.path.basename(resume_path))
             msg.attach(pdf_attachment)
 
     try:
