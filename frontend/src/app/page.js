@@ -461,28 +461,6 @@ export default function LandingPage() {
         {/* ── HERO SECTION ── */}
         <section id="workspace" style={{ padding: '90px 24px 80px', textAlign: 'center', minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle at top, #111 0%, #0a0a0a 60%)' }}>
           
-          {/* Top Trust / SLA Status */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '24px' }}>
-            <a
-              href="https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral"
-              target="_blank"
-              rel="noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', transition: 'transform 0.2s ease', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))' }}
-              onMouseOver={e => e.currentTarget.style.transform = 'translateY(-1px)'}
-              onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
-              title="View Live UptimeRobot Public Status Page"
-            >
-              <img
-                src="https://badge.uptimerobot.com/sla/18a544b11fc4799a468704cc7acccedb.svg?theme=dark"
-                alt="Uptime SLA 99.998%"
-                style={{ height: '24px', width: 'auto', borderRadius: '4px', display: 'block' }}
-              />
-            </a>
-            <span style={{ fontSize: '11px', color: '#a0a0a0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', padding: '3px 10px', borderRadius: '12px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-              ⚡ Official Global Feature · 99.998% SLA
-            </span>
-          </div>
-
           <h1 className="landing-title" style={{ maxWidth: '900px', fontSize: '4rem', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: '24px', lineHeight: 1.1, background: 'linear-gradient(135deg, #FFFFFF 0%, #A0A0A0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Production-grade Agentic AI Workspace
           </h1>
