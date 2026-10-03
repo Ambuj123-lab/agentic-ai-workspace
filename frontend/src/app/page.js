@@ -384,10 +384,12 @@ export default function LandingPage() {
         .desktop-nav { display: flex; align-items: center; gap: 24px; }
         .mobile-menu-btn { display: none; background: transparent; border: none; color: white; cursor: pointer; }
         .mobile-dropdown { display: none; flex-direction: column; gap: 16px; padding: 16px 20px; background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .mobile-nav-badge { display: none; }
         @media (max-width: 768px) {
           .desktop-nav { display: none; }
           .mobile-menu-btn { display: flex; }
-          .nav-container { padding: 12px 20px !important; }
+          .mobile-nav-badge { display: inline-flex; }
+          .nav-container { padding: 12px 16px !important; }
         }
       `}</style>
       <nav className="nav-container" style={{
@@ -425,9 +427,26 @@ export default function LandingPage() {
           </a>
         </div>
 
-        <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <a
+            href="https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral"
+            target="_blank"
+            rel="noreferrer"
+            className="mobile-nav-badge"
+            style={{ alignItems: 'center', textDecoration: 'none' }}
+            title="UptimeRobot Verified 99.998% SLA"
+          >
+            <img
+              src="https://badge.uptimerobot.com/sla/18a544b11fc4799a468704cc7acccedb.svg?theme=dark"
+              alt="Uptime SLA 99.998%"
+              style={{ height: '20px', width: 'auto', borderRadius: '4px', display: 'block' }}
+            />
+          </a>
+
+          <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </nav>
       {isMobileMenuOpen && (
         <div className="mobile-dropdown" style={{ display: 'flex', position: 'sticky', top: '65px', zIndex: 9998 }}>
@@ -435,21 +454,6 @@ export default function LandingPage() {
           <button onClick={() => { setIsHowItWorksOpen(true); setIsMobileMenuOpen(false); }} className="nav-link" style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 'inherit', padding: 0, fontFamily: 'inherit', color: 'inherit', textAlign: 'left' }}>How it works</button>
           <Link href="#architecture" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Architecture</Link>
           <Link href="#capabilities" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Capabilities</Link>
-          <div style={{ paddingTop: '8px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            <a
-              href="https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral"
-              target="_blank"
-              rel="noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}
-              title="UptimeRobot Verified 99.998% SLA"
-            >
-              <img
-                src="https://badge.uptimerobot.com/sla/18a544b11fc4799a468704cc7acccedb.svg?theme=dark"
-                alt="Uptime SLA 99.998%"
-                style={{ height: '22px', width: 'auto', borderRadius: '4px', display: 'block' }}
-              />
-            </a>
-          </div>
         </div>
       )}
 
