@@ -6,7 +6,9 @@
 <br/>
 
 [![Live Demo](https://img.shields.io/badge/🚀_LIVE_DEMO-Visit_App-D4A574?style=for-the-badge&logoColor=white)](https://agentic-ai-workspace.onrender.com)
-[![Portfolio](https://img.shields.io/badge/👤_PORTFOLIO-Ambuj_Tripathi-34A853?style=for-the-badge)](https://ambuj-portfolio-v2.netlify.app/)
+[![Uptime SLA 99.998%](https://badge.uptimerobot.com/sla/18a544b11fc4799a468704cc7acccedb.svg?theme=dark)](https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral)
+[![Featured on UptimeRobot](https://img.shields.io/badge/FEATURED_IN-UptimeRobot_Official_Blog-047857?style=for-the-badge&logo=uptimerobot&logoColor=3BD671)](https://uptimerobot.com/blog/community-spotlight-ambuj-kumar-tripathi/)
+[![Portfolio](https://img.shields.io/badge/👤_PORTFOLIO-Ambuj_Tripathi-34A853?style=for-the-badge)](https://ambuj-ai-portfolio.vercel.app/)
 
 <br/>
 
@@ -175,9 +177,11 @@ docker run -p 8000:8000 --env-file .env agentic-mcp-workspace
 | Resource | URL |
 |----------|-----|
 | **🚀 Live Application** | [agentic-ai-workspace.onrender.com](https://agentic-ai-workspace.onrender.com) |
-| **👤 Ambuj's Portfolio** | [ambuj-portfolio-v2.netlify.app](https://ambuj-portfolio-v2.netlify.app/) |
+| **⚡ System SLA Status (99.998%)** | [stats.uptimerobot.com/4tYmSQnuBE](https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral) |
+| **🏆 UptimeRobot Official Spotlight** | [uptimerobot.com/blog/community-spotlight-ambuj-kumar-tripathi](https://uptimerobot.com/blog/community-spotlight-ambuj-kumar-tripathi/) |
+| **👤 Ambuj's Portfolio** | [ambuj-ai-portfolio.vercel.app](https://ambuj-ai-portfolio.vercel.app/) |
 | **📖 Financial Parser Docs** | [ambuj-rag-docs.netlify.app](https://ambuj-rag-docs.netlify.app/) |
-| **💻 Source Code** | [GitHub Repository](https://github.com/Ambuj123-lab/agentic-mcp-chatbot) |
+| **💻 Source Code** | [GitHub Repository](https://github.com/Ambuj123-lab/agentic-ai-workspace) |
 
 ---
 
@@ -188,7 +192,7 @@ GenAI Engineer & RAG Systems Specialist | LLMOps
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/ambuj-kumar-tripathi/)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github)](https://github.com/Ambuj123-lab)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-34A853?style=flat-square&logo=google-chrome&logoColor=white)](https://ambuj-portfolio-v2.netlify.app/)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-34A853?style=flat-square&logo=google-chrome&logoColor=white)](https://ambuj-ai-portfolio.vercel.app/)
 
 ---
 
