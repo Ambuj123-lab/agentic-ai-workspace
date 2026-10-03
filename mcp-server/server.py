@@ -92,7 +92,14 @@ def _github_headers() -> dict:
 # MCP Tools
 # ==============================================================================
 
-@mcp.tool()
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 async def web_search(query: str, max_results: int = 5) -> str:
     """Search the web for current information, news, facts, or real-time data.
     
@@ -135,7 +142,14 @@ async def web_search(query: str, max_results: int = 5) -> str:
         return f"Web search failed: {str(e)}"
 
 
-@mcp.tool()
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 async def fetch_webpage(url: str, max_chars: int = 4000) -> str:
     """Fetch and extract clean text content from a specific webpage URL.
     
@@ -168,7 +182,14 @@ async def fetch_webpage(url: str, max_chars: int = 4000) -> str:
         return f"Failed to fetch webpage content: {str(e)}"
 
 
-@mcp.tool()
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 async def get_stock_price(symbol: str) -> str:
     """Get real-time stock price, day range, market cap, and valuation metrics for a ticker symbol.
     
@@ -221,7 +242,14 @@ async def get_stock_price(symbol: str) -> str:
         return f"Failed to retrieve market data for {clean_sym}: {str(e)}"
 
 
-@mcp.tool()
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 async def get_github_repo_stats(owner: str, repo: str) -> str:
     """Fetches real-time statistics for a public GitHub repository.
     
@@ -254,7 +282,14 @@ async def get_github_repo_stats(owner: str, repo: str) -> str:
         return f"Failed to fetch GitHub repository stats: {str(e)}"
 
 
-@mcp.tool()
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 async def search_github_repositories(query: str, language: str = "", limit: int = 5) -> str:
     """Searches for public GitHub repositories based on keywords and language.
     
@@ -293,7 +328,14 @@ async def search_github_repositories(query: str, language: str = "", limit: int 
         return f"GitHub repository search failed: {str(e)}"
 
 
-@mcp.tool()
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 async def get_github_user_profile(username: str) -> str:
     """Fetches public profile statistics for a GitHub developer.
     
@@ -322,7 +364,14 @@ async def get_github_user_profile(username: str) -> str:
         return f"Failed to fetch GitHub profile for {username}: {str(e)}"
 
 
-@mcp.tool()
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": True,
+        "openWorldHint": False,
+    }
+)
 def calculate_expression(expression: str) -> str:
     """Safely evaluates a mathematical expression using an Abstract Syntax Tree (AST).
     
@@ -340,7 +389,14 @@ def calculate_expression(expression: str) -> str:
         return f"Calculation error: {str(e)}"
 
 
-@mcp.tool()
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": True,
+        "openWorldHint": False,
+    }
+)
 def format_email_template(subject: str, body: str, style: str = "dark_corporate") -> str:
     """Formats raw text or markdown email content into an HTML email template.
     

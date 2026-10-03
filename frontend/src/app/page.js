@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Bot, Mail, LineChart, Globe, GitBranch, Shield, Lock, Trash2, Layout, TerminalSquare, ChevronLeft, ChevronRight, X, Menu, ArrowUp } from 'lucide-react';
+import { Bot, Mail, LineChart, Globe, GitBranch, Shield, Lock, Trash2, Layout, TerminalSquare, ChevronLeft, ChevronRight, X, Menu, ArrowUp, Activity, CheckCircle2, Sparkles, Cpu } from 'lucide-react';
 import { FaLinkedin, FaXTwitter, FaGithub } from 'react-icons/fa6';
 import { useSession, signIn } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
@@ -175,6 +175,7 @@ export default function LandingPage() {
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [activeHudTab, setActiveHudTab] = useState('trace');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -564,6 +565,121 @@ export default function LandingPage() {
           .hero-cluster-divider { display: none; }
         }
 
+        /* ── 2-Column Hero & Agentic AI HUD Styling ── */
+        .hero-split-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.98fr);
+          gap: 40px;
+          align-items: center;
+          max-width: 1200px;
+          width: 100%;
+          margin: 0 auto 36px;
+          text-align: left;
+        }
+        .hero-left-content {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        @media (max-width: 980px) {
+          .hero-split-grid {
+            grid-template-columns: 1fr;
+            gap: 40px;
+            text-align: center;
+          }
+          .hero-left-content {
+            align-items: center;
+          }
+          .hero-left-content .hero-ctas {
+            justify-content: center !important;
+          }
+        }
+        .ai-hud-window {
+          background: rgba(8, 12, 22, 0.85);
+          border: 1px solid rgba(56, 189, 248, 0.28);
+          border-radius: 18px;
+          overflow: hidden;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(14, 165, 233, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(20px);
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
+          transition: all 0.3s ease;
+          position: relative;
+        }
+        .ai-hud-window:hover {
+          border-color: rgba(56, 189, 248, 0.45);
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(14, 165, 233, 0.25);
+        }
+        .ai-hud-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 12px 18px;
+          background: rgba(15, 23, 42, 0.7);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        .ai-hud-body {
+          padding: 18px 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+        .ai-hud-step-card {
+          background: rgba(255, 255, 255, 0.025);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 12px;
+          padding: 12px 14px;
+          transition: all 0.2s ease;
+        }
+        .ai-hud-step-card:hover {
+          background: rgba(255, 255, 255, 0.045);
+          border-color: rgba(56, 189, 248, 0.3);
+        }
+        .ai-hud-step-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 8px;
+          font-size: 11px;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          font-weight: 700;
+        }
+        .ai-hud-tool-tag {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+          font-size: 11px;
+          padding: 3px 8px;
+          border-radius: 6px;
+          background: rgba(14, 165, 233, 0.12);
+          border: 1px solid rgba(14, 165, 233, 0.28);
+          color: #38bdf8;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+        }
+        .ai-hud-hitl-gate {
+          background: rgba(245, 158, 11, 0.06);
+          border: 1px solid rgba(245, 158, 11, 0.28);
+          border-radius: 10px;
+          padding: 10px 12px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+        }
+        .ai-hud-footer-metrics {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px 18px;
+          background: rgba(10, 15, 26, 0.6);
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+          font-size: 11px;
+          color: #64748b;
+          font-weight: 500;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
       `}</style>
       <nav className="nav-container" style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -631,11 +747,10 @@ export default function LandingPage() {
       )}
 
       <main>
-        {/* ── HERO SECTION ── */}
+{/* ── HERO SECTION ── */}
         <section id="workspace" style={{
           position: 'relative',
-          padding: '100px 24px 85px',
-          textAlign: 'center',
+          padding: '85px 24px 75px',
           minHeight: '85vh',
           display: 'flex',
           flexDirection: 'column',
@@ -643,120 +758,218 @@ export default function LandingPage() {
           justifyContent: 'center',
           background: '#000000',
         }}>
+          {/* Main 2-Column Split: Content Left + Live AI Orchestration HUD Right */}
+          <div className="hero-split-grid">
+            
+            {/* Left Column: All Core Content, Headline, Subtitle, CTAs */}
+            <div className="hero-left-content">
+              {/* Top Trust Row: M8ven Verified & Production Monitoring */}
+              <div style={{ marginBottom: '22px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                <a
+                  href="https://m8ven.ai/mcp/ambuj123-lab/agentic-ai-workspace?s=readme"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', transition: 'transform 0.2s ease' }}
+                  onMouseOver={e => e.currentTarget.style.transform = 'translateY(-1px)'}
+                  onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
+                  title="M8ven Score & Live Monitored MCP Server"
+                >
+                  <img
+                    src="https://m8ven.ai/badge/mcp/ambuj123-lab/agentic-ai-workspace"
+                    alt="M8ven Score"
+                    style={{ height: '24px', width: 'auto', borderRadius: '4px', display: 'inline-block' }}
+                  />
+                </a>
 
-          {/* Top Trust Row: Production Monitoring Status Pill */}
-          <div style={{
-            position: 'relative',
-            zIndex: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '12px',
-            flexWrap: 'wrap',
-            marginBottom: '26px',
-          }}>
-            <a
-              href="https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral"
-              target="_blank"
-              rel="noreferrer"
-              className="hero-monitoring-pill"
-              title="UptimeRobot Verified 99.998% SLA Status"
-            >
-              <span className="live-status-dot" />
-              <span className="hero-monitoring-label">Production Monitoring</span>
-              <span style={{ color: 'rgba(255, 255, 255, 0.25)', fontSize: '11px' }}>·</span>
-              <span className="hero-monitoring-val">99.998% Uptime</span>
-            </a>
-          </div>
+                <a
+                  href="https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hero-monitoring-pill"
+                  title="UptimeRobot Verified 99.998% SLA Status"
+                >
+                  <span className="live-status-dot" />
+                  <span className="hero-monitoring-label">Production Monitoring</span>
+                  <span style={{ color: 'rgba(255, 255, 255, 0.25)', fontSize: '11px' }}>·</span>
+                  <span className="hero-monitoring-val">99.998% Uptime</span>
+                </a>
+              </div>
 
-          {/* Main Headline (2-Tier Architecture) */}
-          <h1 className="landing-title" style={{
-            position: 'relative',
-            zIndex: 2,
-            maxWidth: '1000px',
-            fontSize: 'clamp(2.75rem, 5.8vw, 4.4rem)',
-            fontWeight: 800,
-            letterSpacing: '-0.04em',
-            marginBottom: '14px',
-            lineHeight: 1.08,
-            background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 65%, rgba(255, 255, 255, 0.72) 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            filter: 'drop-shadow(0 2px 24px rgba(255, 255, 255, 0.08))',
-          }}>
-            Production-Grade Agentic AI Workspace
-          </h1>
+              {/* Main Headline (2-Tier Architecture) */}
+              <h1 className="landing-title" style={{
+                maxWidth: '640px',
+                fontSize: 'clamp(2.4rem, 4.2vw, 3.8rem)',
+                fontWeight: 800,
+                letterSpacing: '-0.04em',
+                marginBottom: '12px',
+                lineHeight: 1.1,
+                background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 65%, rgba(255, 255, 255, 0.72) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                filter: 'drop-shadow(0 2px 24px rgba(255, 255, 255, 0.08))',
+              }}>
+                Production-Grade Agentic AI Workspace
+              </h1>
 
-          {/* Headline Sub-Kicker */}
-          <div style={{
-            position: 'relative',
-            zIndex: 2,
-            fontSize: 'clamp(1.15rem, 2.2vw, 1.55rem)',
-            fontWeight: 600,
-            letterSpacing: '-0.02em',
-            color: '#cbd5e1',
-            marginBottom: '20px',
-            background: 'linear-gradient(90deg, #f1f5f9 0%, #94a3b8 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}>
-            LangGraph orchestration. MCP tools. Human-controlled actions.
-          </div>
+              {/* Headline Sub-Kicker */}
+              <div style={{
+                fontSize: 'clamp(1.1rem, 1.8vw, 1.35rem)',
+                fontWeight: 600,
+                letterSpacing: '-0.02em',
+                color: '#cbd5e1',
+                marginBottom: '18px',
+                background: 'linear-gradient(90deg, #f1f5f9 0%, #94a3b8 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}>
+                LangGraph orchestration. MCP tools. Human-controlled actions.
+              </div>
 
-          {/* Tighter, Engineering-Heavy Supporting Text */}
-          <p className="landing-subtitle" style={{
-            position: 'relative',
-            zIndex: 2,
-            maxWidth: '740px',
-            fontSize: 'clamp(1.02rem, 1.4vw, 1.15rem)',
-            color: '#94a3b8',
-            lineHeight: 1.65,
-            marginBottom: '36px',
-            fontWeight: 400,
-          }}>
-            A production-oriented AI workspace that orchestrates multi-step agents, discovers MCP tools dynamically, and keeps consequential actions behind human approval.
-          </p>
+              {/* Tighter, Engineering-Heavy Supporting Text */}
+              <p className="landing-subtitle" style={{
+                maxWidth: '560px',
+                fontSize: 'clamp(1rem, 1.25vw, 1.08rem)',
+                color: '#94a3b8',
+                lineHeight: 1.65,
+                marginBottom: '32px',
+                fontWeight: 400,
+              }}>
+                A production-oriented AI workspace that orchestrates multi-step agents, discovers MCP tools dynamically, and keeps consequential actions behind human approval.
+              </p>
 
-          {/* Dual Action CTAs: Luminous Solid White Pill + Frosted Glass Pill */}
-          <div style={{
-            position: 'relative',
-            zIndex: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '14px',
-            flexWrap: 'wrap',
-            marginBottom: '36px',
-          }}>
-            <button onClick={() => signIn('google')} className="hero-btn-primary">
-              <svg width="18" height="18" viewBox="0 0 48 48">
-                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
-                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-              </svg>
-              <span>Sign in with Google</span>
-            </button>
+              {/* Dual Action CTAs: Luminous Solid White Pill + Frosted Glass Pill */}
+              <div className="hero-ctas" style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '14px',
+                flexWrap: 'wrap',
+              }}>
+                <button onClick={() => signIn('google')} className="hero-btn-primary">
+                  <svg width="18" height="18" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                  </svg>
+                  <span>Sign in with Google</span>
+                </button>
 
-            <button onClick={() => setIsHowItWorksOpen(true)} className="hero-btn-secondary">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style={{ opacity: 0.85 }}>
-                <polygon points="6 3 20 12 6 21 6 3" />
-              </svg>
-              <span>How it works</span>
-            </button>
+                <button onClick={() => setIsHowItWorksOpen(true)} className="hero-btn-secondary">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style={{ opacity: 0.85 }}>
+                    <polygon points="6 3 20 12 6 21 6 3" />
+                  </svg>
+                  <span>How it works</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Right Column: High-Tech Live Agentic Orchestration HUD */}
+            <div className="ai-hud-window">
+              {/* Window Header */}
+              <div className="ai-hud-header">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ef4444' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#f59e0b' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981' }} />
+                  <span style={{ marginLeft: '8px', fontSize: '11px', color: '#94a3b8', fontFamily: 'monospace', fontWeight: 600 }}>
+                    LANGGRAPH_REACT_ENGINE // LIVE
+                  </span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span className="live-status-dot" />
+                  <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 700, letterSpacing: '0.04em' }}>ACTIVE</span>
+                </div>
+              </div>
+
+              {/* HUD Body */}
+              <div className="ai-hud-body">
+                {/* Step 1: User Request */}
+                <div className="ai-hud-step-card">
+                  <div className="ai-hud-step-header" style={{ color: '#38bdf8' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <Bot size={13} /> Input Prompt
+                    </span>
+                    <span style={{ color: '#64748b', fontSize: '10px' }}>T+0ms</span>
+                  </div>
+                  <div style={{ fontSize: '12.5px', color: '#f1f5f9', lineHeight: 1.4, fontFamily: 'monospace' }}>
+                    &quot;Audit GitHub PR #42, calculate AST spend variance, and draft incident alert.&quot;
+                  </div>
+                </div>
+
+                {/* Step 2: Dynamic MCP Invocation */}
+                <div className="ai-hud-step-card" style={{ borderColor: 'rgba(168, 85, 247, 0.3)' }}>
+                  <div className="ai-hud-step-header" style={{ color: '#c084fc' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <Cpu size={13} /> LangGraph ReAct Planner
+                    </span>
+                    <span style={{ color: '#10b981', fontSize: '10px', fontWeight: 600 }}>2 Tools Dispatched</span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <span className="ai-hud-tool-tag">
+                        <TerminalSquare size={11} /> github_get_pr_diff()
+                      </span>
+                      <span style={{ fontSize: '11px', color: '#10b981', fontFamily: 'monospace' }}>200 OK · 2 files</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <span className="ai-hud-tool-tag" style={{ background: 'rgba(168, 85, 247, 0.12)', borderColor: 'rgba(168, 85, 247, 0.28)', color: '#c084fc' }}>
+                        <Shield size={11} /> ast_sandboxed_math()
+                      </span>
+                      <span style={{ fontSize: '11px', color: '#10b981', fontFamily: 'monospace' }}>Delta: +22.4%</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step 3: Human-in-the-Loop Governance Gate */}
+                <div className="ai-hud-hitl-gate">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b' }} />
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span style={{ fontSize: '11px', fontWeight: 700, color: '#f59e0b', letterSpacing: '0.03em' }}>
+                        HITL GOVERNANCE GATE
+                      </span>
+                      <span style={{ fontSize: '11.5px', color: '#cbd5e1' }}>
+                        Gmail MCP Dispatch Alert
+                      </span>
+                    </div>
+                  </div>
+                  <span style={{
+                    fontSize: '10px',
+                    fontWeight: 700,
+                    padding: '3px 8px',
+                    borderRadius: '6px',
+                    background: 'rgba(16, 185, 129, 0.15)',
+                    border: '1px solid rgba(16, 185, 129, 0.35)',
+                    color: '#10b981',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}>
+                    <CheckCircle2 size={11} /> Human Approved
+                  </span>
+                </div>
+              </div>
+
+              {/* HUD Footer Metrics */}
+              <div className="ai-hud-footer-metrics">
+                <span>⚡ Latency: <strong style={{ color: '#f1f5f9' }}>112ms</strong></span>
+                <span>🔌 MCP Transports: <strong style={{ color: '#f1f5f9' }}>stdio / SSE</strong></span>
+                <span>🛡️ Security: <strong style={{ color: '#10b981' }}>AST-Sandboxed</strong></span>
+              </div>
+            </div>
+
           </div>
 
           {/* Categorized Architecture Clusters (Intentional Tech Grouping) */}
           <div style={{
-            position: 'relative',
-            zIndex: 2,
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '18px',
             flexWrap: 'wrap',
-            maxWidth: '1020px',
+            maxWidth: '1080px',
+            width: '100%',
             marginBottom: '32px',
             padding: '14px 20px',
             background: 'rgba(255, 255, 255, 0.02)',
@@ -801,8 +1014,6 @@ export default function LandingPage() {
 
           {/* Security & Governance Footer (Tight & Premium) */}
           <div style={{
-            position: 'relative',
-            zIndex: 2,
             display: 'flex',
             gap: '16px',
             justifyContent: 'center',

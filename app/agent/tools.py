@@ -6,7 +6,19 @@ They are intentionally lightweight — no heavy dependencies.
 
 import re
 import logging
-from langchain_core.tools import tool
+from langchain_core.tools import tool as _langchain_tool
+
+def tool(*args, annotations: dict = None, **kwargs):
+    """Wrapper around LangChain @tool declaring MCP 4-hint risk annotations."""
+    def decorator(fn):
+        t = _langchain_tool(fn, *args, **kwargs)
+        if annotations:
+            t.metadata = annotations
+        return t
+
+    if len(args) == 1 and callable(args[0]) and not kwargs and annotations is None:
+        return _langchain_tool(args[0])
+    return decorator
 from app.core.config import get_settings
 
 logger = logging.getLogger(__name__)
@@ -25,7 +37,14 @@ def _github_headers() -> dict:
     return headers
 
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 async def web_search(query: str) -> str:
     """Search the web for current information, news, facts, or any real-time data.
     Use this whenever you need up-to-date information that you don't already know."""
@@ -52,7 +71,14 @@ async def web_search(query: str) -> str:
         return f"Web search failed: {str(e)}"
 
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 async def fetch_webpage(url: str) -> str:
     """Fetch and read the text content of a specific webpage URL.
     Use this when you need to read a specific article or page in detail.
@@ -115,7 +141,14 @@ def _safe_eval_ast(node):
         raise TypeError(f"Unsupported syntax tree element: {type(node).__name__}")
 
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": True,
+        "openWorldHint": False,
+    }
+)
 def calculator(expression: str) -> str:
     """Evaluate a mathematical expression safely without code execution risks.
     Examples: '2 + 2 * 3', '(100 / 5) ** 2', '3.14 * 10 ** 2'."""
@@ -128,7 +161,14 @@ def calculator(expression: str) -> str:
         return f"Calculation error: {str(e)}"
 
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 async def get_stock_price(symbol: str) -> str:
     """Get real-time stock price and market data for a given ticker symbol (e.g. AAPL, MSFT, TSLA).
     Uses Yahoo Finance API via RapidAPI."""
@@ -165,7 +205,14 @@ async def get_stock_price(symbol: str) -> str:
         logger.error(f"Stock API error: {e}")
         return f"Failed to fetch stock price: {str(e)}. CRITICAL INSTRUCTION: Do NOT retry this tool. Inform the user that the financial API is currently unavailable."
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": False,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str = "", template_style: str = "none") -> str:
     """Send an email using Gmail SMTP. ONLY call this tool after the user has explicitly clicked the 'Approve & Send' button."""
     import smtplib
@@ -273,7 +320,14 @@ def send_email_confirmed(to_email: str, subject: str, body: str, cc_email: str =
         logger.error(f"Failed to send email: {e}")
         return f"Failed to send email: {str(e)}"
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 def read_emails(query: str = "UNSEEN", max_results: int = 5) -> str:
     """Read emails from Gmail using IMAP. 
     Use IMAP search queries like 'UNSEEN', 'FROM "boss@company.com"', 'SINCE "01-Jan-2023"'.
@@ -339,7 +393,14 @@ def read_emails(query: str = "UNSEEN", max_results: int = 5) -> str:
         logger.error(f"Failed to read emails: {e}")
         return f"Failed to read emails: {str(e)}"
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 def get_github_repo_stats(owner: str, repo: str) -> str:
     """Fetches stats for a public GitHub repository including stars, forks, and open issues.
     
@@ -374,7 +435,14 @@ def get_github_repo_stats(owner: str, repo: str) -> str:
         logger.error(f"❌ Tool failed for github stats: {e}")
         return f"Failed to fetch github stats: {e}"
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 def get_github_pull_requests(owner: str, repo: str) -> str:
     """Fetches the latest 5 open Pull Requests for a public GitHub repository.
     
@@ -406,7 +474,14 @@ def get_github_pull_requests(owner: str, repo: str) -> str:
         logger.error(f"❌ Tool failed for github prs: {e}")
         return f"Failed to fetch github prs: {e}"
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 def get_github_user_profile(username: str) -> str:
     """Fetches public profile stats for a GitHub user.
     
@@ -441,7 +516,14 @@ def get_github_user_profile(username: str) -> str:
         logger.error(f"❌ Tool failed for github profile: {e}")
         return f"Failed to fetch github profile: {e}"
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 def search_github_repositories(query: str, language: str = "") -> str:
     """Searches for public GitHub repositories based on a query and optional language.
     
@@ -481,7 +563,14 @@ def search_github_repositories(query: str, language: str = "") -> str:
         logger.error(f"❌ Tool failed for github search: {e}")
         return f"Failed to search github: {e}"
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 def get_github_latest_commits(owner: str, repo: str) -> str:
     """Fetches the latest 5 commits for a public GitHub repository.
     
@@ -517,7 +606,14 @@ def get_github_latest_commits(owner: str, repo: str) -> str:
         logger.error(f"❌ Tool failed for github commits: {e}")
         return f"Failed to fetch github commits: {e}"
 
-@tool
+@tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
 def get_github_repo_contributors(owner: str, repo: str) -> str:
     """Fetches the top 5 contributors for a public GitHub repository.
     
