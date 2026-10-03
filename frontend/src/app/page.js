@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Bot, Mail, LineChart, Globe, GitBranch, Shield, Lock, Trash2, Layout, TerminalSquare, ChevronLeft, ChevronRight, X, Menu } from 'lucide-react';
+import { Bot, Mail, LineChart, Globe, GitBranch, Shield, Lock, Trash2, Layout, TerminalSquare, ChevronLeft, ChevronRight, X, Menu, ArrowUp } from 'lucide-react';
 import { FaLinkedin, FaXTwitter, FaGithub } from 'react-icons/fa6';
 import { useSession, signIn } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
@@ -174,8 +174,14 @@ export default function LandingPage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 350);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
     if (status === "authenticated") {
       router.push("/chat");
     }
@@ -193,7 +199,10 @@ export default function LandingPage() {
     };
     fetchUptime();
     const intervalId = setInterval(fetchUptime, 60000); // refresh every minute
-    return () => clearInterval(intervalId);
+    return () => {
+      clearInterval(intervalId);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [status, router]);
 
   if (status === "authenticated") {
@@ -494,6 +503,67 @@ export default function LandingPage() {
           color: #ffffff;
           transform: translateY(-1px);
         }
+        .hero-monitoring-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 6px 16px;
+          border-radius: 9999px;
+          background: rgba(16, 185, 129, 0.06);
+          border: 1px solid rgba(16, 185, 129, 0.24);
+          backdrop-filter: blur(16px);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(16, 185, 129, 0.15);
+          transition: all 0.25s ease;
+          text-decoration: none;
+        }
+        .hero-monitoring-pill:hover {
+          background: rgba(16, 185, 129, 0.12);
+          border-color: rgba(16, 185, 129, 0.5);
+          transform: translateY(-1px);
+          box-shadow: 0 6px 24px rgba(16, 185, 129, 0.25);
+        }
+        .live-status-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #10b981;
+          box-shadow: 0 0 8px #10b981;
+          animation: pulseDot 2s infinite ease-in-out;
+        }
+        @keyframes pulseDot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(0.85); }
+        }
+        .hero-monitoring-label {
+          font-size: 11px;
+          color: #94a3b8;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          font-weight: 600;
+        }
+        .hero-monitoring-val {
+          font-size: 12px;
+          color: #10b981;
+          font-weight: 700;
+          letter-spacing: -0.01em;
+        }
+        .hero-cluster-label {
+          font-size: 10px;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: #64748b;
+          font-weight: 700;
+          margin-right: 4px;
+        }
+        .hero-cluster-divider {
+          width: 1px;
+          height: 22px;
+          background: rgba(255, 255, 255, 0.1);
+        }
+        @media (max-width: 850px) {
+          .hero-cluster-divider { display: none; }
+        }
+
       `}</style>
       <nav className="nav-container" style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -561,71 +631,90 @@ export default function LandingPage() {
       )}
 
       <main>
-        {/* ── HERO SECTION (FLUXORA-INSPIRED LUXURY TECH AESTHETICS) ── */}
+        {/* ── HERO SECTION ── */}
         <section id="workspace" style={{
           position: 'relative',
-          padding: '110px 24px 90px',
+          padding: '100px 24px 85px',
           textAlign: 'center',
           minHeight: '85vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'radial-gradient(circle at 50% 120%, rgba(30, 58, 138, 0.22) 0%, rgba(15, 23, 42, 0.65) 45%, #030712 100%)',
-          overflow: 'hidden',
+          background: '#000000',
         }}>
-          {/* Ambient Lighting & Sci-Fi Grid Atmosphere */}
-          <div className="hero-glow-top" />
-          <div className="hero-glow-bottom" />
-          <div className="hero-light-grid" />
 
-          {/* M8ven Verified Publisher Trust Pill (Matching Fluxora Callout Pill) */}
-          <div style={{ position: 'relative', zIndex: 2, marginBottom: '28px' }}>
+          {/* Top Trust Row: Production Monitoring Status Pill */}
+          <div style={{
+            position: 'relative',
+            zIndex: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '12px',
+            flexWrap: 'wrap',
+            marginBottom: '26px',
+          }}>
             <a
-              href="https://m8ven.ai/verified?check=https%3A%2F%2Fgithub.com%2Fambuj123-lab%2Fagentic-ai-workspace"
+              href="https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral"
               target="_blank"
               rel="noreferrer"
-              className="hero-pill-badge"
-              title="Verified by M8ven - Public MCP Trust Index"
+              className="hero-monitoring-pill"
+              title="UptimeRobot Verified 99.998% SLA Status"
             >
-              <img
-                src="https://m8ven.ai/badge/mcp/ambuj123-lab-agentic-ai-workspace-fpyoik"
-                alt="Verified by M8ven"
-                style={{ height: '22px', width: 'auto', borderRadius: '3px', display: 'block' }}
-              />
+              <span className="live-status-dot" />
+              <span className="hero-monitoring-label">Production Monitoring</span>
+              <span style={{ color: 'rgba(255, 255, 255, 0.25)', fontSize: '11px' }}>·</span>
+              <span className="hero-monitoring-val">99.998% Uptime</span>
             </a>
           </div>
 
-          {/* Main Headline with Platinum Glow */}
+          {/* Main Headline (2-Tier Architecture) */}
           <h1 className="landing-title" style={{
             position: 'relative',
             zIndex: 2,
-            maxWidth: '960px',
-            fontSize: 'clamp(2.75rem, 5.8vw, 4.5rem)',
+            maxWidth: '1000px',
+            fontSize: 'clamp(2.75rem, 5.8vw, 4.4rem)',
             fontWeight: 800,
             letterSpacing: '-0.04em',
-            marginBottom: '24px',
+            marginBottom: '14px',
             lineHeight: 1.08,
             background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 65%, rgba(255, 255, 255, 0.72) 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             filter: 'drop-shadow(0 2px 24px rgba(255, 255, 255, 0.08))',
           }}>
-            Production-grade Agentic AI Workspace
+            Production-Grade Agentic AI Workspace
           </h1>
 
-          {/* Subtitle with High-Legibility Slate Tuning */}
+          {/* Headline Sub-Kicker */}
+          <div style={{
+            position: 'relative',
+            zIndex: 2,
+            fontSize: 'clamp(1.15rem, 2.2vw, 1.55rem)',
+            fontWeight: 600,
+            letterSpacing: '-0.02em',
+            color: '#cbd5e1',
+            marginBottom: '20px',
+            background: 'linear-gradient(90deg, #f1f5f9 0%, #94a3b8 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}>
+            LangGraph orchestration. MCP tools. Human-controlled actions.
+          </div>
+
+          {/* Tighter, Engineering-Heavy Supporting Text */}
           <p className="landing-subtitle" style={{
             position: 'relative',
             zIndex: 2,
             maxWidth: '740px',
-            fontSize: 'clamp(1.02rem, 1.5vw, 1.15rem)',
+            fontSize: 'clamp(1.02rem, 1.4vw, 1.15rem)',
             color: '#94a3b8',
             lineHeight: 1.65,
             marginBottom: '36px',
             fontWeight: 400,
           }}>
-            Built with <strong style={{ color: '#f8fafc', fontWeight: 600 }}>LangGraph</strong>, <strong style={{ color: '#f8fafc', fontWeight: 600 }}>Model Context Protocol (MCP)</strong>, Human-in-the-Loop workflows, and secure tool orchestration to interact with external systems through natural language.
+            A production-oriented AI workspace that orchestrates multi-step agents, discovers MCP tools dynamically, and keeps consequential actions behind human approval.
           </p>
 
           {/* Dual Action CTAs: Luminous Solid White Pill + Frosted Glass Pill */}
@@ -657,37 +746,74 @@ export default function LandingPage() {
             </button>
           </div>
 
-          {/* Tech Stack Chips (Glass Micro-Capsules) */}
+          {/* Categorized Architecture Clusters (Intentional Tech Grouping) */}
           <div style={{
             position: 'relative',
             zIndex: 2,
             display: 'flex',
-            flexWrap: 'wrap',
-            gap: '8px',
+            flexDirection: 'row',
+            alignItems: 'center',
             justifyContent: 'center',
-            maxWidth: '820px',
+            gap: '18px',
+            flexWrap: 'wrap',
+            maxWidth: '1020px',
             marginBottom: '32px',
+            padding: '14px 20px',
+            background: 'rgba(255, 255, 255, 0.02)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            borderRadius: '16px',
+            backdropFilter: 'blur(10px)',
           }}>
-            {['LangGraph', 'Gemini', 'FastAPI', 'MongoDB Atlas', 'MCP', 'Next.js', 'OAuth', 'GitHub API', 'RapidAPI', 'Tavily'].map(tech => (
-              <span key={tech} className="hero-tech-chip">
-                {tech}
-              </span>
-            ))}
+            {/* Cluster 1: AI / Orchestration */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <span className="hero-cluster-label">AI / Orchestration</span>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                <span className="hero-tech-chip">LangGraph</span>
+                <span className="hero-tech-chip">MCP</span>
+                <span className="hero-tech-chip">Gemini</span>
+              </div>
+            </div>
+
+            <div className="hero-cluster-divider" />
+
+            {/* Cluster 2: Backend */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <span className="hero-cluster-label">Backend</span>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                <span className="hero-tech-chip">FastAPI</span>
+                <span className="hero-tech-chip">MongoDB Atlas</span>
+              </div>
+            </div>
+
+            <div className="hero-cluster-divider" />
+
+            {/* Cluster 3: Integrations */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <span className="hero-cluster-label">Integrations</span>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                <span className="hero-tech-chip">GitHub API</span>
+                <span className="hero-tech-chip">Gmail</span>
+                <span className="hero-tech-chip">Yahoo Finance</span>
+                <span className="hero-tech-chip">Tavily</span>
+              </div>
+            </div>
           </div>
 
-          {/* Security & Data Governance Footer */}
+          {/* Security & Governance Footer (Tight & Premium) */}
           <div style={{
             position: 'relative',
             zIndex: 2,
             display: 'flex',
-            gap: '24px',
+            gap: '16px',
             justifyContent: 'center',
             alignItems: 'center',
             flexWrap: 'wrap',
           }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '12px', fontWeight: 500 }}><Lock size={13} style={{ color: '#475569' }} /> Authentication secured with OAuth</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '12px', fontWeight: 500 }}><Shield size={13} style={{ color: '#475569' }} /> Conversation history encrypted</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '12px', fontWeight: 500 }}><Trash2 size={13} style={{ color: '#475569' }} /> 30-day automatic cleanup</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '12px', fontWeight: 500 }}><Lock size={13} style={{ color: '#475569' }} /> OAuth 2.0</span>
+            <span style={{ color: '#334155' }}>·</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '12px', fontWeight: 500 }}><Shield size={13} style={{ color: '#475569' }} /> Encrypted Sessions</span>
+            <span style={{ color: '#334155' }}>·</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '12px', fontWeight: 500 }}><Trash2 size={13} style={{ color: '#475569' }} /> 30-Day TTL Cleanup</span>
           </div>
         </section>
 
@@ -901,6 +1027,18 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* Floating Back to Top Button */}
+      {showBackToTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="back-to-top-btn"
+          title="Back to Top"
+          aria-label="Back to Top"
+        >
+          <ArrowUp size={18} />
+        </button>
+      )}
     </div>
   );
 }
