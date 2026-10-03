@@ -444,6 +444,25 @@ export default function LandingPage() {
         {/* ── HERO SECTION ── */}
         <section id="workspace" style={{ padding: '90px 24px 80px', textAlign: 'center', minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle at top, #111 0%, #0a0a0a 60%)' }}>
           
+          {/* M8ven Verified Publisher Trust Badge */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+            <a
+              href="https://m8ven.ai/verified?check=https%3A%2F%2Fgithub.com%2Fambuj123-lab%2Fagentic-ai-workspace"
+              target="_blank"
+              rel="noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', transition: 'transform 0.2s ease', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))' }}
+              onMouseOver={e => e.currentTarget.style.transform = 'translateY(-1px)'}
+              onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
+              title="Verified by M8ven - Public MCP Trust Index"
+            >
+              <img
+                src="https://m8ven.ai/badge/mcp/ambuj123-lab-agentic-ai-workspace-fpyoik"
+                alt="Verified by M8ven"
+                style={{ height: '24px', width: 'auto', borderRadius: '4px', display: 'block' }}
+              />
+            </a>
+          </div>
+
           <h1 className="landing-title" style={{ maxWidth: '900px', fontSize: '4rem', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: '24px', lineHeight: 1.1, background: 'linear-gradient(135deg, #FFFFFF 0%, #A0A0A0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Production-grade Agentic AI Workspace
           </h1>
