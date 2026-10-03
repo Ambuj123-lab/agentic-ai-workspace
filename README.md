@@ -6,7 +6,7 @@
 <br/>
 
 [![Live Demo](https://img.shields.io/badge/🚀_LIVE_DEMO-Visit_App-D4A574?style=for-the-badge&logoColor=white)](https://agentic-ai-workspace.onrender.com)
-[![M8ven Score](https://m8ven.ai/badge/mcp/ambuj123-lab/agentic-ai-workspace)](https://m8ven.ai/mcp/ambuj123-lab/agentic-ai-workspace?s=readme)
+[![M8ven Score](https://m8ven.ai/badge/mcp/ambuj123-lab-agentic-ai-workspace-z0cbq7)](https://m8ven.ai/mcp/ambuj123-lab-agentic-ai-workspace-z0cbq7?s=readme)
 [![Uptime SLA 99.998%](https://badge.uptimerobot.com/sla/18a544b11fc4799a468704cc7acccedb.svg?theme=dark)](https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral)
 [![Featured on UptimeRobot](https://img.shields.io/badge/FEATURED_IN-UptimeRobot_Official_Blog-047857?style=for-the-badge&logo=uptimerobot&logoColor=3BD671)](https://uptimerobot.com/blog/community-spotlight-ambuj-kumar-tripathi/)
 [![Portfolio](https://img.shields.io/badge/👤_PORTFOLIO-Ambuj_Tripathi-34A853?style=for-the-badge)](https://ambuj-ai-portfolio.vercel.app/)

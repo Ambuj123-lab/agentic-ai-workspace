@@ -766,18 +766,18 @@ export default function LandingPage() {
               {/* Top Trust Row: M8ven Verified & Production Monitoring */}
               <div style={{ marginBottom: '22px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                 <a
-                  href="https://m8ven.ai/mcp/ambuj123-lab/agentic-ai-workspace?s=readme"
+                  href="https://m8ven.ai/mcp/ambuj123-lab-agentic-ai-workspace-z0cbq7?s=docs"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', transition: 'transform 0.2s ease' }}
                   onMouseOver={e => e.currentTarget.style.transform = 'translateY(-1px)'}
                   onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
                   title="M8ven Score & Live Monitored MCP Server"
                 >
                   <img
-                    src="https://m8ven.ai/badge/mcp/ambuj123-lab/agentic-ai-workspace"
+                    src="https://m8ven.ai/badge/mcp/ambuj123-lab-agentic-ai-workspace-z0cbq7"
                     alt="M8ven Score"
-                    style={{ height: '24px', width: 'auto', borderRadius: '4px', display: 'inline-block' }}
+                    style={{ height: '22px', width: 'auto', borderRadius: '4px', display: 'inline-block' }}
                   />
                 </a>
 
