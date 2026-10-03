@@ -340,27 +340,43 @@ export default function LandingPage() {
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: '8px'
+        gap: '10px'
       }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', justifyContent: 'center' }}>
           <span>⚠️</span>
           <span><strong>Disclaimer:</strong> Experimental Agentic Workspace by Ambuj Kumar Tripathi. Open for constructive feedback.</span>
         </div>
-        <a
-          href="https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral"
-          target="_blank"
-          rel="noreferrer"
-          style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', transition: 'opacity 0.2s ease' }}
-          onMouseOver={e => e.currentTarget.style.opacity = '0.85'}
-          onMouseOut={e => e.currentTarget.style.opacity = '1'}
-          title="UptimeRobot Verified 99.998% SLA"
-        >
-          <img
-            src="https://badge.uptimerobot.com/sla/18a544b11fc4799a468704cc7acccedb.svg?theme=dark"
-            alt="Uptime SLA 99.998%"
-            style={{ height: '20px', width: 'auto', borderRadius: '4px', verticalAlign: 'middle', display: 'block' }}
-          />
-        </a>
+
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {/* UptimeRobot Official SLA Dark Badge */}
+          <a
+            href="https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral"
+            target="_blank"
+            rel="noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', transition: 'opacity 0.2s ease' }}
+            onMouseOver={e => e.currentTarget.style.opacity = '0.85'}
+            onMouseOut={e => e.currentTarget.style.opacity = '1'}
+            title="UptimeRobot Verified 99.998% SLA"
+          >
+            <img
+              src="https://badge.uptimerobot.com/sla/18a544b11fc4799a468704cc7acccedb.svg?theme=dark"
+              alt="Uptime SLA 99.998%"
+              style={{ height: '22px', width: 'auto', borderRadius: '4px', verticalAlign: 'middle', display: 'block' }}
+            />
+          </a>
+
+          {/* Original Live Heartbeat Status Badge */}
+          <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" className="afp-status-badge">
+            <span style={{ position: 'relative', width: '8px', height: '8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ position: 'absolute', width: '8px', height: '8px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.4)', animation: 'sonar-ping 2s ease-out infinite' }} />
+              <span style={{ position: 'relative', width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 6px rgba(16, 185, 129, 0.6)' }} />
+            </span>
+            <svg width="28" height="12" viewBox="0 0 28 12" style={{ overflow: 'visible', marginLeft: '-2px' }}>
+              <path d="M0,6 L6,6 L8,2 L10,10 L12,4 L14,8 L16,6 L28,6" fill="none" stroke="#10b981" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ strokeDasharray: '30', strokeDashoffset: '0', animation: 'ecg-draw 2s linear infinite' }} />
+            </svg>
+            {uptimeData ? `${uptimeData.uptime} • ${uptimeData.latency}` : 'System Status'}
+          </a>
+        </div>
       </div>
 
       {/* ===== NAVBAR ===== */}
