@@ -374,6 +374,126 @@ export default function LandingPage() {
           .mobile-nav-badge { display: inline-flex; }
           .nav-container { padding: 12px 16px !important; }
         }
+        /* Hero Ambient & Buttons (Fluxora-Inspired Luxury Aesthetics) */
+        @keyframes hero-glow-pulse {
+          0%, 100% { opacity: 0.65; transform: translateX(-50%) scale(1); }
+          50% { opacity: 0.9; transform: translateX(-50%) scale(1.06); }
+        }
+        .hero-glow-bottom {
+          position: absolute;
+          width: 820px;
+          height: 440px;
+          left: 50%;
+          bottom: -120px;
+          transform: translateX(-50%);
+          background: radial-gradient(ellipse at 50% 100%, rgba(56, 189, 248, 0.22) 0%, rgba(99, 102, 241, 0.16) 35%, rgba(14, 165, 233, 0.05) 60%, transparent 75%);
+          filter: blur(75px);
+          pointer-events: none;
+          z-index: 1;
+          animation: hero-glow-pulse 9s ease-in-out infinite;
+        }
+        .hero-glow-top {
+          position: absolute;
+          width: 960px;
+          height: 380px;
+          left: 50%;
+          top: -140px;
+          transform: translateX(-50%);
+          background: radial-gradient(ellipse at 50% 0%, rgba(30, 58, 138, 0.3) 0%, rgba(59, 130, 246, 0.12) 40%, transparent 75%);
+          filter: blur(85px);
+          pointer-events: none;
+          z-index: 1;
+        }
+        .hero-light-grid {
+          position: absolute;
+          inset: 0;
+          background-image: 
+            linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+            radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+          background-size: 72px 100%, 100% 100%;
+          mask-image: radial-gradient(ellipse at 50% 50%, black 35%, transparent 75%);
+          -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 35%, transparent 75%);
+          pointer-events: none;
+          z-index: 1;
+        }
+        .hero-pill-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 5px 14px;
+          border-radius: 9999px;
+          background: rgba(255, 255, 255, 0.035);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          backdrop-filter: blur(16px);
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          text-decoration: none;
+        }
+        .hero-pill-badge:hover {
+          background: rgba(255, 255, 255, 0.06);
+          border-color: rgba(255, 255, 255, 0.25);
+          transform: translateY(-1px);
+          box-shadow: 0 6px 30px rgba(56, 189, 248, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        .hero-btn-primary {
+          background: #ffffff !important;
+          color: #09090b !important;
+          font-weight: 600 !important;
+          font-size: 0.95rem !important;
+          padding: 13px 28px !important;
+          border-radius: 9999px !important;
+          border: 1px solid #ffffff !important;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 0 28px rgba(255, 255, 255, 0.28), 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        .hero-btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 0 36px rgba(255, 255, 255, 0.45), 0 4px 14px rgba(0, 0, 0, 0.5);
+          background: #f8fafc !important;
+        }
+        .hero-btn-secondary {
+          background: rgba(255, 255, 255, 0.05) !important;
+          color: #f1f5f9 !important;
+          font-weight: 500 !important;
+          font-size: 0.95rem !important;
+          padding: 13px 26px !important;
+          border-radius: 9999px !important;
+          border: 1px solid rgba(255, 255, 255, 0.14) !important;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          backdrop-filter: blur(12px);
+          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+        }
+        .hero-btn-secondary:hover {
+          background: rgba(255, 255, 255, 0.1) !important;
+          border-color: rgba(255, 255, 255, 0.3) !important;
+          color: #ffffff !important;
+          transform: translateY(-2px);
+        }
+        .hero-tech-chip {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          color: #cbd5e1;
+          padding: 6px 14px;
+          border-radius: 9999px;
+          font-size: 13px;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          backdrop-filter: blur(8px);
+        }
+        .hero-tech-chip:hover {
+          background: rgba(255, 255, 255, 0.06);
+          border-color: rgba(255, 255, 255, 0.22);
+          color: #ffffff;
+          transform: translateY(-1px);
+        }
       `}</style>
       <nav className="nav-container" style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -441,57 +561,133 @@ export default function LandingPage() {
       )}
 
       <main>
-        {/* ── HERO SECTION ── */}
-        <section id="workspace" style={{ padding: '90px 24px 80px', textAlign: 'center', minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle at top, #111 0%, #0a0a0a 60%)' }}>
-          
-          {/* M8ven Verified Publisher Trust Badge */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+        {/* ── HERO SECTION (FLUXORA-INSPIRED LUXURY TECH AESTHETICS) ── */}
+        <section id="workspace" style={{
+          position: 'relative',
+          padding: '110px 24px 90px',
+          textAlign: 'center',
+          minHeight: '85vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'radial-gradient(circle at 50% 120%, rgba(30, 58, 138, 0.22) 0%, rgba(15, 23, 42, 0.65) 45%, #030712 100%)',
+          overflow: 'hidden',
+        }}>
+          {/* Ambient Lighting & Sci-Fi Grid Atmosphere */}
+          <div className="hero-glow-top" />
+          <div className="hero-glow-bottom" />
+          <div className="hero-light-grid" />
+
+          {/* M8ven Verified Publisher Trust Pill (Matching Fluxora Callout Pill) */}
+          <div style={{ position: 'relative', zIndex: 2, marginBottom: '28px' }}>
             <a
               href="https://m8ven.ai/verified?check=https%3A%2F%2Fgithub.com%2Fambuj123-lab%2Fagentic-ai-workspace"
               target="_blank"
               rel="noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', transition: 'transform 0.2s ease', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))' }}
-              onMouseOver={e => e.currentTarget.style.transform = 'translateY(-1px)'}
-              onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
+              className="hero-pill-badge"
               title="Verified by M8ven - Public MCP Trust Index"
             >
               <img
                 src="https://m8ven.ai/badge/mcp/ambuj123-lab-agentic-ai-workspace-fpyoik"
                 alt="Verified by M8ven"
-                style={{ height: '24px', width: 'auto', borderRadius: '4px', display: 'block' }}
+                style={{ height: '22px', width: 'auto', borderRadius: '3px', display: 'block' }}
               />
             </a>
           </div>
 
-          <h1 className="landing-title" style={{ maxWidth: '900px', fontSize: '4rem', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: '24px', lineHeight: 1.1, background: 'linear-gradient(135deg, #FFFFFF 0%, #A0A0A0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          {/* Main Headline with Platinum Glow */}
+          <h1 className="landing-title" style={{
+            position: 'relative',
+            zIndex: 2,
+            maxWidth: '960px',
+            fontSize: 'clamp(2.75rem, 5.8vw, 4.5rem)',
+            fontWeight: 800,
+            letterSpacing: '-0.04em',
+            marginBottom: '24px',
+            lineHeight: 1.08,
+            background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 65%, rgba(255, 255, 255, 0.72) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            filter: 'drop-shadow(0 2px 24px rgba(255, 255, 255, 0.08))',
+          }}>
             Production-grade Agentic AI Workspace
           </h1>
-          <p className="landing-subtitle" style={{ maxWidth: '800px', fontSize: '1.1rem', color: '#8b949e', lineHeight: 1.6, marginBottom: '40px' }}>
-            Built with <strong>LangGraph</strong>, <strong>Model Context Protocol (MCP)</strong>, Human-in-the-Loop workflows, and secure tool orchestration to interact with external systems through natural language.
+
+          {/* Subtitle with High-Legibility Slate Tuning */}
+          <p className="landing-subtitle" style={{
+            position: 'relative',
+            zIndex: 2,
+            maxWidth: '740px',
+            fontSize: 'clamp(1.02rem, 1.5vw, 1.15rem)',
+            color: '#94a3b8',
+            lineHeight: 1.65,
+            marginBottom: '36px',
+            fontWeight: 400,
+          }}>
+            Built with <strong style={{ color: '#f8fafc', fontWeight: 600 }}>LangGraph</strong>, <strong style={{ color: '#f8fafc', fontWeight: 600 }}>Model Context Protocol (MCP)</strong>, Human-in-the-Loop workflows, and secure tool orchestration to interact with external systems through natural language.
           </p>
-          
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center', maxWidth: '800px', marginBottom: '40px' }}>
+
+          {/* Dual Action CTAs: Luminous Solid White Pill + Frosted Glass Pill */}
+          <div style={{
+            position: 'relative',
+            zIndex: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '14px',
+            flexWrap: 'wrap',
+            marginBottom: '36px',
+          }}>
+            <button onClick={() => signIn('google')} className="hero-btn-primary">
+              <svg width="18" height="18" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+              </svg>
+              <span>Sign in with Google</span>
+            </button>
+
+            <button onClick={() => setIsHowItWorksOpen(true)} className="hero-btn-secondary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style={{ opacity: 0.85 }}>
+                <polygon points="6 3 20 12 6 21 6 3" />
+              </svg>
+              <span>How it works</span>
+            </button>
+          </div>
+
+          {/* Tech Stack Chips (Glass Micro-Capsules) */}
+          <div style={{
+            position: 'relative',
+            zIndex: 2,
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '8px',
+            justifyContent: 'center',
+            maxWidth: '820px',
+            marginBottom: '32px',
+          }}>
             {['LangGraph', 'Gemini', 'FastAPI', 'MongoDB Atlas', 'MCP', 'Next.js', 'OAuth', 'GitHub API', 'RapidAPI', 'Tavily'].map(tech => (
-              <span key={tech} style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', color: '#c9d1d9', padding: '6px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: 500 }}>
+              <span key={tech} className="hero-tech-chip">
                 {tech}
               </span>
             ))}
           </div>
 
-          <button onClick={() => signIn('google')} style={{ background: 'rgba(255,255,255,0.05)', color: '#fff', fontWeight: 500, fontSize: '0.95rem', padding: '12px 28px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.15)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'all 0.2s', backdropFilter: 'blur(8px)' }} onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; }} onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; }}>
-            <svg width="18" height="18" viewBox="0 0 48 48">
-              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
-              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-            </svg>
-            Sign in with Google
-          </button>
-          
-          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginTop: '24px', flexWrap: 'wrap' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '12px' }}><Lock size={14} /> Authentication secured with OAuth</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '12px' }}><Shield size={14} /> Conversation history encrypted</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '12px' }}><Trash2 size={14} /> 30-day automatic cleanup</span>
+          {/* Security & Data Governance Footer */}
+          <div style={{
+            position: 'relative',
+            zIndex: 2,
+            display: 'flex',
+            gap: '24px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+          }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '12px', fontWeight: 500 }}><Lock size={13} style={{ color: '#475569' }} /> Authentication secured with OAuth</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '12px', fontWeight: 500 }}><Shield size={13} style={{ color: '#475569' }} /> Conversation history encrypted</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '12px', fontWeight: 500 }}><Trash2 size={13} style={{ color: '#475569' }} /> 30-day automatic cleanup</span>
           </div>
         </section>
 
