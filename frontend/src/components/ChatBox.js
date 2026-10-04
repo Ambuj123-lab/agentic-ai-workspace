@@ -9,9 +9,28 @@ import GenerativeChart from "./GenerativeChart";
 // Direct API base — bypasses Next.js proxy so SSE streams in real-time
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
-export default function ChatBox() {
+export default function ChatBox({ initialGuestId = null }) {
   const { data: session } = useSession();
-  const userId = session?.user?.email;
+  const [guestId, setGuestId] = useState(initialGuestId);
+
+  useEffect(() => {
+    if (!session?.user?.email) {
+      let gId = initialGuestId;
+      if (!gId && typeof window !== "undefined") {
+        gId = localStorage.getItem("guest_id");
+        if (!gId) {
+          gId = "guest_" + Math.random().toString(36).substring(2, 10);
+          localStorage.setItem("guest_id", gId);
+          document.cookie = `guest_session=${gId}; path=/; max-age=2592000`; // 30-day TTL
+        }
+      }
+      if (gId && gId !== guestId) {
+        setGuestId(gId);
+      }
+    }
+  }, [session, initialGuestId, guestId]);
+
+  const userId = session?.user?.email || guestId;
 
   const [messages, setMessages] = useState([
     {
@@ -493,7 +512,7 @@ export default function ChatBox() {
 
         {/* User Actions */}
         <div style={{ padding: '16px 20px', borderTop: '1px solid #333', paddingBottom: 'calc(20px + env(safe-area-inset-bottom))' }}>
-          {session?.user && (
+          {session?.user ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', padding: '8px', borderRadius: '8px', background: 'rgba(255,255,255,0.03)' }}>
               {session.user.image ? (
                 <img
@@ -519,21 +538,58 @@ export default function ChatBox() {
                 </div>
               </div>
             </div>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', padding: '8px', borderRadius: '8px', background: 'rgba(217, 70, 239, 0.07)', border: '1px solid rgba(217, 70, 239, 0.25)' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #d946ef 0%, #8b5cf6 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold', fontSize: '16px', boxShadow: '0 0 12px rgba(217, 70, 239, 0.45)' }}>
+                G
+              </div>
+              <div style={{ overflow: 'hidden' }}>
+                <div style={{ fontSize: '14px', fontWeight: '600', color: '#f0abfc', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  Guest Explorer
+                </div>
+                <div style={{ fontSize: '11px', color: '#c084fc', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontFamily: 'monospace' }}>
+                  Anonymous (30-day TTL)
+                </div>
+              </div>
+            </div>
           )}
-          <button
-            onClick={() => signOut({ callbackUrl: '/' })}
-            style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%',
-              background: '#21262d', border: '1px solid #30363d', color: '#c9d1d9',
-              cursor: 'pointer', fontFamily: 'Outfit', fontSize: '14px',
-              padding: '10px', borderRadius: '8px', transition: 'all 0.2s ease'
-            }}
-            onMouseOver={(e) => { e.currentTarget.style.background = '#30363d'; e.currentTarget.style.borderColor = '#8b949e'; }}
-            onMouseOut={(e) => { e.currentTarget.style.background = '#21262d'; e.currentTarget.style.borderColor = '#30363d'; }}
-          >
-            <LogOut size={16} />
-            Sign Out
-          </button>
+
+          {session?.user ? (
+            <button
+              onClick={() => signOut({ callbackUrl: '/' })}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%',
+                background: '#21262d', border: '1px solid #30363d', color: '#c9d1d9',
+                cursor: 'pointer', fontFamily: 'Outfit', fontSize: '14px',
+                padding: '10px', borderRadius: '8px', transition: 'all 0.2s ease'
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.background = '#30363d'; e.currentTarget.style.borderColor = '#8b949e'; }}
+              onMouseOut={(e) => { e.currentTarget.style.background = '#21262d'; e.currentTarget.style.borderColor = '#30363d'; }}
+            >
+              <LogOut size={16} />
+              Sign Out
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  document.cookie = "guest_session=; path=/; max-age=0";
+                  window.location.href = "/";
+                }
+              }}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%',
+                background: '#21262d', border: '1px solid rgba(217, 70, 239, 0.4)', color: '#f0abfc',
+                cursor: 'pointer', fontFamily: 'Outfit', fontSize: '14px', fontWeight: '600',
+                padding: '10px', borderRadius: '8px', transition: 'all 0.2s ease'
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(217, 70, 239, 0.15)'; e.currentTarget.style.borderColor = '#d946ef'; }}
+              onMouseOut={(e) => { e.currentTarget.style.background = '#21262d'; e.currentTarget.style.borderColor = 'rgba(217, 70, 239, 0.4)'; }}
+            >
+              <LogOut size={16} />
+              Exit Guest Mode
+            </button>
+          )}
         </div>
       </aside>
 

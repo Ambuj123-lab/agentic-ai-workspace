@@ -202,8 +202,25 @@ export default function LandingPage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isGuestLoading, setIsGuestLoading] = useState(false);
   const [signInStage, setSignInStage] = useState(1);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+
+    const handleGuestContinue = () => {
+    setIsGuestLoading(true);
+    if (typeof window !== "undefined") {
+      let gId = localStorage.getItem("guest_id");
+      if (!gId) {
+        gId = "guest_" + Math.random().toString(36).substring(2, 10);
+        localStorage.setItem("guest_id", gId);
+      }
+      document.cookie = `guest_session=${gId}; path=/; max-age=2592000`; // 30-day persistence
+    }
+    // 1.35s High-tech Cyberpunk Loader sequence
+    setTimeout(() => {
+      router.push("/chat");
+    }, 1350);
+  };
 
   const handleGoogleSignIn = () => {
     setIsSigningIn(true);
@@ -269,6 +286,26 @@ export default function LandingPage() {
         title="Initializing Autonomous Workspace"
         subtitle="LangGraph ReAct · FastMCP Protocol · MongoDB Atlas"
         badge="AGENT RUNTIME ACTIVE"
+      />
+    );
+  }
+
+  if (isGuestLoading) {
+    return (
+      <Loading 
+        title="Allocating Isolated Agent Session"
+        subtitle="FastMCP Protocols · LangGraph ReAct · MongoDB Atlas"
+        badge="GUEST SANDBOX INITIALIZING"
+      />
+    );
+  }
+
+  if (isSigningIn) {
+    return (
+      <Loading 
+        title={signInStage === 1 ? "M8ven FastMCP Handshake" : "OAuth 2.0 Identity Protocol"}
+        subtitle="Verifying Secure Cloud Gateway · Google Auth"
+        badge="AUTHENTICATING SESSION"
       />
     );
   }
@@ -1223,7 +1260,18 @@ export default function LandingPage() {
           </a>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Top-Right Navbar CTA: Continue as Guest */}
+          <button 
+            id="continue-as-guest-btn"
+            onClick={handleGuestContinue} 
+            className="guest-cta-btn" 
+            title="Instant sandbox access without sign-in"
+          >
+            <span>Continue as Guest</span>
+            <span className="cta-arrow">›</span>
+          </button>
+
           <a
             href="https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral"
             target="_blank"
@@ -1250,6 +1298,14 @@ export default function LandingPage() {
           <button onClick={() => { setIsHowItWorksOpen(true); setIsMobileMenuOpen(false); }} className="nav-link" style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 'inherit', padding: 0, fontFamily: 'inherit', color: 'inherit', textAlign: 'left' }}>How it works</button>
           <Link href="#architecture" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Architecture</Link>
           <Link href="#capabilities" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Capabilities</Link>
+          <button 
+            onClick={() => { setIsMobileMenuOpen(false); handleGuestContinue(); }} 
+            className="guest-cta-btn" 
+            style={{ justifyContent: 'center', width: '100%', padding: '10px 16px', marginTop: '6px' }}
+          >
+            <span>Continue as Guest</span>
+            <span className="cta-arrow">›</span>
+          </button>
         </div>
       )}
 
