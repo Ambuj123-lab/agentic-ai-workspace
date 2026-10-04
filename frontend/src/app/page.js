@@ -1,26 +1,28 @@
 "use client";
 
 import Link from 'next/link';
-import { Bot, Mail, LineChart, Globe, GitBranch, Shield, Lock, Trash2, Layout, TerminalSquare, ChevronLeft, ChevronRight, X, Menu, ArrowUp, Activity, CheckCircle2, Sparkles, Cpu } from 'lucide-react';
+import Loading from './loading';
+import { Bot, Mail, LineChart, Globe, GitBranch, Shield, Lock, Trash2, Layout, TerminalSquare, ChevronLeft, ChevronRight, X, Menu, ArrowUp, Activity, CheckCircle2, Sparkles, Cpu, User, Database, Zap, Layers, Server, ShieldCheck } from 'lucide-react';
 import { FaLinkedin, FaXTwitter, FaGithub } from 'react-icons/fa6';
 import { useSession, signIn } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 const FlowNode = ({ icon, title, subtitle, color = "#0EA5E9", variant = "default" }) => {
-  const bg = variant === "focus" ? `${color}15` : "rgba(255,255,255,0.02)";
-  const border = variant === "focus" ? color : "rgba(255,255,255,0.1)";
+  const bg = variant === "focus" ? `${color}18` : "rgba(255,255,255,0.03)";
+  const border = variant === "focus" ? color : "rgba(255,255,255,0.12)";
   
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      padding: '16px', minWidth: '140px', background: bg, border: `1px solid ${border}`,
-      borderRadius: '12px', zIndex: 2, position: 'relative',
-      boxShadow: variant === "focus" ? `0 0 20px ${color}20` : 'none',
-      transition: 'transform 0.2s', cursor: 'default'
-    }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
-      <div style={{ fontSize: '28px', marginBottom: '8px' }}>{icon}</div>
-      <div style={{ fontSize: '13px', fontWeight: 600, color: '#fff', textAlign: 'center' }}>{title}</div>
-      {subtitle && <div style={{ fontSize: '11px', color: '#9CA3AF', marginTop: '4px', textAlign: 'center' }}>{subtitle}</div>}
+    <div 
+      className="flow-node-box"
+      style={{
+        background: bg,
+        borderColor: border,
+        boxShadow: variant === "focus" ? `0 0 20px ${color}35` : 'none',
+      }}
+    >
+      <div style={{ fontSize: '24px', marginBottom: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{icon}</div>
+      <div style={{ fontSize: '12px', fontWeight: 700, color: '#fff', textAlign: 'center', whiteSpace: 'nowrap' }}>{title}</div>
+      {subtitle && <div style={{ fontSize: '10px', color: '#94A3B8', marginTop: '3px', textAlign: 'center', whiteSpace: 'nowrap' }}>{subtitle}</div>}
     </div>
   );
 };
@@ -63,105 +65,131 @@ const SystemArchitecture = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', width: '100%', maxWidth: '950px', margin: '0 auto', fontFamily: 'Inter, sans-serif' }}>
     
     {/* ── CLIENT LAYER ── */}
-    <div style={{ border: '1px solid rgba(14, 165, 233, 0.2)', borderRadius: '16px', padding: '28px', background: 'rgba(14, 165, 233, 0.02)', position: 'relative' }}>
-      <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#0a0a0a', padding: '0 12px', color: '#0EA5E9', fontSize: '12px', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>🖥️ Client Layer</div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center', alignItems: 'center' }}>
-        <FlowNode icon="🔐" title="NextAuth.js" subtitle="Google OAuth" color="#0EA5E9" />
+    <div style={{ border: '1px solid rgba(14, 165, 233, 0.25)', borderRadius: '16px', padding: '24px', background: 'rgba(14, 165, 233, 0.02)', position: 'relative' }}>
+      <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#000000', padding: '0 12px', color: '#0EA5E9', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <Layers size={13} color="#0EA5E9" /> Client UI & Session Layer
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', justifyContent: 'center', alignItems: 'center' }}>
+        <FlowNode icon={<Lock size={22} color="#0EA5E9" />} title="NextAuth.js" subtitle="Google OAuth 2.0" color="#0EA5E9" />
         <FlowArrow label="" width="20px" />
-        <FlowNode icon="💻" title="Next.js App" subtitle="React Frontend" color="#0EA5E9" variant="focus" />
+        <FlowNode icon={<Layers size={22} color="#0EA5E9" />} title="Next.js App" subtitle="React 19 / Turbopack" color="#0EA5E9" variant="focus" />
         <FlowArrow label="" width="20px" />
-        <FlowNode icon="💬" title="ChatBox.js" subtitle="Generative UI" color="#0EA5E9" />
+        <FlowNode icon={<TerminalSquare size={22} color="#0EA5E9" />} title="Generative UI" subtitle="SSE Stream Receiver" color="#0EA5E9" />
       </div>
     </div>
 
     <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <FlowArrow direction="down" label="POST /api/chat (SSE Stream)" width="30px" />
+      <FlowArrow direction="down" label="POST /api/chat (SSE Stream)" width="32px" />
     </div>
 
     {/* ── SERVER + PERSISTENCE (side by side) ── */}
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '28px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '24px' }}>
       {/* Server Layer */}
-      <div style={{ border: '1px solid rgba(16, 185, 129, 0.2)', borderRadius: '16px', padding: '28px', background: 'rgba(16, 185, 129, 0.02)', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#0a0a0a', padding: '0 12px', color: '#10B981', fontSize: '12px', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>⚙️ Server Layer</div>
+      <div style={{ border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '16px', padding: '24px', background: 'rgba(16, 185, 129, 0.02)', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#000000', padding: '0 12px', color: '#10B981', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Zap size={13} color="#10B981" /> Async Gateway & Defense
+        </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-          <FlowNode icon="⚡" title="FastAPI" subtitle="app/main.py" color="#10B981" variant="focus" />
+          <FlowNode icon={<Zap size={24} color="#10B981" />} title="FastAPI ASGI" subtitle="app/main.py" color="#10B981" variant="focus" />
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
-            <FlowNode icon="🛡️" title="Rate Limiter" subtitle="SlowAPI + Circuit Breaker" color="#10B981" />
-            <FlowNode icon="📡" title="Chat API" subtitle="app/api/chat.py" color="#10B981" />
+            <FlowNode icon={<ShieldCheck size={20} color="#10B981" />} title="SlowAPI Guard" subtitle="Rate Limiter + Breaker" color="#10B981" />
+            <FlowNode icon={<Activity size={20} color="#10B981" />} title="Stream Router" subtitle="app/api/chat.py" color="#10B981" />
           </div>
         </div>
       </div>
 
       {/* Persistence Layer */}
-      <div style={{ border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '16px', padding: '28px', background: 'rgba(245, 158, 11, 0.02)', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#0a0a0a', padding: '0 12px', color: '#F59E0B', fontSize: '12px', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>🗄️ Persistence Layer</div>
+      <div style={{ border: '1px solid rgba(245, 158, 11, 0.25)', borderRadius: '16px', padding: '24px', background: 'rgba(245, 158, 11, 0.02)', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#000000', padding: '0 12px', color: '#F59E0B', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Database size={13} color="#F59E0B" /> Persistence & Retention
+        </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-          <FlowNode icon="🍃" title="MongoDB Atlas" subtitle="Conversation Store" color="#F59E0B" variant="focus" />
+          <FlowNode icon={<Database size={24} color="#F59E0B" />} title="MongoDB Atlas" subtitle="Encrypted Thread Store" color="#F59E0B" variant="focus" />
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
-            <FlowNode icon="⏱️" title="30-Day TTL" subtitle="Auto Cleanup Index" color="#F59E0B" />
-            <FlowNode icon="🔄" title="Sliding Window" subtitle="Last 10 Messages" color="#F59E0B" />
+            <FlowNode icon={<Trash2 size={20} color="#EF4444" />} title="30-Day TTL" subtitle="Auto-Purge Index" color="#EF4444" />
+            <FlowNode icon={<CheckCircle2 size={20} color="#F59E0B" />} title="Context Window" subtitle="Last 10 Turns" color="#F59E0B" />
           </div>
         </div>
       </div>
     </div>
 
     <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <FlowArrow direction="down" label="Initialize LangGraph Agent" width="30px" />
+      <FlowArrow direction="down" label="Initialize LangGraph ReAct Cycle" width="32px" />
     </div>
 
     {/* ── AGENTIC CORE ── */}
-    <div style={{ border: '1px solid rgba(168, 85, 247, 0.2)', borderRadius: '16px', padding: '28px', background: 'rgba(168, 85, 247, 0.02)', position: 'relative' }}>
-      <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#0a0a0a', padding: '0 12px', color: '#A855F7', fontSize: '12px', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>🧠 Agentic Core (LangGraph)</div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center', alignItems: 'center' }}>
-        <FlowNode icon="🔄" title="State Graph" subtitle="app/agent/graph.py" color="#A855F7" variant="focus" />
-        <FlowArrow label="Reason" width="30px" />
-        <FlowNode icon="✨" title="LLM Node" subtitle="Gemini / OpenRouter" color="#A855F7" />
-        <FlowArrow label="tool_calls?" width="40px" />
-        <FlowNode icon="🛠️" title="Action Node" subtitle="ToolNode Executor" color="#A855F7" />
+    <div style={{ border: '1px solid rgba(168, 85, 247, 0.28)', borderRadius: '16px', padding: '24px', background: 'rgba(168, 85, 247, 0.02)', position: 'relative' }}>
+      <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#000000', padding: '0 12px', color: '#A855F7', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <Cpu size={13} color="#A855F7" /> LangGraph ReAct Agentic Core
       </div>
-      <div style={{ textAlign: 'center', marginTop: '12px', fontSize: '11px', color: '#9CA3AF', fontStyle: 'italic' }}>
-        ReAct Loop: Agent → LLM → Tool → Agent → ... → END
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center', alignItems: 'center' }}>
+        <FlowNode icon={<Cpu size={22} color="#A855F7" />} title="State Graph" subtitle="app/agent/graph.py" color="#A855F7" variant="focus" />
+        <FlowArrow label="Reasoning" width="32px" />
+        <FlowNode icon={<Sparkles size={22} color="#A855F7" />} title="LLM Engine" subtitle="Gemini 2.5 Flash" color="#A855F7" />
+        <FlowArrow label="tool_calls?" width="36px" />
+        <FlowNode icon={<Bot size={22} color="#A855F7" />} title="ToolNode Dispatch" subtitle="Structured Execution" color="#A855F7" />
+      </div>
+      <div style={{ textAlign: 'center', marginTop: '12px', fontSize: '11px', color: '#9CA3AF', fontFamily: 'monospace' }}>
+        Stateful ReAct Loop: Agent ➔ LLM ➔ Tool Execution ➔ Synthesis ➔ Client Stream
       </div>
     </div>
 
     <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <FlowArrow direction="down" label="Invokes Tools" width="30px" />
+      <FlowArrow direction="down" label="Invokes FastMCP & Sandboxed Tools" width="32px" />
     </div>
 
-    {/* ── TOOL REGISTRY ── */}
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '28px' }}>
-      {/* Built-in Tools */}
-      <div style={{ border: '1px solid rgba(99, 102, 241, 0.2)', borderRadius: '16px', padding: '28px', background: 'rgba(99, 102, 241, 0.02)', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#0a0a0a', padding: '0 12px', color: '#6366F1', fontSize: '12px', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>🔧 Built-in Tools</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-          <FlowNode icon="🔍" title="Web Search" subtitle="Tavily API" color="#6366F1" />
-          <FlowNode icon="📈" title="Stock Price" subtitle="RapidAPI / Yahoo" color="#6366F1" />
-          <FlowNode icon="🐙" title="GitHub Suite" subtitle="6 REST API Tools" color="#6366F1" variant="focus" />
-          <FlowNode icon="📧" title="Gmail" subtitle="SMTP + IMAP" color="#6366F1" />
-          <FlowNode icon="🌐" title="Webpage Reader" subtitle="httpx Scraper" color="#6366F1" />
-          <FlowNode icon="🧮" title="Calculator" subtitle="Math Evaluator" color="#6366F1" />
+    {/* ── FASTMCP TOOLS & M8VEN GOVERNANCE LAYER ── */}
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '24px' }}>
+      {/* 20 Production Tools with AST Sandbox */}
+      <div style={{ border: '1px solid rgba(99, 102, 241, 0.28)', borderRadius: '16px', padding: '24px', background: 'rgba(99, 102, 241, 0.02)', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#000000', padding: '0 12px', color: '#818cf8', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Bot size={13} color="#818cf8" /> 20 FastMCP Live Tools
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+          <FlowNode icon={<Globe size={18} color="#818cf8" />} title="Tavily Search" subtitle="Web Fact Finding" color="#818cf8" />
+          <FlowNode icon={<LineChart size={18} color="#818cf8" />} title="Stock Telemetry" subtitle="RapidAPI / Yahoo" color="#818cf8" />
+          <FlowNode icon={<GitBranch size={18} color="#818cf8" />} title="GitHub Suite" subtitle="6 REST Endpoints" color="#818cf8" variant="focus" />
+          <FlowNode icon={<Mail size={18} color="#818cf8" />} title="Gmail Flow" subtitle="SMTP + IMAP Draft" color="#818cf8" />
+          <FlowNode icon={<TerminalSquare size={18} color="#818cf8" />} title="Web Scraper" subtitle="Async httpx" color="#818cf8" />
+          <FlowNode icon={<ShieldCheck size={18} color="#10B981" />} title="AST Math Sandbox" subtitle="Python AST (Zero eval)" color="#10B981" variant="focus" />
         </div>
       </div>
 
-      {/* MCP Layer */}
-      <div style={{ border: '1px solid rgba(236, 72, 153, 0.2)', borderRadius: '16px', padding: '28px', background: 'rgba(236, 72, 153, 0.02)', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#0a0a0a', padding: '0 12px', color: '#EC4899', fontSize: '12px', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>🔌 MCP Integration</div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-          <FlowNode icon="🔌" title="MCP Client" subtitle="app/mcp/client.py" color="#EC4899" variant="focus" />
-          <FlowArrow direction="down" label="SSE Transport" width="20px" />
-          <FlowNode icon="🌐" title="External MCP Servers" subtitle="Dynamic Tool Discovery" color="#EC4899" />
-          <div style={{ textAlign: 'center', fontSize: '11px', color: '#9CA3AF', marginTop: '8px', lineHeight: 1.6 }}>
-            Auto-discovers tools via SSE →<br/>
-            Wraps as LangChain StructuredTool →<br/>
-            Available to agent without code changes
+      {/* M8ven Trust Governance Layer */}
+      <div style={{ border: '1px solid rgba(217, 70, 239, 0.35)', borderRadius: '16px', padding: '24px', background: 'rgba(217, 70, 239, 0.03)', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '-10px', left: '24px', background: '#000000', padding: '0 12px', color: '#e879f9', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Shield size={13} color="#e879f9" /> M8ven Trust Governance Layer
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px' }}>
+          <FlowNode icon={<Server size={22} color="#d946ef" />} title="FastMCP Server" subtitle="mcp-server/server.py (Stdio & SSE)" color="#d946ef" variant="focus" />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', width: '100%' }}>
+            <div style={{ background: 'rgba(217, 70, 239, 0.08)', border: '1px solid rgba(217, 70, 239, 0.25)', borderRadius: '8px', padding: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#f0abfc' }}>ReadOnly</div>
+              <div style={{ fontSize: '9.5px', color: '#94a3b8' }}>Zero Side Effects</div>
+            </div>
+            <div style={{ background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.25)', borderRadius: '8px', padding: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#f87171' }}>Destructive</div>
+              <div style={{ fontSize: '9.5px', color: '#94a3b8' }}>HITL Gate Guard</div>
+            </div>
+            <div style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '8px', padding: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#6ee7b7' }}>Idempotent</div>
+              <div style={{ fontSize: '9.5px', color: '#94a3b8' }}>Safe Repeat Calls</div>
+            </div>
+            <div style={{ background: 'rgba(56, 189, 248, 0.08)', border: '1px solid rgba(56, 189, 248, 0.25)', borderRadius: '8px', padding: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#7dd3fc' }}>OpenWorld</div>
+              <div style={{ fontSize: '9.5px', color: '#94a3b8' }}>External Network</div>
+            </div>
+          </div>
+          <div style={{ textAlign: 'center', fontSize: '11px', color: '#cbd5e1', lineHeight: 1.5, marginTop: '4px' }}>
+            <span style={{ color: '#e879f9', fontWeight: 600 }}>Official M8ven Verified Publisher</span> · 99.998% SLA Heartbeat
           </div>
         </div>
       </div>
     </div>
 
     {/* Bottom Legend */}
-    <div style={{ textAlign: 'center', fontSize: '11px', color: '#6b7280', marginTop: '8px', lineHeight: 1.8 }}>
-      Client (Next.js) → FastAPI → LangGraph ReAct Agent → Built-in Tools / MCP → MongoDB Atlas (30-day TTL)
+    <div style={{ textAlign: 'center', fontSize: '11px', color: '#94a3b8', marginTop: '4px', lineHeight: 1.8, fontFamily: 'monospace' }}>
+      Next.js UI ➔ FastAPI Gateway ➔ LangGraph ReAct ➔ FastMCP (20 Tools) ➔ M8ven Trust Layer ➔ MongoDB Atlas
     </div>
   </div>
 );
@@ -173,6 +201,7 @@ export default function LandingPage() {
   const [uptimeData, setUptimeData] = useState(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeHudTab, setActiveHudTab] = useState('trace');
@@ -212,95 +241,110 @@ export default function LandingPage() {
 
   const howItWorksSlides = [
     {
-      title: "1. The Agentic Workflow",
-      desc: "Users interact via Next.js. FastAPI backend orchestrates LangGraph agents. Agents discover and use MCP tools automatically.",
+      title: "1. The Agentic Workflow & ReAct Loop",
+      desc: "Users interact via Next.js. FastAPI backend orchestrates LangGraph ReAct agents. Agents autonomously discover and execute MCP tools with stateful checkpoints.",
       content: (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'nowrap', padding: '40px 0' }}>
-          <FlowNode icon="👤" title="User" color="#9CA3AF" />
-          <FlowArrow label="Chat" width="30px" />
-          <FlowNode icon="💻" title="Next.js" color="#0EA5E9" />
-          <FlowArrow label="REST API" width="40px" />
-          <FlowNode icon="⚡" title="FastAPI" color="#10B981" />
-          <FlowArrow label="Invokes" width="40px" />
-          <FlowNode icon="🧠" title="LangGraph" color="#A855F7" variant="focus" subtitle="ReAct Loop" />
-          <FlowArrow label="Executes" width="40px" />
-          <FlowNode icon="🔌" title="MCP Tools" color="#6366F1" />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'nowrap', padding: '36px 0' }}>
+          <FlowNode icon={<User size={26} color="#9CA3AF" />} title="User" color="#9CA3AF" subtitle="Prompt Input" />
+          <FlowArrow label="SSE Stream" width="36px" />
+          <FlowNode icon={<Layers size={26} color="#0EA5E9" />} title="Next.js" color="#0EA5E9" subtitle="Client UI" />
+          <FlowArrow label="REST /chat" width="40px" />
+          <FlowNode icon={<Zap size={26} color="#10B981" />} title="FastAPI" color="#10B981" subtitle="Async Gateway" />
+          <FlowArrow label="ReAct Loop" width="42px" />
+          <FlowNode icon={<Cpu size={26} color="#A855F7" />} title="LangGraph" color="#A855F7" variant="focus" subtitle="Stateful Agent" />
+          <FlowArrow label="Dispatches" width="38px" />
+          <FlowNode icon={<Bot size={26} color="#d946ef" />} title="FastMCP" color="#d946ef" subtitle="20 Live Tools" />
         </div>
       )
     },
     {
-      title: "2. Tool Discovery",
-      desc: "The LangGraph agent queries connected MCP servers dynamically to discover available tools (e.g., GitHub API) without hardcoded schemas.",
+      title: "2. FastMCP Tool Discovery & Semantic Hints",
+      desc: "LangGraph dynamically queries connected FastMCP servers. Tools declare M8ven Trust annotations (ReadOnly, Destructive, Idempotent) for safety-first execution.",
       content: (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '40px 0', flexWrap: 'nowrap' }}>
-          <FlowNode icon="🧠" title="Agent" color="#A855F7" subtitle="Needs capability" />
-          <FlowArrow label="List Tools" width="50px" />
-          <FlowNode icon="🔌" title="MCP Client" color="#0EA5E9" />
-          <FlowArrow label="Query" width="50px" />
-          <FlowNode icon="🐙" title="GitHub Server" color="#F59E0B" />
-          <FlowArrow label="Returns Schemas" width="70px" />
-          <FlowNode icon="📋" title="System Prompt" color="#10B981" variant="focus" subtitle="Injected Tool Context" />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', padding: '36px 0', flexWrap: 'nowrap' }}>
+          <FlowNode icon={<Cpu size={26} color="#A855F7" />} title="ReAct Agent" color="#A855F7" subtitle="Needs Tool" />
+          <FlowArrow label="List Tools" width="44px" />
+          <FlowNode icon={<Server size={26} color="#0EA5E9" />} title="FastMCP Server" color="#0EA5E9" subtitle="Stdio / SSE" />
+          <FlowArrow label="Tool Hints" width="48px" />
+          <FlowNode icon={<Shield size={26} color="#d946ef" />} title="M8ven Hints" color="#d946ef" subtitle="ReadOnly / Destructive" />
+          <FlowArrow label="Injects Context" width="56px" />
+          <FlowNode icon={<Sparkles size={26} color="#10B981" />} title="Prompt Context" color="#10B981" variant="focus" subtitle="Zero Hardcoding" />
         </div>
       )
     },
     {
-      title: "3. Tool Execution",
-      desc: "The LLM decides to use a discovered tool. The MCP client routes the request, executes it, and returns the result for the agent to synthesize.",
+      title: "3. Tool Execution & Python AST Sandboxing",
+      desc: "Tools execute safely in isolated contexts. Mathematical formulas evaluate via Python AST parsing (zero arbitrary eval risks), while GitHub & Tavily run via secure APIs.",
       content: (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', alignItems: 'center', padding: '20px 0' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', flexWrap: 'nowrap' }}>
-            <FlowNode icon="🤖" title="LLM Decision" color="#A855F7" subtitle="Use get_repos()" />
-            <FlowArrow label="CallToolRequest" width="60px" />
-            <FlowNode icon="🔌" title="MCP Client" color="#0EA5E9" />
-            <FlowArrow label="Execute" width="50px" />
-            <FlowNode icon="🐙" title="GitHub API" color="#F59E0B" variant="focus" subtitle="External Call" />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', alignItems: 'center', padding: '16px 0' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', flexWrap: 'nowrap' }}>
+            <FlowNode icon={<Cpu size={24} color="#A855F7" />} title="Agent Decision" color="#A855F7" subtitle="calculate_expression()" />
+            <FlowArrow label="AST Parse" width="48px" />
+            <FlowNode icon={<ShieldCheck size={24} color="#10B981" />} title="AST Sandbox" color="#10B981" variant="focus" subtitle="Zero eval() Risk" />
+            <FlowArrow label="Safe Compute" width="48px" />
+            <FlowNode icon={<TerminalSquare size={24} color="#d946ef" />} title="Tool Output" color="#d946ef" subtitle="Verified Result" />
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', opacity: 0.9, flexWrap: 'nowrap' }}>
-            <FlowNode icon="🐙" title="GitHub API" color="#F59E0B" />
-            <FlowArrow label="ToolResult (JSON)" width="60px" />
-            <FlowNode icon="🧠" title="Agent" color="#A855F7" />
-            <FlowArrow label="Synthesize" width="50px" />
-            <FlowNode icon="💬" title="Final Answer" color="#10B981" variant="focus" subtitle="Markdown to UI" />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', opacity: 0.95, flexWrap: 'nowrap' }}>
+            <FlowNode icon={<GitBranch size={24} color="#F59E0B" />} title="GitHub / Web Tools" color="#F59E0B" subtitle="External Transport" />
+            <FlowArrow label="JSON Payload" width="50px" />
+            <FlowNode icon={<Cpu size={24} color="#A855F7" />} title="LangGraph Agent" color="#A855F7" subtitle="Synthesizes Data" />
+            <FlowArrow label="Yield Stream" width="48px" />
+            <FlowNode icon={<Layers size={24} color="#0EA5E9" />} title="Chat UI" color="#0EA5E9" variant="focus" subtitle="Markdown Render" />
           </div>
         </div>
       )
     },
     {
-      title: "4. Human-in-the-Loop",
-      desc: "For sensitive actions like sending emails, the agent drafts a response and waits for explicit user approval before executing.",
+      title: "4. Human-in-the-Loop (HITL) Governance Gate",
+      desc: "Consequential operations like drafting or sending emails trigger a mandatory HITL Governance pause, requiring explicit human approval before any external side effects.",
       content: (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', flexWrap: 'nowrap', padding: '40px 0' }}>
-          <FlowNode icon="🧠" title="Agent" subtitle="Task: Send Email" color="#A855F7" />
-          <FlowArrow label="Drafts" width="40px" />
-          <FlowNode icon="📝" title="Email Draft" color="#6366F1" />
-          <FlowArrow label="Pauses for" width="50px" />
-          <FlowNode icon="🛡️" title="User Review" color="#F59E0B" variant="focus" subtitle="Explicit Approval" />
-          <FlowArrow label="Approves" width="50px" />
-          <FlowNode icon="✉️" title="SMTP Delivery" color="#10B981" variant="focus" />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', flexWrap: 'nowrap', padding: '36px 0' }}>
+          <FlowNode icon={<Bot size={26} color="#A855F7" />} title="Agent" subtitle="Drafts Email" color="#A855F7" />
+          <FlowArrow label="Dispatches" width="40px" />
+          <FlowNode icon={<Mail size={26} color="#d946ef" />} title="Gmail Draft" color="#d946ef" subtitle="HTML Template" />
+          <FlowArrow label="Halts For" width="44px" />
+          <FlowNode icon={<Lock size={26} color="#F59E0B" />} title="HITL Gate" color="#F59E0B" variant="focus" subtitle="Security Check" />
+          <FlowArrow label="User Approves" width="52px" />
+          <FlowNode icon={<CheckCircle2 size={26} color="#10B981" />} title="SMTP Send" color="#10B981" variant="focus" subtitle="Verified Delivery" />
         </div>
       )
     },
     {
-      title: "5. Conversation Lifecycle",
-      desc: "Complete flow of memory management: Load context from DB, run LangGraph loop, save updated context, and apply 30-Day TTL retention.",
+      title: "5. Conversation Lifecycle & 30-Day Automated TTL",
+      desc: "Complete context persistence: Load conversation thread from MongoDB Atlas, run LangGraph state updates, and enforce strict 30-Day TTL privacy cleanup.",
       content: (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', alignItems: 'center', padding: '20px 0' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'nowrap' }}>
-            <FlowNode icon="👤" title="User" color="#9CA3AF" />
-            <FlowArrow label="" width="20px" />
-            <FlowNode icon="⚡" title="FastAPI" color="#10B981" />
-            <FlowArrow label="Load Memory" width="60px" />
-            <FlowNode icon="🍃" title="MongoDB" color="#F59E0B" variant="focus" />
-            <FlowArrow label="" width="20px" />
-            <FlowNode icon="🧠" title="LangGraph" color="#A855F7" />
-          </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '26px', alignItems: 'center', padding: '16px 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'nowrap' }}>
-            <FlowNode icon="🧠" title="LangGraph" color="#A855F7" />
-            <FlowArrow label="Save Updated Memory" width="100px" />
-            <FlowNode icon="🗄️" title="MongoDB" color="#F59E0B" />
-            <FlowArrow label="Retention" width="50px" />
-            <FlowNode icon="⏱️" title="30-Day TTL" color="#EF4444" variant="focus" />
+            <FlowNode icon={<User size={24} color="#9CA3AF" />} title="User" color="#9CA3AF" />
+            <FlowArrow label="Request" width="28px" />
+            <FlowNode icon={<Zap size={24} color="#10B981" />} title="FastAPI" color="#10B981" />
+            <FlowArrow label="Load History" width="50px" />
+            <FlowNode icon={<Database size={24} color="#F59E0B" />} title="MongoDB Atlas" color="#F59E0B" variant="focus" subtitle="Encrypted Store" />
+            <FlowArrow label="Hydrate" width="34px" />
+            <FlowNode icon={<Cpu size={24} color="#A855F7" />} title="LangGraph" color="#A855F7" />
           </div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', flexWrap: 'nowrap' }}>
+            <FlowNode icon={<Cpu size={24} color="#A855F7" />} title="LangGraph" color="#A855F7" subtitle="State Updated" />
+            <FlowArrow label="Upsert Session" width="60px" />
+            <FlowNode icon={<Database size={24} color="#F59E0B" />} title="MongoDB Atlas" color="#F59E0B" />
+            <FlowArrow label="TTL Index" width="44px" />
+            <FlowNode icon={<Trash2 size={24} color="#EF4444" />} title="30-Day Auto Purge" color="#EF4444" variant="focus" subtitle="Zero Stale Data" />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "6. M8ven Trust Governance & 99.998% SLA Telemetry",
+      desc: "Officially listed on M8ven Registry with Continuous UptimeRobot monitoring, FastMCP Stdio/SSE transports, and strict AST sandboxed governance.",
+      content: (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', flexWrap: 'nowrap', padding: '36px 0' }}>
+          <FlowNode icon={<ShieldCheck size={26} color="#10B981" />} title="M8ven Verified" color="#10B981" variant="focus" subtitle="Audited Publisher" />
+          <FlowArrow label="Heartbeat" width="44px" />
+          <FlowNode icon={<Activity size={26} color="#0EA5E9" />} title="UptimeRobot" color="#0EA5E9" subtitle="99.998% Rolling" />
+          <FlowArrow label="Validates" width="44px" />
+          <FlowNode icon={<Server size={26} color="#d946ef" />} title="FastMCP" color="#d946ef" variant="focus" subtitle="Claude & Cursor" />
+          <FlowArrow label="Governance" width="48px" />
+          <FlowNode icon={<Lock size={26} color="#F59E0B" />} title="Zero Leakage" color="#F59E0B" subtitle="Strict Privacy" />
         </div>
       )
     }
@@ -376,9 +420,9 @@ export default function LandingPage() {
       <style>{`
         .desktop-nav { display: flex; align-items: center; gap: 24px; }
         .mobile-menu-btn { display: none; background: transparent; border: none; color: white; cursor: pointer; }
-        .mobile-dropdown { display: none; flex-direction: column; gap: 16px; padding: 16px 20px; background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .mobile-dropdown { display: none; flex-direction: column; gap: 16px; padding: 16px 20px; background: #000000; border-bottom: 1px solid rgba(217, 70, 239, 0.25); }
         .mobile-nav-badge { display: none; }
-        @media (max-width: 768px) {
+        @media (max-width: 980px) {
           .desktop-nav { display: none; }
           .mobile-menu-btn { display: flex; }
           .mobile-nav-badge { display: inline-flex; }
@@ -565,129 +609,558 @@ export default function LandingPage() {
           .hero-cluster-divider { display: none; }
         }
 
-        /* ── 2-Column Hero & Agentic AI HUD Styling ── */
-        .hero-split-grid {
-          display: grid;
-          grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.98fr);
-          gap: 40px;
-          align-items: center;
-          max-width: 1200px;
+
+        /* ── Tactical Sci-Fi Theme: Orbital AI Defense Grid ── */
+        /* ── Dark Futuristic Robot Card (Purana Amber/Gold Theme) ── */
+        .robot-stage-card {
+          position: relative;
+          border-radius: 24px;
+          border: none;
+          background: #000000;
+          overflow: hidden;
+          box-shadow: none;
           width: 100%;
-          margin: 0 auto 36px;
+          aspect-ratio: 16 / 9;
+          max-height: 560px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          /* Seamless bilateral feather: both left AND right edges dissolve into pitch black */
+          -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.65) 3.5%, rgba(0,0,0,1) 9%, rgba(0,0,0,1) 91%, rgba(0,0,0,0.65) 96.5%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.65) 3.5%, rgba(0,0,0,1) 9%, rgba(0,0,0,1) 91%, rgba(0,0,0,0.65) 96.5%, transparent 100%);
+        }
+        .robot-grid-bg {
+          position: absolute;
+          inset: 0;
+          background-image: 
+            linear-gradient(rgba(16, 185, 129, 0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(16, 185, 129, 0.025) 1px, transparent 1px);
+          background-size: 32px 32px;
+          pointer-events: none;
+          z-index: 1;
+          -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 68%, transparent 95%);
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 68%, transparent 95%);
+        }
+        .robot-ambient-glow {
+          position: absolute;
+          top: 15%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 380px;
+          height: 380px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(16, 185, 129, 0.16) 0%, rgba(16, 185, 129, 0.03) 50%, transparent 75%);
+          pointer-events: none;
+          z-index: 1;
+        }
+        .robot-viewport {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          z-index: 2;
+          /* Seamless vertical bottom dissolve into pure dark background */
+          -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 74%, rgba(0,0,0,0.55) 86%, rgba(0,0,0,0.12) 94%, transparent 100%);
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 74%, rgba(0,0,0,0.55) 86%, rgba(0,0,0,0.12) 94%, transparent 100%);
+        }
+        .robot-humanoid-actor {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          /* ZERO ZOOM / ZERO TRIM: Natural 100% video display */
+          user-select: none;
+          pointer-events: none;
+          display: block;
+          -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 76%, rgba(0,0,0,0.55) 87%, rgba(0,0,0,0.12) 95%, transparent 100%);
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 76%, rgba(0,0,0,0.55) 87%, rgba(0,0,0,0.12) 95%, transparent 100%);
+        }
+        @keyframes robotSpecularPulse {
+          0% {
+            filter: brightness(1) drop-shadow(0 0 16px rgba(245, 158, 11, 0.18));
+          }
+          50% {
+            filter: brightness(1.08) drop-shadow(0 0 35px rgba(245, 158, 11, 0.42));
+          }
+          100% {
+            filter: brightness(1) drop-shadow(0 0 16px rgba(245, 158, 11, 0.18));
+          }
+        }
+        .robot-light-sweep {
+          position: absolute;
+          top: 0;
+          left: -120%;
+          width: 50%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent 0%, rgba(245, 158, 11, 0.08) 50%, transparent 100%);
+          transform: skewX(-25deg);
+          animation: lightSweep 9s ease-in-out infinite 2.5s;
+          pointer-events: none;
+          z-index: 5;
+        }
+        @keyframes lightSweep {
+          0% { left: -120%; }
+          30% { left: 220%; }
+          100% { left: 220%; }
+        }
+        /* ── 3D Infinite Perspective Cyber Road Grid ── */
+        .cyber-grid-floor {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 54%;
+          overflow: hidden;
+          perspective: 400px;
+          pointer-events: none;
+          z-index: 1;
+          mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, transparent 100%);
+          -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, transparent 100%);
+        }
+        .cyber-grid-plane {
+          position: absolute;
+          top: -25%;
+          left: -60%;
+          width: 220%;
+          height: 220%;
+          background-image: 
+            linear-gradient(to right, rgba(245, 158, 11, 0.18) 1.5px, transparent 1.5px),
+            linear-gradient(to bottom, rgba(245, 158, 11, 0.18) 1.5px, transparent 1.5px);
+          background-size: 56px 56px;
+          transform: rotateX(72deg);
+          transform-origin: 50% 20%;
+          animation: moveCyberRoad 2.2s linear infinite;
+        }
+        @keyframes moveCyberRoad {
+          0% {
+            background-position: 0 0;
+          }
+          100% {
+            background-position: 0 56px;
+          }
+        }
+        .cyber-horizon-glow {
+          position: absolute;
+          bottom: 50%;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, transparent 0%, rgba(245, 158, 11, 0.3) 25%, rgba(56, 189, 248, 0.6) 50%, rgba(245, 158, 11, 0.3) 75%, transparent 100%);
+          box-shadow: 0 0 16px rgba(245, 158, 11, 0.4), 0 0 35px rgba(56, 189, 248, 0.3);
+          pointer-events: none;
+          z-index: 1;
+        }
+
+        .hero-split-grid {
+          position: relative;
+          z-index: 2;
+          display: grid;
+          grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.35fr);
+          gap: 36px;
+          align-items: center;
+          max-width: 1420px;
+          width: 100%;
+          margin: 0 auto 24px;
           text-align: left;
         }
         .hero-left-content {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
+          text-align: left;
+          z-index: 2;
+          width: 100%;
         }
-        @media (max-width: 980px) {
-          .hero-split-grid {
-            grid-template-columns: 1fr;
-            gap: 40px;
-            text-align: center;
-          }
-          .hero-left-content {
-            align-items: center;
-          }
-          .hero-left-content .hero-ctas {
-            justify-content: center !important;
-          }
-        }
-        .ai-hud-window {
-          background: rgba(8, 12, 22, 0.85);
-          border: 1px solid rgba(56, 189, 248, 0.28);
-          border-radius: 18px;
-          overflow: hidden;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(14, 165, 233, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(20px);
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
-          transition: all 0.3s ease;
-          position: relative;
-        }
-        .ai-hud-window:hover {
-          border-color: rgba(56, 189, 248, 0.45);
-          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(14, 165, 233, 0.25);
-        }
-        .ai-hud-header {
+        .hero-trust-row {
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          padding: 12px 18px;
-          background: rgba(15, 23, 42, 0.7);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-        }
-        .ai-hud-body {
-          padding: 18px 20px;
-          display: flex;
-          flex-direction: column;
-          gap: 14px;
-        }
-        .ai-hud-step-card {
-          background: rgba(255, 255, 255, 0.025);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: 12px;
-          padding: 12px 14px;
-          transition: all 0.2s ease;
-        }
-        .ai-hud-step-card:hover {
-          background: rgba(255, 255, 255, 0.045);
-          border-color: rgba(56, 189, 248, 0.3);
-        }
-        .ai-hud-step-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 8px;
-          font-size: 11px;
-          letter-spacing: 0.05em;
-          text-transform: uppercase;
-          font-weight: 700;
-        }
-        .ai-hud-tool-tag {
-          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-          font-size: 11px;
-          padding: 3px 8px;
-          border-radius: 6px;
-          background: rgba(14, 165, 233, 0.12);
-          border: 1px solid rgba(14, 165, 233, 0.28);
-          color: #38bdf8;
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-        }
-        .ai-hud-hitl-gate {
-          background: rgba(245, 158, 11, 0.06);
-          border: 1px solid rgba(245, 158, 11, 0.28);
-          border-radius: 10px;
-          padding: 10px 12px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 10px;
-        }
-        .ai-hud-footer-metrics {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 10px 18px;
-          background: rgba(10, 15, 26, 0.6);
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-          font-size: 11px;
-          color: #64748b;
-          font-weight: 500;
+          gap: 12px;
           flex-wrap: wrap;
-          gap: 8px;
+          margin-bottom: 18px;
+        }
+        .hero-indicator-row {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 12px;
+        }
+        .landing-title {
+          max-width: 680px;
+          font-size: clamp(2.4rem, 4.4vw, 4.2rem);
+          font-weight: 900;
+          letter-spacing: -0.035em;
+          margin-bottom: 12px;
+          line-height: 1.05;
+          text-transform: uppercase;
+        }
+        .landing-subtitle {
+          max-width: 560px;
+          font-size: clamp(0.98rem, 1.2vw, 1.06rem);
+          color: #94a3b8;
+          line-height: 1.65;
+          margin-bottom: 30px;
+          font-weight: 400;
+        }
+        .hero-ctas {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          flex-wrap: wrap;
         }
 
-      `}</style>
+        /* 📱 Tablet & Compact Desktop (<= 980px) */
+        @media (max-width: 980px) {
+          .hero-split-grid {
+            grid-template-columns: 1fr !important;
+            gap: 28px !important;
+            text-align: center !important;
+            margin: 0 auto 20px !important;
+          }
+          .hero-left-content {
+            align-items: center !important;
+            text-align: center !important;
+          }
+          .hero-trust-row,
+          .hero-indicator-row {
+            justify-content: center !important;
+          }
+          .landing-title {
+            text-align: center !important;
+            font-size: clamp(2rem, 6vw, 3rem) !important;
+          }
+          .landing-subtitle {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            max-width: 100% !important;
+          }
+          .hero-ctas {
+            justify-content: center !important;
+          }
+          .robot-stage-card {
+            max-width: 600px !important;
+            margin: 0 auto !important;
+          }
+        }
+
+        /* 📱 Mobile Portrait (<= 640px) */
+        @media (max-width: 640px) {
+          #workspace {
+            padding: 78px 16px 28px !important;
+          }
+          .hero-split-grid {
+            gap: 22px !important;
+          }
+          .landing-title {
+            font-size: clamp(1.65rem, 7.8vw, 2.3rem) !important;
+            line-height: 1.15 !important;
+            letter-spacing: -0.025em !important;
+            margin-bottom: 12px !important;
+          }
+          .landing-subtitle {
+            font-size: 0.9rem !important;
+            line-height: 1.5 !important;
+            margin-bottom: 22px !important;
+          }
+          .hero-ctas {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 12px !important;
+            width: 100% !important;
+          }
+          .tactical-primary-btn, .tactical-secondary-btn {
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 13px 20px !important;
+            font-size: 0.88rem !important;
+          }
+          .robot-stage-card {
+            border-radius: 14px !important;
+            width: 100% !important;
+          }
+          .robot-pill-top-left {
+            top: 10px !important;
+            left: 10px !important;
+            padding: 4px 8px !important;
+            font-size: 9px !important;
+            gap: 5px !important;
+          }
+          .robot-pill-top-right {
+            top: 10px !important;
+            right: 10px !important;
+            padding: 4px 8px !important;
+            font-size: 9px !important;
+          }
+          .robot-pill-bottom-right {
+            bottom: 10px !important;
+            right: 10px !important;
+            padding: 4px 8px !important;
+            font-size: 9px !important;
+            gap: 5px !important;
+          }
+        }
+
+        /* 📱 Mobile Landscape / Auto-Rotate Fix (<= 550px height) */
+        @media (max-height: 550px) and (orientation: landscape) {
+          #workspace {
+            padding-top: 72px !important;
+            padding-bottom: 20px !important;
+            min-height: auto !important;
+          }
+          .hero-split-grid {
+            grid-template-columns: 1.15fr 1fr !important;
+            gap: 18px !important;
+            align-items: center !important;
+            margin-bottom: 16px !important;
+            text-align: left !important;
+          }
+          .hero-left-content {
+            align-items: flex-start !important;
+            text-align: left !important;
+          }
+          .hero-trust-row,
+          .hero-indicator-row {
+            justify-content: flex-start !important;
+          }
+          .hero-left-content .hero-ctas {
+            justify-content: flex-start !important;
+            flex-direction: row !important;
+          }
+          .landing-title {
+            font-size: 1.7rem !important;
+            line-height: 1.15 !important;
+            text-align: left !important;
+          }
+          .landing-subtitle {
+            font-size: 0.82rem !important;
+            line-height: 1.4 !important;
+            margin-bottom: 12px !important;
+            text-align: left !important;
+          }
+          .tactical-primary-btn, .tactical-secondary-btn {
+            padding: 9px 18px !important;
+            font-size: 0.8rem !important;
+            width: auto !important;
+          }
+          .robot-stage-card {
+            max-height: 240px !important;
+            aspect-ratio: 16 / 9 !important;
+          }
+        }
+
+        .tactical-laser-line {
+          position: absolute;
+          left: 45%;
+          top: 0;
+          bottom: 0;
+          width: 1px;
+          background: linear-gradient(180deg, transparent 0%, rgba(245, 158, 11, 0.35) 30%, rgba(245, 158, 11, 0.6) 50%, rgba(245, 158, 11, 0.35) 70%, transparent 100%);
+          box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+          pointer-events: none;
+          z-index: 1;
+        }
+        @media (max-width: 980px) {
+          .tactical-laser-line { display: none; }
+        }
+
+        .tactical-primary-btn {
+          position: relative;
+          background: rgba(18, 20, 30, 0.95) !important;
+          color: #ffffff !important;
+          font-weight: 700 !important;
+          font-size: 0.92rem !important;
+          letter-spacing: 0.04em !important;
+          text-transform: uppercase !important;
+          padding: 14px 28px 14px 24px !important;
+          border-radius: 4px !important;
+          border: 1px solid rgba(217, 70, 239, 0.4) !important;
+          border-left: 4px solid #d946ef !important;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), -3px 0 12px rgba(217, 70, 239, 0.4), 0 0 20px rgba(217, 70, 239, 0.2);
+        }
+        .tactical-primary-btn:hover {
+          background: rgba(28, 20, 38, 0.95) !important;
+          border-color: #e879f9 !important;
+          border-left-color: #f0abfc !important;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 30px rgba(217, 70, 239, 0.45), -4px 0 18px rgba(217, 70, 239, 0.55), inset 0 0 15px rgba(217, 70, 239, 0.2);
+        }
+
+        .tactical-secondary-btn {
+          background: rgba(10, 14, 20, 0.8) !important;
+          color: #cbd5e1 !important;
+          font-weight: 600 !important;
+          font-size: 0.92rem !important;
+          letter-spacing: 0.04em !important;
+          text-transform: uppercase !important;
+          padding: 14px 24px !important;
+          border-radius: 4px !important;
+          border: 1px solid rgba(255, 255, 255, 0.15) !important;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          transition: all 0.25s ease;
+          backdrop-filter: blur(12px);
+        }
+        .tactical-secondary-btn:hover {
+          background: rgba(255, 255, 255, 0.06) !important;
+          border-color: rgba(245, 158, 11, 0.5) !important;
+          color: #f59e0b !important;
+          transform: translateY(-2px);
+        }
+
+        /* Orbital Radar Stage */
+        .orbital-stage {
+          position: relative;
+          width: 100%;
+          max-width: 520px;
+          height: 480px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        @media (max-width: 600px) {
+          .orbital-stage {
+            height: 380px;
+            max-width: 340px;
+          }
+        }
+
+        .orbital-ring {
+          position: absolute;
+          border-radius: 50%;
+          pointer-events: none;
+        }
+        .orbital-ring-outer {
+          width: 440px;
+          height: 440px;
+          border: 1px dashed rgba(245, 158, 11, 0.15);
+          animation: rotateOrbit 50s linear infinite;
+        }
+        .orbital-ring-mid {
+          width: 320px;
+          height: 320px;
+          border: 1px solid rgba(245, 158, 11, 0.22);
+          animation: rotateOrbitReverse 35s linear infinite;
+        }
+        .orbital-ring-inner {
+          width: 190px;
+          height: 190px;
+          border: 1px solid rgba(245, 158, 11, 0.35);
+          box-shadow: 0 0 25px rgba(245, 158, 11, 0.08);
+        }
+
+        @keyframes rotateOrbit {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes rotateOrbitReverse {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
+
+        /* Radar Beam Sweeper */
+        .radar-sweeper {
+          position: absolute;
+          width: 440px;
+          height: 440px;
+          border-radius: 50%;
+          background: conic-gradient(from 0deg, transparent 0deg, transparent 290deg, rgba(245, 158, 11, 0.16) 360deg);
+          animation: rotateOrbit 9s linear infinite;
+          pointer-events: none;
+        }
+
+        /* Core Glowing Diamond */
+        .orbital-core-halo {
+          position: absolute;
+          width: 90px;
+          height: 90px;
+          border-radius: 50%;
+          border: 1px solid rgba(245, 158, 11, 0.6);
+          background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(15, 23, 42, 0.95) 75%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 0 35px rgba(245, 158, 11, 0.45), inset 0 0 15px rgba(245, 158, 11, 0.3);
+          z-index: 3;
+          animation: corePulse 3.5s ease-in-out infinite;
+        }
+        .orbital-diamond {
+          width: 24px;
+          height: 24px;
+          background: #f59e0b;
+          transform: rotate(45deg);
+          box-shadow: 0 0 16px #f59e0b, 0 0 28px rgba(245, 158, 11, 0.8);
+        }
+        @keyframes corePulse {
+          0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+          }
+          50% {
+            transform: scale(1.08);
+            box-shadow: 0 0 45px rgba(245, 158, 11, 0.7);
+          }
+        }
+
+        /* Floating Tactical Nodes */
+        .tactical-node-card {
+          position: absolute;
+          background: rgba(10, 14, 22, 0.88);
+          border: 1px solid rgba(245, 158, 11, 0.3);
+          border-radius: 6px;
+          padding: 8px 12px;
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(245, 158, 11, 0.15);
+          backdrop-filter: blur(12px);
+          z-index: 4;
+          transition: all 0.25s ease;
+          cursor: default;
+        }
+        .tactical-node-card:hover {
+          border-color: #f59e0b;
+          box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(245, 158, 11, 0.4);
+          transform: translateY(-2px);
+        }
+
+        .tactical-status-hud {
+          position: absolute;
+          bottom: 18px;
+          left: 10px;
+          background: rgba(10, 14, 22, 0.92);
+          border: 1px solid rgba(245, 158, 11, 0.35);
+          border-radius: 6px;
+          padding: 12px 18px;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.18);
+          backdrop-filter: blur(14px);
+          z-index: 5;
+        }
+        .tactical-accent-dash {
+          width: 22px;
+          height: 4px;
+          background: #f59e0b;
+          border-radius: 2px;
+          box-shadow: 0 0 10px #f59e0b;
+        }
+
+`}</style>
       <nav className="nav-container" style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '16px 40px',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-        background: 'rgba(10, 10, 10, 0.8)',
-        backdropFilter: 'blur(12px)',
-        position: 'sticky', top: 0, zIndex: 9999,
+        borderBottom: '1px solid rgba(255,255,255,0.08)',
+        background: 'rgba(8, 8, 10, 0.88)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        position: 'fixed', top: 0, left: 0, right: 0, width: '100%', zIndex: 9999,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <img src="/icon.jpg" alt="Logo" style={{ width: '32px', borderRadius: '8px' }} />
@@ -738,7 +1211,7 @@ export default function LandingPage() {
         </div>
       </nav>
       {isMobileMenuOpen && (
-        <div className="mobile-dropdown" style={{ display: 'flex', position: 'sticky', top: '65px', zIndex: 9998 }}>
+        <div className="mobile-dropdown" style={{ display: 'flex', position: 'fixed', top: '65px', left: 0, right: 0, width: '100%', zIndex: 9998 }}>
           <Link href="#workspace" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
           <button onClick={() => { setIsHowItWorksOpen(true); setIsMobileMenuOpen(false); }} className="nav-link" style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 'inherit', padding: 0, fontFamily: 'inherit', color: 'inherit', textAlign: 'left' }}>How it works</button>
           <Link href="#architecture" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Architecture</Link>
@@ -746,25 +1219,29 @@ export default function LandingPage() {
         </div>
       )}
 
-      <main>
-{/* ── HERO SECTION ── */}
+      <main style={{ background: '#000000', backgroundColor: '#000000', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
+{/* ── HERO SECTION (TACTICAL DEFENSE GRID THEME) ── */}
         <section id="workspace" style={{
           position: 'relative',
-          padding: '85px 24px 75px',
-          minHeight: '85vh',
+          padding: '96px 24px 40px',
+          minHeight: '88vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#000000',
+          background: 'radial-gradient(ellipse at 75% 45%, rgba(16, 185, 129, 0.04) 0%, #000000 60%)',
+          backgroundColor: '#000000',
+          overflow: 'hidden',
         }}>
-          {/* Main 2-Column Split: Content Left + Live AI Orchestration HUD Right */}
+
+
+          {/* Main 2-Column Split: Tactical Content Left + Orbital Radar Grid Right */}
           <div className="hero-split-grid">
             
             {/* Left Column: All Core Content, Headline, Subtitle, CTAs */}
             <div className="hero-left-content">
               {/* Top Trust Row: M8ven Verified & Production Monitoring */}
-              <div style={{ marginBottom: '22px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              <div className="hero-trust-row">
                 <a
                   href="https://m8ven.ai/mcp/ambuj123-lab-agentic-ai-workspace-z0cbq7?s=docs"
                   target="_blank"
@@ -795,173 +1272,198 @@ export default function LandingPage() {
                 </a>
               </div>
 
-              {/* Main Headline (2-Tier Architecture) */}
-              <h1 className="landing-title" style={{
-                maxWidth: '640px',
-                fontSize: 'clamp(2.4rem, 4.2vw, 3.8rem)',
-                fontWeight: 800,
-                letterSpacing: '-0.04em',
-                marginBottom: '12px',
-                lineHeight: 1.1,
-                background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 65%, rgba(255, 255, 255, 0.72) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                filter: 'drop-shadow(0 2px 24px rgba(255, 255, 255, 0.08))',
-              }}>
-                Production-Grade Agentic AI Workspace
+              {/* Tactical Indicator Dashes & Sequence Label (Cyber Emerald Theme) */}
+              <div className="hero-indicator-row">
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <div style={{ width: '8px', height: '3px', background: '#10b981', borderRadius: '1px', boxShadow: '0 0 8px #10b981' }} />
+                  <div style={{ width: '8px', height: '3px', background: '#10b981', borderRadius: '1px' }} />
+                  <div style={{ width: '8px', height: '3px', background: '#34d399', borderRadius: '1px' }} />
+                  <div style={{ width: '8px', height: '3px', background: 'rgba(16, 185, 129, 0.35)', borderRadius: '1px' }} />
+                </div>
+                <span style={{ fontSize: '11px', color: '#10b981', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', textShadow: '0 0 10px rgba(16, 185, 129, 0.45)' }}>
+                  AUTONOMOUS AGENT ACTIVE
+                </span>
+              </div>
+
+              {/* Main Headline: Premium Cyber Emerald Display (Harmonized with Video Robot) */}
+              <h1 className="landing-title">
+                <span style={{
+                  display: 'block',
+                  color: '#FFFFFF',
+                  textShadow: '0 2px 24px rgba(255, 255, 255, 0.2)',
+                }}>
+                  Production-Grade
+                </span>
+                <span style={{
+                  display: 'block',
+                  background: 'linear-gradient(135deg, #ECFDF5 0%, #A7F3D0 25%, #34D399 55%, #10B981 85%, #059669 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  filter: 'drop-shadow(0 2px 28px rgba(16, 185, 129, 0.45))',
+                }}>
+                  Agentic AI Workspace
+                </span>
               </h1>
 
               {/* Headline Sub-Kicker */}
               <div style={{
-                fontSize: 'clamp(1.1rem, 1.8vw, 1.35rem)',
+                fontSize: 'clamp(1.05rem, 1.6vw, 1.25rem)',
                 fontWeight: 600,
-                letterSpacing: '-0.02em',
+                letterSpacing: '-0.01em',
                 color: '#cbd5e1',
-                marginBottom: '18px',
-                background: 'linear-gradient(90deg, #f1f5f9 0%, #94a3b8 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
+                marginBottom: '16px',
               }}>
                 LangGraph orchestration. MCP tools. Human-controlled actions.
               </div>
 
               {/* Tighter, Engineering-Heavy Supporting Text */}
-              <p className="landing-subtitle" style={{
-                maxWidth: '560px',
-                fontSize: 'clamp(1rem, 1.25vw, 1.08rem)',
-                color: '#94a3b8',
-                lineHeight: 1.65,
-                marginBottom: '32px',
-                fontWeight: 400,
-              }}>
+              <p className="landing-subtitle">
                 A production-oriented AI workspace that orchestrates multi-step agents, discovers MCP tools dynamically, and keeps consequential actions behind human approval.
               </p>
 
-              {/* Dual Action CTAs: Luminous Solid White Pill + Frosted Glass Pill */}
-              <div className="hero-ctas" style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '14px',
-                flexWrap: 'wrap',
-              }}>
-                <button onClick={() => signIn('google')} className="hero-btn-primary">
-                  <svg width="18" height="18" viewBox="0 0 48 48">
-                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
-                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-                  </svg>
+              {/* Dual Action CTAs: Tactical Engage Button + Bordered System Scan */}
+              <div className="hero-ctas">
+                <button onClick={() => { setIsSigningIn(true); signIn('google'); }} className="tactical-primary-btn" style={{ borderLeft: '3.5px solid #c026d3' }}>
                   <span>Sign in with Google</span>
+                  <span style={{ color: '#d946ef', fontSize: '1.1rem', fontWeight: 800 }}>›</span>
                 </button>
 
-                <button onClick={() => setIsHowItWorksOpen(true)} className="hero-btn-secondary">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style={{ opacity: 0.85 }}>
-                    <polygon points="6 3 20 12 6 21 6 3" />
-                  </svg>
+                <button onClick={() => setIsHowItWorksOpen(true)} className="tactical-secondary-btn">
                   <span>How it works</span>
                 </button>
               </div>
             </div>
 
-            {/* Right Column: High-Tech Live Agentic Orchestration HUD */}
-            <div className="ai-hud-window">
-              {/* Window Header */}
-              <div className="ai-hud-header">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ef4444' }} />
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#f59e0b' }} />
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981' }} />
-                  <span style={{ marginLeft: '8px', fontSize: '11px', color: '#94a3b8', fontFamily: 'monospace', fontWeight: 600 }}>
-                    LANGGRAPH_REACT_ENGINE // LIVE
-                  </span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span className="live-status-dot" />
-                  <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 700, letterSpacing: '0.04em' }}>ACTIVE</span>
-                </div>
+            {/* Right Column: Dark Futuristic 3D Robot Card (LaunchLayer Aesthetic) */}
+            <div className="robot-stage-card">
+              {/* Subtle Dark Cyber Grid Background */}
+              <div className="robot-grid-bg" />
+
+              {/* Soft Golden Ambient Glow behind the head */}
+              <div className="robot-ambient-glow" />
+
+              {/* Top-Left Status Pill */}
+              <div className="robot-pill-top-left" style={{
+                position: 'absolute',
+                top: '20px',
+                left: '22px',
+                zIndex: 10,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'rgba(0, 0, 0, 0.7)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '20px',
+                padding: '6px 14px',
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#cbd5e1',
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+              }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
+                <span>AGENT CORE ACTIVE</span>
               </div>
 
-              {/* HUD Body */}
-              <div className="ai-hud-body">
-                {/* Step 1: User Request */}
-                <div className="ai-hud-step-card">
-                  <div className="ai-hud-step-header" style={{ color: '#38bdf8' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      <Bot size={13} /> Input Prompt
-                    </span>
-                    <span style={{ color: '#64748b', fontSize: '10px' }}>T+0ms</span>
-                  </div>
-                  <div style={{ fontSize: '12.5px', color: '#f1f5f9', lineHeight: 1.4, fontFamily: 'monospace' }}>
-                    &quot;Audit GitHub PR #42, calculate AST spend variance, and draft incident alert.&quot;
-                  </div>
-                </div>
-
-                {/* Step 2: Dynamic MCP Invocation */}
-                <div className="ai-hud-step-card" style={{ borderColor: 'rgba(168, 85, 247, 0.3)' }}>
-                  <div className="ai-hud-step-header" style={{ color: '#c084fc' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      <Cpu size={13} /> LangGraph ReAct Planner
-                    </span>
-                    <span style={{ color: '#10b981', fontSize: '10px', fontWeight: 600 }}>2 Tools Dispatched</span>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span className="ai-hud-tool-tag">
-                        <TerminalSquare size={11} /> github_get_pr_diff()
-                      </span>
-                      <span style={{ fontSize: '11px', color: '#10b981', fontFamily: 'monospace' }}>200 OK · 2 files</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span className="ai-hud-tool-tag" style={{ background: 'rgba(168, 85, 247, 0.12)', borderColor: 'rgba(168, 85, 247, 0.28)', color: '#c084fc' }}>
-                        <Shield size={11} /> ast_sandboxed_math()
-                      </span>
-                      <span style={{ fontSize: '11px', color: '#10b981', fontFamily: 'monospace' }}>Delta: +22.4%</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Step 3: Human-in-the-Loop Governance Gate */}
-                <div className="ai-hud-hitl-gate">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b' }} />
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <span style={{ fontSize: '11px', fontWeight: 700, color: '#f59e0b', letterSpacing: '0.03em' }}>
-                        HITL GOVERNANCE GATE
-                      </span>
-                      <span style={{ fontSize: '11.5px', color: '#cbd5e1' }}>
-                        Gmail MCP Dispatch Alert
-                      </span>
-                    </div>
-                  </div>
-                  <span style={{
-                    fontSize: '10px',
-                    fontWeight: 700,
-                    padding: '3px 8px',
-                    borderRadius: '6px',
-                    background: 'rgba(16, 185, 129, 0.15)',
-                    border: '1px solid rgba(16, 185, 129, 0.35)',
-                    color: '#10b981',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}>
-                    <CheckCircle2 size={11} /> Human Approved
-                  </span>
-                </div>
+              {/* Top-Right Runtime Tag (Red-Purple / Magenta Accent matching Google Sign-In line) */}
+              <div className="robot-pill-top-right" style={{
+                position: 'absolute',
+                top: '20px',
+                right: '32px',
+                zIndex: 10,
+                background: 'rgba(28, 16, 38, 0.88)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(217, 70, 239, 0.45)',
+                borderRadius: '20px',
+                padding: '6px 14px',
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#e879f9',
+                letterSpacing: '0.06em',
+                fontFamily: 'monospace',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.7), 0 0 16px rgba(217, 70, 239, 0.25)',
+              }}>
+                14 MCP TOOLS
               </div>
 
-              {/* HUD Footer Metrics */}
-              <div className="ai-hud-footer-metrics">
-                <span>⚡ Latency: <strong style={{ color: '#f1f5f9' }}>112ms</strong></span>
-                <span>🔌 MCP Transports: <strong style={{ color: '#f1f5f9' }}>stdio / SSE</strong></span>
-                <span>🛡️ Security: <strong style={{ color: '#10b981' }}>AST-Sandboxed</strong></span>
+              {/* Robot Video Viewport (100% Untrimmed, Natural Aspect) */}
+              <div className="robot-viewport">
+                <video
+                  src="/robot.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="robot-humanoid-actor"
+                />
               </div>
+
+              {/* Bottom Edge Dark Dissolve Overlay (Blends bottom card boundary seamlessly into pitch-black background) */}
+              <div style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '75px',
+                background: 'linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0.85) 75%, #000000 100%)',
+                pointerEvents: 'none',
+                zIndex: 4,
+              }} />
+
+              {/* Precision Gemini Watermark Eradication Shield (Zero Video Trim, Seamless Blackout) */}
+              <div style={{
+                position: 'absolute',
+                bottom: '16.7%',
+                right: '9.4%',
+                transform: 'translate(50%, 50%)',
+                width: '74px',
+                height: '74px',
+                borderRadius: '50%',
+                background: '#000000',
+                boxShadow: '0 0 28px 22px #000000',
+                pointerEvents: 'none',
+                zIndex: 8,
+              }} />
+
+              {/* Bottom-Right Tactical Status Pill (Balanced with top-right pill) */}
+              <div className="robot-pill-bottom-right" style={{
+                position: 'absolute',
+                bottom: '20px',
+                right: '32px',
+                zIndex: 10,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '7px',
+                background: 'rgba(2, 5, 4, 0.92)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                borderRadius: '20px',
+                padding: '6px 14px',
+                fontSize: '10px',
+                fontWeight: 700,
+                color: '#34d399',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                fontFamily: 'monospace',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.95)',
+                pointerEvents: 'auto',
+              }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
+                <span>AUTONOMOUS ENGINE</span>
+              </div>
+
+              {/* Subtle Specular Gleam Sweep across the helmet */}
+              <div className="robot-light-sweep" />
             </div>
-
           </div>
 
           {/* Categorized Architecture Clusters (Intentional Tech Grouping) */}
           <div style={{
+            position: 'relative',
+            zIndex: 2,
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
@@ -973,13 +1475,13 @@ export default function LandingPage() {
             marginBottom: '32px',
             padding: '14px 20px',
             background: 'rgba(255, 255, 255, 0.02)',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
+            border: '1px solid rgba(255, 255, 255, 0.08)', background: 'rgba(12, 12, 16, 0.7)',
             borderRadius: '16px',
             backdropFilter: 'blur(10px)',
           }}>
             {/* Cluster 1: AI / Orchestration */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <span className="hero-cluster-label">AI / Orchestration</span>
+              <span className="hero-cluster-label" style={{ color: '#10b981' }}>AI / Orchestration</span>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                 <span className="hero-tech-chip">LangGraph</span>
                 <span className="hero-tech-chip">MCP</span>
@@ -1014,6 +1516,8 @@ export default function LandingPage() {
 
           {/* Security & Governance Footer (Tight & Premium) */}
           <div style={{
+            position: 'relative',
+            zIndex: 2,
             display: 'flex',
             gap: '16px',
             justifyContent: 'center',
@@ -1029,7 +1533,7 @@ export default function LandingPage() {
         </section>
 
         {/* ── CAPABILITIES ── */}
-        <section id="capabilities" style={{ padding: '80px 20px', background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <section id="capabilities" style={{ padding: '80px 20px', background: '#000000', backgroundColor: '#000000', borderTop: 'none' }}>
           <h2 style={{ fontSize: '32px', fontWeight: 700, textAlign: 'center', marginBottom: '60px', color: '#fff' }}>Core Capabilities</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', maxWidth: '1000px', margin: '0 auto' }}>
             
@@ -1073,62 +1577,92 @@ export default function LandingPage() {
 
         {/* ── HOW IT WORKS MODAL ── */}
         {isHowItWorksOpen && (
-          <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 10000, background: '#0a0a0a', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
-            <button onClick={() => setIsHowItWorksOpen(false)} style={{ position: 'absolute', top: '24px', right: '32px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', zIndex: 10001, transition: 'background 0.2s' }} onMouseOver={e => e.currentTarget.style.background='rgba(255,255,255,0.2)'} onMouseOut={e => e.currentTarget.style.background='rgba(255,255,255,0.1)'}>
-              <X size={28} />
+          <div className="hiw-modal-overlay">
+            <button 
+              onClick={() => setIsHowItWorksOpen(false)} 
+              className="hiw-close-btn"
+              title="Close (Esc)"
+              aria-label="Close"
+            >
+              <X size={24} />
             </button>
             
-            <h2 style={{ fontSize: '32px', fontWeight: 700, textAlign: 'center', marginBottom: '40px', color: '#fff' }}>How It Works</h2>
+            <h2 className="hiw-modal-title">
+              System Architecture & How It Works
+            </h2>
             
-            <div style={{ width: '100%', maxWidth: '1000px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+            <div className="hiw-modal-card">
               {/* Header / Title */}
-              <div style={{ padding: '24px 32px', borderBottom: '1px solid rgba(255,255,255,0.08)', background: 'rgba(0,0,0,0.4)' }}>
-                <h3 style={{ fontSize: '20px', fontWeight: 600, color: '#fff', marginBottom: '8px' }}>{howItWorksSlides[activeSlide].title}</h3>
-                <p style={{ color: '#9CA3AF', fontSize: '14px', lineHeight: 1.6 }}>{howItWorksSlides[activeSlide].desc}</p>
+              <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.08)', background: 'rgba(20,12,28,0.45)' }}>
+                <h3 style={{ fontSize: 'clamp(16px, 2.5vw, 20px)', fontWeight: 700, color: '#fff', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                  <span style={{ color: '#d946ef' }}>Slide {activeSlide + 1}:</span> {howItWorksSlides[activeSlide].title}
+                </h3>
+                <p style={{ color: '#94A3B8', fontSize: 'clamp(12.5px, 1.8vw, 14px)', lineHeight: 1.55 }}>
+                  {howItWorksSlides[activeSlide].desc}
+                </p>
               </div>
               
               {/* Carousel Content */}
-              <div style={{ position: 'relative', padding: '40px', minHeight: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0a' }}>
-                
-                {/* Prev Button */}
+              <div className="hiw-diagram-viewport">
+                {/* Prev Button (Desktop/Tablet) */}
                 <button 
                   onClick={() => setActiveSlide(s => Math.max(0, s - 1))}
                   disabled={activeSlide === 0}
-                  style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: activeSlide === 0 ? 'not-allowed' : 'pointer', opacity: activeSlide === 0 ? 0.3 : 1, transition: 'background 0.2s', zIndex: 10 }}
-                  onMouseOver={e => { if(activeSlide !== 0) e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}}
-                  onMouseOut={e => { if(activeSlide !== 0) e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}}
+                  style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(217,70,239,0.3)', borderRadius: '50%', width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: activeSlide === 0 ? 'not-allowed' : 'pointer', opacity: activeSlide === 0 ? 0.25 : 1, transition: 'all 0.2s', zIndex: 10 }}
+                  onMouseOver={e => { if(activeSlide !== 0) { e.currentTarget.style.background = 'rgba(217,70,239,0.25)'; e.currentTarget.style.borderColor = '#d946ef'; }}}
+                  onMouseOut={e => { if(activeSlide !== 0) { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(217,70,239,0.3)'; }}}
+                  aria-label="Previous Slide"
                 >
-                  <ChevronLeft size={24} />
+                  <ChevronLeft size={22} />
                 </button>
 
-                {/* Diagram */}
-                <div style={{ width: '100%', maxWidth: '850px', display: 'flex', justifyContent: 'flex-start', overflowX: 'auto', paddingBottom: '20px' }}>
-                  <div style={{ minWidth: 'min-content', margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
-                    {howItWorksSlides[activeSlide].content}
-                  </div>
+                {/* Diagram Scroll Container */}
+                <div className="hiw-flow-scroll">
+                  {howItWorksSlides[activeSlide].content}
                 </div>
-                
-                {/* Next Button */}
+
+                {/* Next Button (Desktop/Tablet) */}
                 <button 
                   onClick={() => setActiveSlide(s => Math.min(howItWorksSlides.length - 1, s + 1))}
                   disabled={activeSlide === howItWorksSlides.length - 1}
-                  style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: activeSlide === howItWorksSlides.length - 1 ? 'not-allowed' : 'pointer', opacity: activeSlide === howItWorksSlides.length - 1 ? 0.3 : 1, transition: 'background 0.2s', zIndex: 10 }}
-                  onMouseOver={e => { if(activeSlide !== howItWorksSlides.length - 1) e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}}
-                  onMouseOut={e => { if(activeSlide !== howItWorksSlides.length - 1) e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}}
+                  style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(217,70,239,0.3)', borderRadius: '50%', width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: activeSlide === howItWorksSlides.length - 1 ? 'not-allowed' : 'pointer', opacity: activeSlide === howItWorksSlides.length - 1 ? 0.25 : 1, transition: 'all 0.2s', zIndex: 10 }}
+                  onMouseOver={e => { if(activeSlide !== howItWorksSlides.length - 1) { e.currentTarget.style.background = 'rgba(217,70,239,0.25)'; e.currentTarget.style.borderColor = '#d946ef'; }}}
+                  onMouseOut={e => { if(activeSlide !== howItWorksSlides.length - 1) { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(217,70,239,0.3)'; }}}
+                  aria-label="Next Slide"
                 >
-                  <ChevronRight size={24} />
+                  <ChevronRight size={22} />
                 </button>
               </div>
               
-              {/* Dots / Footer */}
-              <div style={{ padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.4)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                <span style={{ color: '#6B7280', fontSize: '13px' }}>Slide {activeSlide + 1} of {howItWorksSlides.length}</span>
-                <div style={{ display: 'flex', gap: '8px' }}>
+              {/* Dots & Mobile Nav Footer */}
+              <div style={{ padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(15,10,22,0.85)', borderTop: '1px solid rgba(255,255,255,0.08)', flexWrap: 'wrap', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <button 
+                    onClick={() => setActiveSlide(s => Math.max(0, s - 1))}
+                    disabled={activeSlide === 0}
+                    style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(217,70,239,0.3)', borderRadius: '6px', padding: '4px 10px', color: '#fff', fontSize: '12px', cursor: activeSlide === 0 ? 'not-allowed' : 'pointer', opacity: activeSlide === 0 ? 0.3 : 1 }}
+                  >
+                    ← Prev
+                  </button>
+                  <span style={{ color: '#94A3B8', fontSize: '12.5px', fontFamily: 'monospace' }}>
+                    {activeSlide + 1} / {howItWorksSlides.length}
+                  </span>
+                  <button 
+                    onClick={() => setActiveSlide(s => Math.min(howItWorksSlides.length - 1, s + 1))}
+                    disabled={activeSlide === howItWorksSlides.length - 1}
+                    style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(217,70,239,0.3)', borderRadius: '6px', padding: '4px 10px', color: '#fff', fontSize: '12px', cursor: activeSlide === howItWorksSlides.length - 1 ? 'not-allowed' : 'pointer', opacity: activeSlide === howItWorksSlides.length - 1 ? 0.3 : 1 }}
+                  >
+                    Next →
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                   {howItWorksSlides.map((_, i) => (
                     <button 
                       key={i} 
                       onClick={() => setActiveSlide(i)}
-                      style={{ width: '8px', height: '8px', borderRadius: '50%', background: i === activeSlide ? '#0EA5E9' : 'rgba(255,255,255,0.2)', border: 'none', cursor: 'pointer', padding: 0, transition: 'background 0.3s' }}
+                      aria-label={`Go to slide ${i + 1}`}
+                      style={{ width: i === activeSlide ? '22px' : '8px', height: '8px', borderRadius: '4px', background: i === activeSlide ? '#d946ef' : 'rgba(255,255,255,0.2)', boxShadow: i === activeSlide ? '0 0 10px #d946ef' : 'none', border: 'none', cursor: 'pointer', padding: 0, transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)' }}
                     />
                   ))}
                 </div>
@@ -1138,9 +1672,9 @@ export default function LandingPage() {
         )}
 
         {/* ── ARCHITECTURE ── */}
-        <section id="architecture" style={{ padding: '80px 20px', background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <section id="architecture" style={{ padding: '80px 20px', background: '#000000', backgroundColor: '#000000', borderTop: 'none' }}>
           <h2 style={{ fontSize: '32px', fontWeight: 700, textAlign: 'center', marginBottom: '60px', color: '#fff' }}>System Architecture</h2>
-          <div style={{ background: 'rgba(10,10,10,0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '40px 24px', maxWidth: '1000px', margin: '0 auto', overflowX: 'auto', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
+          <div style={{ background: 'rgba(12,12,15,0.85)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '40px 24px', maxWidth: '1000px', margin: '0 auto', overflowX: 'auto', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
             <SystemArchitecture />
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '40px' }}>
@@ -1163,15 +1697,38 @@ export default function LandingPage() {
           .fat-footer { padding: 3rem 1.5rem 2rem 1.5rem; }
         }
       `}</style>
-      <footer id="about" className="fat-footer" style={{ background: '#030303', borderTop: '1px solid rgba(255, 255, 255, 0.05)', color: '#9CA3AF', fontSize: '0.9rem' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: '3rem' }}>
+      <footer id="about" className="fat-footer" style={{ position: 'relative', background: '#000000', backgroundColor: '#000000', borderTop: 'none', color: '#9CA3AF', fontSize: '0.9rem', overflow: 'hidden' }}>
+        {/* Signature Red-Purple / Magenta Differentiator Bar with Ambient Glow */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '2px',
+          background: 'linear-gradient(90deg, transparent 0%, rgba(217, 70, 239, 0.25) 15%, #d946ef 50%, rgba(217, 70, 239, 0.25) 85%, transparent 100%)',
+          boxShadow: '0 0 20px rgba(217, 70, 239, 0.6), 0 0 45px rgba(217, 70, 239, 0.3)',
+        }} />
+        {/* Soft Ambient Radial Glow from top center of footer */}
+        <div style={{
+          position: 'absolute',
+          top: '-60px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '700px',
+          height: '120px',
+          borderRadius: '50%',
+          background: 'radial-gradient(ellipse, rgba(217, 70, 239, 0.12) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }} />
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: '1400px', margin: '0 auto', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: '3rem' }}>
           
           {/* Left Column: Logo & Copyright */}
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '300px', flex: 1.5, minWidth: '250px' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
                 <img src="/icon.jpg" alt="Logo" style={{ height: '40px', borderRadius: '8px' }} />
-                <span style={{ fontWeight: 700, fontSize: '1.4rem', color: '#fff', letterSpacing: '-0.5px' }}>Ambuj Kumar Tripathi's <span style={{ color: '#0EA5E9' }}>Workspace</span></span>
+                <span style={{ fontWeight: 700, fontSize: '1.4rem', color: '#fff', letterSpacing: '-0.5px' }}>Ambuj Kumar Tripathi's <span style={{ color: '#d946ef' }}>Workspace</span></span>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
                 <a href="https://www.linkedin.com/in/ambuj-tripathi-042b4a118/" target="_blank" rel="noreferrer" style={{ color: '#a1a1aa', transition: 'color 0.2s' }} onMouseOver={e=>e.currentTarget.style.color='#fff'} onMouseOut={e=>e.currentTarget.style.color='#a1a1aa'}><FaLinkedin size={22} /></a>
@@ -1182,11 +1739,11 @@ export default function LandingPage() {
               {/* QR Code Section */}
               <div style={{ marginTop: '2.5rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '16px', display: 'inline-block', maxWidth: '100%', transition: 'border-color 0.3s' }} onMouseOver={(e) => e.currentTarget.style.borderColor='rgba(14,165,233,0.4)'} onMouseOut={(e) => e.currentTarget.style.borderColor='rgba(255,255,255,0.08)'}>
                 <h4 style={{ fontSize: '0.85rem', color: '#fff', marginBottom: '12px', fontWeight: 600, letterSpacing: '0.5px' }}>Connect with the Architect</h4>
-                <a href="https://ambuj-ai-portfolio.vercel.app" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none' }}>
+                <a href="https://ambuj-ai-portfolio.vercel.app/" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none' }}>
                   <img src="/qr-code.png" alt="Portfolio QR Code" style={{ width: '70px', height: '70px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', background: '#fff', padding: '2px' }} />
                   <div style={{ fontSize: '0.75rem', color: '#9CA3AF', lineHeight: '1.6' }}>
-                    Scan or click to view my <br/>
-                    <strong style={{ color: '#0EA5E9' }}>AI Micro-Portfolio</strong> & Resume.
+                    Scan or click to view <br/>
+                    <strong style={{ color: '#d946ef', fontWeight: 600, textDecoration: 'underline' }}>My Portfolio</strong> & Resume.
                   </div>
                 </a>
               </div>

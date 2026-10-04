@@ -1,249 +1,390 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<style>
-  body {
-    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-    background-color: #0d0d0d;
-    color: #e0e0e0;
-    margin: 0;
-    padding: 20px;
-    line-height: 1.6;
-  }
-  .container {
-    max-width: 750px;
-    margin: 0 auto;
-    background: #141414;
-    border: 1px solid #333;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  }
-  .header {
-    background: linear-gradient(90deg, #1f1c2c 0%, #000000 100%);
-    padding: 25px 30px;
-    border-bottom: 2px solid #bda852;
-  }
-  .header h1 {
-    margin: 0;
-    font-size: 24px;
-    color: #f5f5f5;
-    letter-spacing: 0.5px;
-  }
-  .header p {
-    margin: 5px 0 0 0;
-    font-size: 14px;
-    color: #bda852;
-  }
-  .content {
-    padding: 30px;
-    font-size: 15px;
-    color: #e0e0e0 !important;
-  }
-  .content p, .content div, .content span {
-    margin-bottom: 15px;
-    color: #e0e0e0 !important;
-  }
-  .footer {
-    background: #0d0d0d;
-    padding: 25px 30px;
-    border-top: 1px solid #333;
-    font-size: 13px;
-    color: #888;
-  }
-  .footer table {
-    width: 100%;
-    margin-bottom: 15px;
-  }
-  .footer td {
-    padding-bottom: 5px;
-  }
-  .icon-text {
-    display: inline-block;
-    width: 20px;
-  }
-  a {
-    color: #bda852;
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
-  .badge {
-    background: #bda852;
-    color: #000;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 11px;
-    text-transform: uppercase;
-  }
-  @media screen and (max-width: 600px) {
-    .container { width: 100% !important; border-radius: 0 !important; border-left: none; border-right: none; }
-    body { padding: 0; }
-    .header, .content, .projects-section, .footer { padding: 20px !important; }
-    .hide-mobile { display: none !important; }
-    .stack-mobile { display: block !important; width: 100% !important; text-align: left !important; padding-top: 10px !important; }
-  }
-  @keyframes sonar-ping { 0% { transform: scale(1); opacity: 0.8; } 70% { transform: scale(3.5); opacity: 0; } 100% { transform: scale(3.5); opacity: 0; } }
-  @keyframes ecg-draw { 0% { stroke-dashoffset: 60; } 100% { stroke-dashoffset: -60; } }
-  @keyframes red-heartbeat-glow {
-    0%   { box-shadow: 0 0 0px rgba(185, 28, 28, 0); border-color: rgba(255, 255, 255, 0.1); }
-    30%  { box-shadow: 0 0 0px rgba(185, 28, 28, 0); border-color: rgba(255, 255, 255, 0.1); }
-    40%  { box-shadow: 0 0 25px rgba(185, 28, 28, 0.8), inset 0 0 8px rgba(153, 27, 27, 0.4); border-color: rgba(185, 28, 28, 0.9); }
-    45%  { box-shadow: 0 0 8px rgba(185, 28, 28, 0.3); border-color: rgba(185, 28, 28, 0.4); }
-    55%  { box-shadow: 0 0 40px rgba(153, 27, 27, 1), inset 0 0 15px rgba(153, 27, 27, 0.8); border-color: #dc2626; }
-    70%  { box-shadow: 0 0 0px rgba(185, 28, 28, 0); border-color: rgba(255, 255, 255, 0.1); }
-    100% { box-shadow: 0 0 0px rgba(185, 28, 28, 0); border-color: rgba(255, 255, 255, 0.1); }
-  }
-  .afp-status-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 12px;
-    background: #000000;
-    animation: red-heartbeat-glow 4s ease-in-out infinite;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px; text-decoration: none; color: #ffffff;
-    font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
-    cursor: pointer; white-space: nowrap;
-    transition: border-color 0.3s;
-  }
-</style>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background-color: #0d0d0d;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: 0 auto;
+      background: #141414;
+      border: 1px solid #333;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .header {
+      background: linear-gradient(90deg, #1f1c2c 0%, #000000 100%);
+      padding: 25px 30px;
+      border-bottom: 2px solid #bda852;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #f5f5f5;
+      letter-spacing: 0.5px;
+    }
+
+    .header p {
+      margin: 5px 0 0 0;
+      font-size: 14px;
+      color: #bda852;
+    }
+
+    .content {
+      padding: 30px;
+      font-size: 15px;
+      color: #e0e0e0 !important;
+    }
+
+    .content p,
+    .content div,
+    .content span {
+      margin-bottom: 15px;
+      color: #e0e0e0 !important;
+    }
+
+    .footer {
+      background: #0d0d0d;
+      padding: 25px 30px;
+      border-top: 1px solid #333;
+      font-size: 13px;
+      color: #888;
+    }
+
+    .footer table {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .footer td {
+      padding-bottom: 5px;
+    }
+
+    .icon-text {
+      display: inline-block;
+      width: 20px;
+    }
+
+    a {
+      color: #bda852;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .badge {
+      background: #bda852;
+      color: #000;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    @media screen and (max-width: 600px) {
+      .container {
+        width: 100% !important;
+        border-radius: 0 !important;
+        border-left: none;
+        border-right: none;
+      }
+
+      body {
+        padding: 0;
+      }
+
+      .header,
+      .content,
+      .projects-section,
+      .footer {
+        padding: 20px !important;
+      }
+
+      .hide-mobile {
+        display: none !important;
+      }
+
+      .stack-mobile {
+        display: block !important;
+        width: 100% !important;
+        text-align: left !important;
+        padding-top: 10px !important;
+      }
+    }
+
+    @keyframes sonar-ping {
+      0% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+
+      70% {
+        transform: scale(3.5);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(3.5);
+        opacity: 0;
+      }
+    }
+
+    @keyframes ecg-draw {
+      0% {
+        stroke-dashoffset: 60;
+      }
+
+      100% {
+        stroke-dashoffset: -60;
+      }
+    }
+
+    @keyframes red-heartbeat-glow {
+      0% {
+        box-shadow: 0 0 0px rgba(185, 28, 28, 0);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      30% {
+        box-shadow: 0 0 0px rgba(185, 28, 28, 0);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      40% {
+        box-shadow: 0 0 25px rgba(185, 28, 28, 0.8), inset 0 0 8px rgba(153, 27, 27, 0.4);
+        border-color: rgba(185, 28, 28, 0.9);
+      }
+
+      45% {
+        box-shadow: 0 0 8px rgba(185, 28, 28, 0.3);
+        border-color: rgba(185, 28, 28, 0.4);
+      }
+
+      55% {
+        box-shadow: 0 0 40px rgba(153, 27, 27, 1), inset 0 0 15px rgba(153, 27, 27, 0.8);
+        border-color: #dc2626;
+      }
+
+      70% {
+        box-shadow: 0 0 0px rgba(185, 28, 28, 0);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      100% {
+        box-shadow: 0 0 0px rgba(185, 28, 28, 0);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    .afp-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: #000000;
+      animation: red-heartbeat-glow 4s ease-in-out infinite;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      text-decoration: none;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color 0.3s;
+    }
+  </style>
 </head>
+
 <body>
-<div class="container">
-  <div class="header" style="position: relative; padding-bottom: 20px;">
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-      <tr>
-        <td valign="top">
-          <h1 style="margin: 0; padding-bottom: 5px;">Ambuj Kumar Tripathi</h1>
-          <p style="margin: 0;">AI Developer & Agentic RAG Specialist</p>
-          <p style="font-size: 12px; color: #888; margin: 4px 0 0 0; font-style: italic;">Building Production-Grade Agentic AI Systems</p>
-        </td>
-        <td class="stack-mobile" align="right" valign="top">
-          <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" class="afp-status-badge" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: #000000; border: 1px solid #dc2626; border-radius: 6px; text-decoration: none !important; color: #ffffff !important; font-size: 11px; font-weight: 600; letter-spacing: 0.04em;">
-            <span style="position: relative; width: 8px; height: 8px; display: inline-flex; align-items: center; justify-content: center;">
-              <span style="position: absolute; width: 8px; height: 8px; border-radius: 50%; background: rgba(185, 28, 28, 0.4); animation: sonar-ping 2s ease-out infinite;"></span>
-              <span style="position: relative; width: 6px; height: 6px; border-radius: 50%; background: #b91c1c; box-shadow: 0 0 8px rgba(185, 28, 28, 0.9), inset 0 0 4px rgba(185,28,28,0.5);"></span>
-            </span>
-            <svg width="28" height="12" viewBox="0 0 28 12" style="overflow: visible; margin-left: -2px;">
-              <path d="M0,6 L6,6 L8,2 L10,10 L12,4 L14,8 L16,6 L28,6" fill="none" stroke="#dc2626" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray: 30; stroke-dashoffset: 0; animation: ecg-draw 2s linear infinite;"></path>
-            </svg>
-            <span style="color: #ffffff;">System Status</span>
-          </a>
-        </td>
-      </tr>
-    </table>
-  </div>
-  
-  <div class="content">
-    {{BODY}}
-  </div>
+  <div class="container">
+    <div class="header" style="position: relative; padding-bottom: 20px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td valign="top">
+            <h1 style="margin: 0; padding-bottom: 5px;">Ambuj Kumar Tripathi</h1>
+            <p style="margin: 0;">AI Developer & Agentic RAG Specialist</p>
+            <p style="font-size: 12px; color: #888; margin: 4px 0 0 0; font-style: italic;">Building Production-Grade
+              Agentic AI Systems</p>
+          </td>
+          <td class="stack-mobile" align="right" valign="top">
+            <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" class="afp-status-badge"
+              style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: #000000; border: 1px solid #dc2626; border-radius: 6px; text-decoration: none !important; color: #ffffff !important; font-size: 11px; font-weight: 600; letter-spacing: 0.04em;">
+              <span
+                style="position: relative; width: 8px; height: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                <span
+                  style="position: absolute; width: 8px; height: 8px; border-radius: 50%; background: rgba(185, 28, 28, 0.4); animation: sonar-ping 2s ease-out infinite;"></span>
+                <span
+                  style="position: relative; width: 6px; height: 6px; border-radius: 50%; background: #b91c1c; box-shadow: 0 0 8px rgba(185, 28, 28, 0.9), inset 0 0 4px rgba(185,28,28,0.5);"></span>
+              </span>
+              <svg width="28" height="12" viewBox="0 0 28 12" style="overflow: visible; margin-left: -2px;">
+                <path d="M0,6 L6,6 L8,2 L10,10 L12,4 L14,8 L16,6 L28,6" fill="none" stroke="#dc2626" stroke-width="1.2"
+                  stroke-linecap="round" stroke-linejoin="round"
+                  style="stroke-dasharray: 30; stroke-dashoffset: 0; animation: ecg-draw 2s linear infinite;"></path>
+              </svg>
+              <span style="color: #ffffff;">System Status</span>
+            </a>
+          </td>
+        </tr>
+      </table>
+    </div>
 
-  <div class="projects-section" style="padding: 0 30px 25px 30px;">
-    <h3 style="color: #888; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 20px;">Featured Production Systems</h3>
-    
-    <!-- PROJECT 1 -->
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #0d0d0d; border-radius: 12px; border: 1px solid #333; margin-bottom: 16px;">
-      <tr>
-        <td style="padding: 24px 28px;">
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tr>
-              <td valign="middle">
-                <div style="font-size: 16px; font-weight: 700; color: #f5f5f5; letter-spacing: -0.3px;">Agentic AI Workspace</div>
-              </td>
-              <td class="stack-mobile" width="100" align="right" valign="middle">
-                <a href="https://agentic-ai-workspace.onrender.com" target="_blank" style="display: inline-block; background-color: #bda852; color: #000; font-size: 11px; font-weight: 700; padding: 7px 16px; border-radius: 6px; text-decoration: none;">LIVE DEMO &#8599;</a>
-              </td>
-            </tr>
-          </table>
-          <div style="font-size: 13px; color: #888; line-height: 1.6; margin-top: 12px; margin-bottom: 16px;">
-            Production ReAct agent with FastMCP server orchestration, autonomous tool discovery, real-time APIs, and secure HITL Gmail operations.
-          </div>
-          <div>
-            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">LangGraph</span>
-            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">MCP</span>
-            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">FastAPI</span>
-          </div>
-        </td>
-      </tr>
-    </table>
+    <div class="content">
+      {{BODY}}
+    </div>
 
-    <!-- PROJECT 2 -->
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #0d0d0d; border-radius: 12px; border: 1px solid #333; margin-bottom: 16px;">
-      <tr>
-        <td style="padding: 24px 28px;">
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tr>
-              <td valign="middle">
-                <div style="font-size: 16px; font-weight: 700; color: #f5f5f5; letter-spacing: -0.3px;">Adaptive ReAct RAG</div>
-              </td>
-              <td class="stack-mobile" width="100" align="right" valign="middle">
-                <a href="https://agentic-rag-financial-parser.onrender.com" target="_blank" style="display: inline-block; background-color: #bda852; color: #000; font-size: 11px; font-weight: 700; padding: 7px 16px; border-radius: 6px; text-decoration: none;">LIVE DEMO &#8599;</a>
-              </td>
-            </tr>
-          </table>
-          <div style="font-size: 13px; color: #888; line-height: 1.6; margin-top: 12px; margin-bottom: 16px;">
-            10-Node Multi-channel conversational AI with hybrid vector retrieval, LLM Function Calling, and autonomous CRON-driven agents.
-          </div>
-          <div>
-            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">Pinecone</span>
-            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">WhatsApp Cloud API</span>
-          </div>
-        </td>
-      </tr>
-    </table>
+    <div class="projects-section" style="padding: 0 30px 25px 30px;">
+      <h3
+        style="color: #888; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 20px;">
+        Featured Production Systems</h3>
 
-    <!-- PROJECT 3 -->
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #0d0d0d; border-radius: 12px; border: 1px solid #333; margin-bottom: 16px;">
-      <tr>
-        <td style="padding: 24px 28px;">
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tr>
-              <td valign="middle">
-                <div style="font-size: 16px; font-weight: 700; color: #f5f5f5; letter-spacing: -0.3px;">Agentic Legal AI</div>
-              </td>
-              <td class="stack-mobile" width="100" align="right" valign="middle">
-                <a href="https://indian-legal-ai-expert.onrender.com" target="_blank" style="display: inline-block; background-color: #bda852; color: #000; font-size: 11px; font-weight: 700; padding: 7px 16px; border-radius: 6px; text-decoration: none;">LIVE DEMO &#8599;</a>
-              </td>
-            </tr>
-          </table>
-          <div style="font-size: 13px; color: #888; line-height: 1.6; margin-top: 12px; margin-bottom: 16px;">
-            Processed 31,500+ chunks across 20+ Indian acts. OAuth 2.0 multi-tenant vector search on Qdrant with 5.6K+ HuggingFace downloads.
-          </div>
-          <div>
-            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">Qdrant</span>
-            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">OAuth 2.0</span>
-            <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">HuggingFace</span>
-          </div>
-        </td>
-      </tr>
-    </table>
+      <!-- PROJECT 1 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+        style="background-color: #0d0d0d; border-radius: 12px; border: 1px solid #333; margin-bottom: 16px;">
+        <tr>
+          <td style="padding: 24px 28px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td valign="middle">
+                  <div style="font-size: 16px; font-weight: 700; color: #f5f5f5; letter-spacing: -0.3px;">Agentic AI
+                    Workspace</div>
+                </td>
+                <td class="stack-mobile" width="100" align="right" valign="middle">
+                  <a href="https://agentic-ai-workspace.onrender.com" target="_blank"
+                    style="display: inline-block; background-color: #bda852; color: #000; font-size: 11px; font-weight: 700; padding: 7px 16px; border-radius: 6px; text-decoration: none;">LIVE
+                    DEMO &#8599;</a>
+                </td>
+              </tr>
+            </table>
+            <div style="font-size: 13px; color: #888; line-height: 1.6; margin-top: 12px; margin-bottom: 16px;">
+              Production ReAct agent with FastMCP server orchestration, autonomous tool discovery, real-time APIs, and
+              secure HITL Gmail operations.
+            </div>
+            <div>
+              <span
+                style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">LangGraph</span>
+              <span
+                style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">MCP</span>
+              <span
+                style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">FastAPI</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <!-- PROJECT 2 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+        style="background-color: #0d0d0d; border-radius: 12px; border: 1px solid #333; margin-bottom: 16px;">
+        <tr>
+          <td style="padding: 24px 28px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td valign="middle">
+                  <div style="font-size: 16px; font-weight: 700; color: #f5f5f5; letter-spacing: -0.3px;">Adaptive ReAct
+                    RAG</div>
+                </td>
+                <td class="stack-mobile" width="100" align="right" valign="middle">
+                  <a href="https://agentic-rag-financial-parser.onrender.com" target="_blank"
+                    style="display: inline-block; background-color: #bda852; color: #000; font-size: 11px; font-weight: 700; padding: 7px 16px; border-radius: 6px; text-decoration: none;">LIVE
+                    DEMO &#8599;</a>
+                </td>
+              </tr>
+            </table>
+            <div style="font-size: 13px; color: #888; line-height: 1.6; margin-top: 12px; margin-bottom: 16px;">
+              10-Node Multi-channel conversational AI with hybrid vector retrieval, LLM Function Calling, and autonomous
+              CRON-driven agents.
+            </div>
+            <div>
+              <span
+                style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">Pinecone</span>
+              <span
+                style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">WhatsApp
+                Cloud API</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <!-- PROJECT 3 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+        style="background-color: #0d0d0d; border-radius: 12px; border: 1px solid #333; margin-bottom: 16px;">
+        <tr>
+          <td style="padding: 24px 28px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td valign="middle">
+                  <div style="font-size: 16px; font-weight: 700; color: #f5f5f5; letter-spacing: -0.3px;">Agentic Legal
+                    AI</div>
+                </td>
+                <td class="stack-mobile" width="100" align="right" valign="middle">
+                  <a href="https://indian-legal-ai-expert.onrender.com" target="_blank"
+                    style="display: inline-block; background-color: #bda852; color: #000; font-size: 11px; font-weight: 700; padding: 7px 16px; border-radius: 6px; text-decoration: none;">LIVE
+                    DEMO &#8599;</a>
+                </td>
+              </tr>
+            </table>
+            <div style="font-size: 13px; color: #888; line-height: 1.6; margin-top: 12px; margin-bottom: 16px;">
+              Processed 31,500+ chunks across 20+ Indian acts. OAuth 2.0 multi-tenant vector search on Qdrant with 5.6K+
+              HuggingFace downloads.
+            </div>
+            <div>
+              <span
+                style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">Qdrant</span>
+              <span
+                style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">OAuth
+                2.0</span>
+              <span
+                style="display: inline-block; font-size: 11px; font-weight: 600; color: #bda852; background-color: rgba(189,168,82,0.1); border: 1px solid rgba(189,168,82,0.2); padding: 4px 10px; border-radius: 6px; margin: 0 6px 6px 0;">HuggingFace</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="footer">
+      <table cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="width: 25px;">📞</td>
+          <td>+91-9431801363</td>
+        </tr>
+        <tr>
+          <td>🌐</td>
+          <td><a href="https://ambuj-ai-portfolio.vercel.app/">ambuj-ai-portfolio.vercel.app</a></td>
+        </tr>
+        <tr>
+          <td>💼</td>
+          <td><a
+              href="https://www.linkedin.com/in/ambuj-tripathi-042b4a118/">linkedin.com/in/ambuj-tripathi-042b4a118</a>
+          </td>
+        </tr>
+        <tr>
+          <td>💻</td>
+          <td><a href="https://github.com/Ambuj123-lab">github.com/Ambuj123-lab</a></td>
+        </tr>
+      </table>
+      <p style="margin: 0; font-style: italic; border-top: 1px solid #333; padding-top: 15px;">
+        🤖 This email was generated through <span
+          style="color: #00e5ff; font-weight: bold; letter-spacing: 0.5px;">Ambuj Kumar Tripathi's Agentic AI Workflow
+          (MCP Server)</span> and reviewed before delivery.
+      </p>
+    </div>
   </div>
-  
-  <div class="footer">
-    <table cellpadding="0" cellspacing="0">
-      <tr>
-        <td style="width: 25px;">📞</td>
-        <td>+91-9431801363</td>
-      </tr>
-      <tr>
-        <td>🌐</td>
-        <td><a href="https://ambuj-ai-portfolio.vercel.app/">ambuj-ai-portfolio.vercel.app</a></td>
-      </tr>
-      <tr>
-        <td>💼</td>
-        <td><a href="https://www.linkedin.com/in/ambuj-tripathi-042b4a118/">linkedin.com/in/ambuj-tripathi-042b4a118</a></td>
-      </tr>
-      <tr>
-        <td>💻</td>
-        <td><a href="https://github.com/Ambuj123-lab">github.com/Ambuj123-lab</a></td>
-      </tr>
-    </table>
-    <p style="margin: 0; font-style: italic; border-top: 1px solid #333; padding-top: 15px;">
-      🤖 This email was generated through <span style="color: #00e5ff; font-weight: bold; letter-spacing: 0.5px;">Ambuj Kumar Tripathi's Agentic AI Workflow (MCP Server)</span> and reviewed before delivery.
-    </p>
-  </div>
-</div>
 </body>
+
 </html>

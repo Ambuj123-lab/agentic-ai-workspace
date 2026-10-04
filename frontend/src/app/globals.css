@@ -1167,30 +1167,167 @@ html {
   background: rgba(255, 255, 255, 0.32);
 }
 
+/* Signature Red-Purple / Magenta Back to Top Button */
 .back-to-top-btn {
   position: fixed;
   bottom: 28px;
   right: 28px;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: rgba(15, 23, 42, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(24, 12, 34, 0.94);
+  border: 1.5px solid rgba(217, 70, 239, 0.55);
   backdrop-filter: blur(16px);
-  color: #ffffff;
+  -webkit-backdrop-filter: blur(16px);
+  color: #d946ef;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 9999;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 22px rgba(217, 70, 239, 0.45);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   animation: fadeIn 0.3s ease-out;
 }
 
+.back-to-top-btn svg {
+  color: #d946ef;
+  stroke: #d946ef;
+  filter: drop-shadow(0 0 6px rgba(217, 70, 239, 0.8));
+  transition: all 0.25s ease;
+}
+
 .back-to-top-btn:hover {
-  transform: translateY(-3px) scale(1.05);
-  background: rgba(30, 41, 59, 0.95);
-  border-color: rgba(56, 189, 248, 0.6);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 28px rgba(56, 189, 248, 0.45);
+  transform: translateY(-3px) scale(1.1);
+  background: rgba(45, 18, 65, 0.98);
+  border-color: #f0abfc;
+  color: #ffffff;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.9), 0 0 32px rgba(217, 70, 239, 0.8), inset 0 0 12px rgba(217, 70, 239, 0.4);
+}
+
+.back-to-top-btn:hover svg {
+  color: #ffffff;
+  stroke: #ffffff;
+  filter: drop-shadow(0 0 10px rgba(217, 70, 239, 1));
+}
+
+/* How It Works Responsive Modal Styles */
+.hiw-modal-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px 14px 36px 14px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hiw-close-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(217, 70, 239, 0.35);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10002;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.hiw-close-btn:hover {
+  background: rgba(217, 70, 239, 0.25);
+  border-color: #d946ef;
+  color: #e879f9;
+  transform: scale(1.08);
+}
+
+.hiw-modal-card {
+  width: 100%;
+  max-width: 980px;
+  background: rgba(10, 10, 14, 0.95);
+  border: 1px solid rgba(217, 70, 239, 0.3);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 36px rgba(217, 70, 239, 0.12);
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hiw-diagram-viewport {
+  position: relative;
+  padding: 32px 16px;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  overflow: hidden;
+}
+
+.hiw-flow-scroll {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(217, 70, 239, 0.4) transparent;
+  padding-bottom: 14px;
+}
+
+@media (max-width: 860px) {
+  .hiw-flow-scroll {
+    justify-content: flex-start;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+.flow-node-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 12px;
+  min-width: 120px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  z-index: 2;
+  position: relative;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  cursor: default;
+  flex-shrink: 0;
+}
+
+.flow-node-box:hover {
+  transform: translateY(-2px);
+  border-color: rgba(217, 70, 239, 0.5);
+}
+
+@media (max-width: 640px) {
+  .flow-node-box {
+    padding: 10px 8px;
+    min-width: 96px;
+  }
+  .hiw-diagram-viewport {
+    padding: 20px 8px;
+    min-height: 320px;
+  }
 }

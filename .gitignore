@@ -31,8 +31,22 @@ Thumbs.db
 # Logs
 *.log
 
-# Scratch / Local Files
+# Scratch / Local Documents
 FUTURE_MCP_IDEAS.md
 architecture-dig
 architecture.html
 capabilities-MCP-NEW
+docs/
+
+# Temporary & Editor Backup Files
+*.bak*
+*.pre_*
+*.tmp
+*.swp
+
+# Local Media Experiments & Unused Assets
+frontend/public/WhatsApp*
+frontend/public/gemini_generated_video_*.mp4
+frontend/public/ai_agent_robot.*
+frontend/public/*.pdf
+frontend/public/langgraph_mcp_flow_animated.svg
