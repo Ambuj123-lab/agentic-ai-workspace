@@ -202,6 +202,20 @@ export default function LandingPage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [signInStage, setSignInStage] = useState(1);
+
+  const handleGoogleSignIn = () => {
+    setIsSigningIn(true);
+    setSignInStage(1);
+    // Stage 1: 0ms - 650ms (M8ven FastMCP Handshake)
+    setTimeout(() => {
+      setSignInStage(2); // Stage 2: 650ms - 1350ms (OAuth 2.0 Routing)
+    }, 650);
+    // Stage 3: At 1350ms trigger the Google OAuth redirect smoothly
+    setTimeout(() => {
+      signIn('google');
+    }, 1350);
+  };
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeHudTab, setActiveHudTab] = useState('trace');
@@ -1323,7 +1337,7 @@ export default function LandingPage() {
 
               {/* Dual Action CTAs: Tactical Engage Button + Bordered System Scan */}
               <div className="hero-ctas">
-                <button onClick={() => { setIsSigningIn(true); signIn('google'); }} className="tactical-primary-btn" style={{ borderLeft: '3.5px solid #c026d3' }}>
+                <button onClick={handleGoogleSignIn} className="tactical-primary-btn" style={{ borderLeft: '3.5px solid #c026d3' }}>
                   <span>Sign in with Google</span>
                   <span style={{ color: '#d946ef', fontSize: '1.1rem', fontWeight: 800 }}>›</span>
                 </button>
