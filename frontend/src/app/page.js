@@ -1314,6 +1314,24 @@ export default function LandingPage() {
             <span>Continue as Guest</span>
             <span className="cta-arrow">›</span>
           </button>
+
+          {/* UptimeRobot Verified 99.998% SLA Status in Mobile Dropdown */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 4px 4px', borderTop: '1px solid rgba(255,255,255,0.08)', marginTop: '6px' }}>
+            <span style={{ fontSize: '13px', color: '#94a3b8', fontFamily: 'Outfit' }}>UptimeRobot SLA:</span>
+            <a
+              href="https://stats.uptimerobot.com/4tYmSQnuBE?utm_source=status_badge&utm_medium=referral"
+              target="_blank"
+              rel="noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}
+              title="UptimeRobot Verified 99.998% SLA"
+            >
+              <img
+                src="https://badge.uptimerobot.com/sla/18a544b11fc4799a468704cc7acccedb.svg?theme=dark"
+                alt="Uptime SLA 99.998%"
+                style={{ height: '22px', width: 'auto', borderRadius: '4px', display: 'block' }}
+              />
+            </a>
+          </div>
         </div>
       )}
 
