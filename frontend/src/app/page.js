@@ -203,6 +203,7 @@ export default function LandingPage() {
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [signInStage, setSignInStage] = useState(1);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   const handleGoogleSignIn = () => {
     setIsSigningIn(true);
@@ -219,6 +220,15 @@ export default function LandingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeHudTab, setActiveHudTab] = useState('trace');
+
+  useEffect(() => {
+    // Standard entrance display: 950ms so user clearly sees the cybernetic telemetry
+    // without getting bored or feeling delayed
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 950);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -251,6 +261,16 @@ export default function LandingPage() {
 
   if (status === "authenticated") {
     return null; 
+  }
+
+  if (isInitialLoading) {
+    return (
+      <Loading 
+        title="Initializing Autonomous Workspace"
+        subtitle="LangGraph ReAct · FastMCP Protocol · MongoDB Atlas"
+        badge="AGENT RUNTIME ACTIVE"
+      />
+    );
   }
 
   const howItWorksSlides = [
