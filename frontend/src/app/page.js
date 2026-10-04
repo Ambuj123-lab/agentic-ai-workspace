@@ -490,14 +490,22 @@ export default function LandingPage() {
       {/* ===== NAVBAR ===== */}
       <style>{`
         .desktop-nav { display: flex; align-items: center; gap: 24px; }
-        .mobile-menu-btn { display: none; background: transparent; border: none; color: white; cursor: pointer; }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: white; cursor: pointer; padding: 4px; }
         .mobile-dropdown { display: none; flex-direction: column; gap: 16px; padding: 16px 20px; background: #000000; border-bottom: 1px solid rgba(217, 70, 239, 0.25); }
-        .mobile-nav-badge { display: none; }
+        .mobile-nav-badge { display: none !important; }
+        .nav-actions-right { display: flex; align-items: center; gap: 12px; }
         @media (max-width: 980px) {
           .desktop-nav { display: none; }
           .mobile-menu-btn { display: flex; }
-          .mobile-nav-badge { display: inline-flex; }
-          .nav-container { padding: 12px 16px !important; }
+          .mobile-nav-badge { display: none !important; }
+          .nav-container { padding: 10px 14px !important; }
+          .nav-actions-right { gap: 8px !important; }
+          .nav-brand-title { font-size: 0.92rem !important; }
+          .guest-cta-btn {
+            padding: 5px 10px !important;
+            font-size: 11.5px !important;
+            gap: 4px !important;
+          }
         }
         /* Hero Ambient & Buttons (Fluxora-Inspired Luxury Aesthetics) */
         @keyframes hero-glow-pulse {
@@ -1235,7 +1243,7 @@ export default function LandingPage() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <img src="/icon.jpg" alt="Logo" style={{ width: '32px', borderRadius: '8px' }} />
-          <span style={{ fontWeight: 700, fontFamily: 'Outfit', fontSize: '1.05rem', letterSpacing: '-0.3px' }}>
+          <span className="nav-brand-title" style={{ fontWeight: 700, fontFamily: 'Outfit', fontSize: '1.05rem', letterSpacing: '-0.3px' }}>
             Ambuj's Workspace
           </span>
         </div>
@@ -1260,7 +1268,7 @@ export default function LandingPage() {
           </a>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="nav-actions-right">
           {/* Top-Right Navbar CTA: Continue as Guest */}
           <button 
             id="continue-as-guest-btn"
