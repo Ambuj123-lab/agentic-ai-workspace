@@ -23,6 +23,17 @@ from app.agent.tools import (
     _safe_eval_ast,
     calculator,
     get_builtin_tools,
+    web_search,
+    fetch_webpage,
+    get_stock_price,
+    send_email_confirmed,
+    read_emails,
+    get_github_repo_stats,
+    get_github_pull_requests,
+    get_github_user_profile,
+    search_github_repositories,
+    get_github_latest_commits,
+    get_github_repo_contributors,
 )
 
 
