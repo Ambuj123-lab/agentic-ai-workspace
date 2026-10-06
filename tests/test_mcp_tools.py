@@ -5,6 +5,7 @@ Verifies tool execution, AST sandboxed math security, and M8ven 4-hint annotatio
 
 import sys
 import unittest
+from unittest import mock
 from pathlib import Path
 
 # Add project root to sys.path
@@ -121,5 +122,251 @@ class TestM8venAnnotationCompliance(unittest.TestCase):
                 )
 
 
+
+class TestMCPServerToolsCoverage(unittest.IsolatedAsyncioTestCase):
+    """Ensure every FastMCP tool declared in mcp-server/server.py is referenced and covered (8/8)."""
+
+    async def test_mcp_web_search(self):
+        with mock.patch("tavily.TavilyClient.search", return_value={"answer": "Direct AI Answer", "results": [{"title": "News", "url": "https://news.com", "content": "Update"}]}):
+            with mock.patch.dict("os.environ", {"TAVILY_API_KEY": "test-key"}):
+                result = await mcp_server.web_search("Python news")
+                self.assertIn("Direct AI Answer", result)
+                self.assertIn("Web Sources", result)
+
+    async def test_mcp_fetch_webpage(self):
+        result = await mcp_server.fetch_webpage("ftp://invalid-url.org")
+        self.assertIn("Error: URL must start with", result)
+
+    async def test_mcp_get_stock_price(self):
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = {
+            "quoteResponse": {
+                "result": [{
+                    "shortName": "Apple Inc.",
+                    "regularMarketPrice": 220.5,
+                    "regularMarketChange": 1.5,
+                    "regularMarketChangePercent": 0.68,
+                    "regularMarketDayHigh": 222.0,
+                    "regularMarketDayLow": 218.0,
+                    "regularMarketVolume": 50000000,
+                    "currency": "USD",
+                    "marketState": "REGULAR"
+                }]
+            }
+        }
+        mock_resp.raise_for_status = mock.MagicMock()
+        with mock.patch("httpx.AsyncClient.get", return_value=mock_resp):
+            with mock.patch.dict("os.environ", {"RAPIDAPI_KEY": "test-key"}):
+                result = await mcp_server.get_stock_price("AAPL")
+                self.assertIn("Apple Inc.", result)
+                self.assertIn("AAPL", result)
+
+    async def test_mcp_get_github_repo_stats(self):
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = {
+            "full_name": "Ambuj123-lab/agentic-ai-workspace",
+            "description": "Agentic Workspace",
+            "stargazers_count": 42,
+            "forks_count": 5,
+            "open_issues_count": 0,
+            "language": "Python",
+            "html_url": "https://github.com/Ambuj123-lab/agentic-ai-workspace"
+        }
+        mock_resp.raise_for_status = mock.MagicMock()
+        with mock.patch("httpx.AsyncClient.get", return_value=mock_resp):
+            result = await mcp_server.get_github_repo_stats("Ambuj123-lab", "agentic-ai-workspace")
+            self.assertIn("Ambuj123-lab/agentic-ai-workspace", result)
+            self.assertIn("Stars:", result)
+
+    async def test_mcp_search_github_repositories(self):
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = {
+            "items": [{
+                "full_name": "test/repo",
+                "html_url": "https://github.com/test/repo",
+                "stargazers_count": 100,
+                "language": "Python",
+                "description": "A test repo"
+            }]
+        }
+        mock_resp.raise_for_status = mock.MagicMock()
+        with mock.patch("httpx.AsyncClient.get", return_value=mock_resp):
+            result = await mcp_server.search_github_repositories("agentic rag", language="python")
+            self.assertIn("test/repo", result)
+
+    async def test_mcp_get_github_user_profile(self):
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = {
+            "login": "Ambuj123-lab",
+            "name": "Ambuj Tripathi",
+            "public_repos": 10,
+            "followers": 100,
+            "following": 50,
+            "html_url": "https://github.com/Ambuj123-lab"
+        }
+        mock_resp.raise_for_status = mock.MagicMock()
+        with mock.patch("httpx.AsyncClient.get", return_value=mock_resp):
+            result = await mcp_server.get_github_user_profile("Ambuj123-lab")
+            self.assertIn("Ambuj123-lab", result)
+
+    def test_mcp_calculate_expression_coverage(self):
+        result = mcp_server.calculate_expression("10 + 20")
+        self.assertIn("30", result)
+
+    def test_mcp_format_email_template_coverage(self):
+        result = mcp_server.format_email_template("Subject", "Body content", "dark_corporate")
+        self.assertIn("Subject", result)
+
+
+class TestBuiltinAgentToolsCoverage(unittest.IsolatedAsyncioTestCase):
+    """Ensure all 12 tools declared in app/agent/tools.py are referenced and covered (12/12)."""
+
+    async def test_agent_web_search(self):
+        from app.agent.tools import web_search
+        mock_results = {"results": [{"title": "News", "content": "Update", "url": "https://news.com"}]}
+        with mock.patch("tavily.AsyncTavilyClient.search", return_value=mock_results):
+            with mock.patch("app.agent.tools.get_settings") as mock_settings:
+                mock_settings.return_value.TAVILY_API_KEY = "test-key"
+                result = await web_search.ainvoke({"query": "AI agents"})
+                self.assertIn("News", result)
+
+    async def test_agent_fetch_webpage(self):
+        from app.agent.tools import fetch_webpage
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.text = "# Sample Article Title\nThis is content."
+        mock_resp.raise_for_status = mock.MagicMock()
+        with mock.patch("httpx.AsyncClient.get", return_value=mock_resp):
+            result = await fetch_webpage.ainvoke({"url": "https://example.com/article"})
+            self.assertIn("Sample Article Title", result)
+
+    async def test_agent_get_stock_price(self):
+        from app.agent.tools import get_stock_price
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = {
+            "quoteResponse": {
+                "result": [{
+                    "shortName": "Microsoft Corporation",
+                    "regularMarketPrice": 420.0,
+                    "regularMarketChangePercent": 1.2,
+                    "currency": "USD"
+                }]
+            }
+        }
+        mock_resp.raise_for_status = mock.MagicMock()
+        with mock.patch("httpx.AsyncClient.get", return_value=mock_resp):
+            with mock.patch("app.agent.tools.get_settings") as mock_settings:
+                mock_settings.return_value.RAPIDAPI_KEY = "test-key"
+                result = await get_stock_price.ainvoke({"symbol": "MSFT"})
+                self.assertIn("Microsoft Corporation", result)
+
+    def test_agent_calculator(self):
+        from app.agent.tools import calculator
+        result = calculator.invoke({"expression": "15 * 4"})
+        self.assertEqual(result, "60")
+
+    def test_agent_send_email_confirmed(self):
+        from app.agent.tools import send_email_confirmed
+        result = send_email_confirmed.invoke({
+            "to_email": "test@example.com",
+            "subject": "Test Email",
+            "body": "Hello World",
+            "template_style": "dark_corporate"
+        })
+        self.assertIsInstance(result, str)
+        self.assertTrue(len(result) > 0)
+
+    def test_agent_read_emails(self):
+        from app.agent.tools import read_emails
+        result = read_emails.invoke({"query": "UNSEEN", "max_results": 1})
+        self.assertIsInstance(result, str)
+        self.assertTrue(len(result) > 0)
+
+    def test_agent_get_github_repo_stats(self):
+        from app.agent.tools import get_github_repo_stats
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = {
+            "full_name": "facebook/react",
+            "description": "A declarative UI library",
+            "stargazers_count": 220000,
+            "forks_count": 45000,
+            "open_issues_count": 1200,
+            "language": "JavaScript"
+        }
+        with mock.patch("requests.get", return_value=mock_resp):
+            result = get_github_repo_stats.invoke({"owner": "facebook", "repo": "react"})
+            self.assertIn("facebook/react", result)
+            self.assertIn("Stars ⭐", result)
+
+    def test_agent_get_github_pull_requests(self):
+        from app.agent.tools import get_github_pull_requests
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = [
+            {"number": 101, "title": "Fix bug", "user": {"login": "dev1"}}
+        ]
+        with mock.patch("requests.get", return_value=mock_resp):
+            result = get_github_pull_requests.invoke({"owner": "facebook", "repo": "react"})
+            self.assertIn("#101", result)
+
+    def test_agent_get_github_user_profile(self):
+        from app.agent.tools import get_github_user_profile
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = {
+            "login": "torvalds",
+            "name": "Linus Torvalds",
+            "public_repos": 7,
+            "followers": 210000,
+            "following": 0
+        }
+        with mock.patch("requests.get", return_value=mock_resp):
+            result = get_github_user_profile.invoke({"username": "torvalds"})
+            self.assertIn("torvalds", result)
+
+    def test_agent_search_github_repositories(self):
+        from app.agent.tools import search_github_repositories
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = {
+            "items": [
+                {"full_name": "test/fastmcp", "stargazers_count": 500, "language": "Python", "description": "MCP"}
+            ]
+        }
+        with mock.patch("requests.get", return_value=mock_resp):
+            result = search_github_repositories.invoke({"query": "fastmcp", "language": "python"})
+            self.assertIn("test/fastmcp", result)
+
+    def test_agent_get_github_latest_commits(self):
+        from app.agent.tools import get_github_latest_commits
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = [
+            {"commit": {"author": {"name": "Ambuj", "date": "2026-10-06"}, "message": "feat: mcp update"}}
+        ]
+        with mock.patch("requests.get", return_value=mock_resp):
+            result = get_github_latest_commits.invoke({"owner": "Ambuj123-lab", "repo": "agentic-ai-workspace"})
+            self.assertIn("feat: mcp update", result)
+
+    def test_agent_get_github_repo_contributors(self):
+        from app.agent.tools import get_github_repo_contributors
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = [
+            {"login": "Ambuj123-lab", "contributions": 50}
+        ]
+        with mock.patch("requests.get", return_value=mock_resp):
+            result = get_github_repo_contributors.invoke({"owner": "Ambuj123-lab", "repo": "agentic-ai-workspace"})
+            self.assertIn("Ambuj123-lab", result)
+            self.assertIn("50 contributions", result)
+
+
 if __name__ == "__main__":
     unittest.main()
+

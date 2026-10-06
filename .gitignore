@@ -37,6 +37,7 @@ architecture-dig
 architecture.html
 capabilities-MCP-NEW
 docs/
+*.pdf
 
 # Temporary & Editor Backup Files
 *.bak*
