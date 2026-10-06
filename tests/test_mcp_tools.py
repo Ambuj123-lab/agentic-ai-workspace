@@ -90,13 +90,13 @@ class TestGitHubHeaders(unittest.TestCase):
 
 
 class TestM8venAnnotationCompliance(unittest.TestCase):
-    """Verify that all 20 tools across the workspace declare all four M8ven hints."""
+    """Verify that all 25 tools across the workspace declare all four M8ven hints."""
 
     REQUIRED_HINTS = ("readOnlyHint", "destructiveHint", "idempotentHint", "openWorldHint")
 
     def test_mcp_server_all_tools_have_four_hints(self):
         tools = mcp_server.mcp._tool_manager.list_tools()
-        self.assertEqual(len(tools), 8, "Expected 8 tools declared in mcp-server/server.py")
+        self.assertEqual(len(tools), 13, "Expected 13 tools declared in mcp-server/server.py")
         
         for tool in tools:
             annotations = tool.annotations
@@ -124,7 +124,7 @@ class TestM8venAnnotationCompliance(unittest.TestCase):
 
 
 class TestMCPServerToolsCoverage(unittest.IsolatedAsyncioTestCase):
-    """Ensure every FastMCP tool declared in mcp-server/server.py is referenced and covered (8/8)."""
+    """Ensure every FastMCP tool declared in mcp-server/server.py is referenced and covered (13/13)."""
 
     async def test_mcp_web_search(self):
         with mock.patch("tavily.TavilyClient.search", return_value={"answer": "Direct AI Answer", "results": [{"title": "News", "url": "https://news.com", "content": "Update"}]}):
@@ -220,6 +220,52 @@ class TestMCPServerToolsCoverage(unittest.IsolatedAsyncioTestCase):
     def test_mcp_format_email_template_coverage(self):
         result = mcp_server.format_email_template("Subject", "Body content", "dark_corporate")
         self.assertIn("Subject", result)
+
+    async def test_mcp_get_github_pull_requests(self):
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = [
+            {"number": 42, "title": "Fix bug", "user": {"login": "dev1"}, "html_url": "https://github.com/org/repo/pull/42"}
+        ]
+        mock_resp.raise_for_status = mock.MagicMock()
+        with mock.patch("httpx.AsyncClient.get", return_value=mock_resp):
+            result = await mcp_server.get_github_pull_requests("org", "repo")
+            self.assertIn("#42", result)
+            self.assertIn("Fix bug", result)
+
+    async def test_mcp_get_github_latest_commits(self):
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = [
+            {"sha": "abc1234567", "commit": {"author": {"name": "Ambuj", "date": "2026-10-06"}, "message": "Initial commit"}}
+        ]
+        mock_resp.raise_for_status = mock.MagicMock()
+        with mock.patch("httpx.AsyncClient.get", return_value=mock_resp):
+            result = await mcp_server.get_github_latest_commits("Ambuj123-lab", "agentic-ai-workspace")
+            self.assertIn("abc1234", result)
+            self.assertIn("Initial commit", result)
+
+    async def test_mcp_get_github_repo_contributors(self):
+        mock_resp = mock.MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = [
+            {"login": "Ambuj123-lab", "contributions": 150, "html_url": "https://github.com/Ambuj123-lab"}
+        ]
+        mock_resp.raise_for_status = mock.MagicMock()
+        with mock.patch("httpx.AsyncClient.get", return_value=mock_resp):
+            result = await mcp_server.get_github_repo_contributors("Ambuj123-lab", "agentic-ai-workspace")
+            self.assertIn("Ambuj123-lab", result)
+            self.assertIn("150", result)
+
+    def test_mcp_send_email_missing_credentials(self):
+        with mock.patch.dict("os.environ", {"GMAIL_SENDER_EMAIL": "", "GMAIL_APP_PASSWORD": ""}):
+            result = mcp_server.send_email("test@example.com", "Subject", "Body")
+            self.assertIn("Error", result)
+
+    def test_mcp_read_emails_missing_credentials(self):
+        with mock.patch.dict("os.environ", {"GMAIL_SENDER_EMAIL": "", "GMAIL_APP_PASSWORD": ""}):
+            result = mcp_server.read_emails("UNSEEN", 5)
+            self.assertIn("Error", result)
 
 
 class TestBuiltinAgentToolsCoverage(unittest.IsolatedAsyncioTestCase):

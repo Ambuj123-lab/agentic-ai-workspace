@@ -423,6 +423,280 @@ def format_email_template(subject: str, body: str, style: str = "dark_corporate"
     )
 
 
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
+async def get_github_pull_requests(owner: str, repo: str, limit: int = 5) -> str:
+    """Fetches the latest open Pull Requests for a public GitHub repository.
+
+    Args:
+        owner: GitHub repository owner or organization (e.g. 'facebook', 'anthropics').
+        repo: Repository name (e.g. 'react', 'fastmcp').
+        limit: Maximum PRs to return (default: 5, max: 10).
+    """
+    url = f"https://api.github.com/repos/{owner}/{repo}/pulls"
+    capped_limit = min(max(1, limit), 10)
+    params = {"state": "open", "sort": "created", "direction": "desc", "per_page": capped_limit}
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(url, headers=_github_headers(), params=params)
+            if response.status_code == 404:
+                return f"Error: GitHub repository '{owner}/{repo}' not found."
+            response.raise_for_status()
+            data = response.json()
+
+            if not data:
+                return f"No open Pull Requests found for {owner}/{repo}."
+
+            lines = [f"**Open Pull Requests for {owner}/{repo}:**\n"]
+            for pr in data:
+                number = pr.get("number", "?")
+                title = pr.get("title", "Untitled")
+                user = pr.get("user", {}).get("login", "unknown")
+                url_pr = pr.get("html_url", "")
+                lines.append(f"- [#{number}]({url_pr}) {title} (by {user})")
+
+            return "\n".join(lines)
+    except Exception as e:
+        logger.error(f"GitHub PRs error: {e}")
+        return f"Failed to fetch Pull Requests: {str(e)}"
+
+
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
+async def get_github_latest_commits(owner: str, repo: str, limit: int = 5) -> str:
+    """Fetches the latest commits for a public GitHub repository.
+
+    Args:
+        owner: GitHub repository owner or organization (e.g. 'Ambuj123-lab', 'langchain-ai').
+        repo: Repository name (e.g. 'agentic-ai-workspace', 'langchain').
+        limit: Maximum commits to return (default: 5, max: 10).
+    """
+    url = f"https://api.github.com/repos/{owner}/{repo}/commits"
+    capped_limit = min(max(1, limit), 10)
+    params = {"per_page": capped_limit}
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(url, headers=_github_headers(), params=params)
+            if response.status_code == 404:
+                return f"Error: GitHub repository '{owner}/{repo}' not found."
+            response.raise_for_status()
+            data = response.json()
+
+            if not data:
+                return f"No commits found for {owner}/{repo}."
+
+            lines = [f"**Latest Commits for {owner}/{repo}:**\n"]
+            for commit_obj in data:
+                commit = commit_obj.get("commit", {})
+                author = commit.get("author", {}).get("name", "Unknown")
+                date = commit.get("author", {}).get("date", "Unknown")
+                message = commit.get("message", "").split("\n")[0]
+                sha = commit_obj.get("sha", "")[:7]
+                lines.append(f"- `{sha}` {date} | {author}: {message}")
+
+            return "\n".join(lines)
+    except Exception as e:
+        logger.error(f"GitHub commits error: {e}")
+        return f"Failed to fetch commits: {str(e)}"
+
+
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
+async def get_github_repo_contributors(owner: str, repo: str, limit: int = 5) -> str:
+    """Fetches the top contributors for a public GitHub repository.
+
+    Args:
+        owner: GitHub repository owner or organization (e.g. 'facebook', 'vercel').
+        repo: Repository name (e.g. 'react', 'next.js').
+        limit: Maximum contributors to return (default: 5, max: 10).
+    """
+    url = f"https://api.github.com/repos/{owner}/{repo}/contributors"
+    capped_limit = min(max(1, limit), 10)
+    params = {"per_page": capped_limit}
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(url, headers=_github_headers(), params=params)
+            if response.status_code == 404:
+                return f"Error: GitHub repository '{owner}/{repo}' not found."
+            response.raise_for_status()
+            data = response.json()
+
+            if not data:
+                return f"No contributors found for {owner}/{repo}."
+
+            lines = [f"**Top Contributors for {owner}/{repo}:**\n"]
+            for user in data:
+                login = user.get("login", "Unknown")
+                contributions = user.get("contributions", 0)
+                profile_url = user.get("html_url", "")
+                lines.append(f"- [{login}]({profile_url}): {contributions:,} contributions")
+
+            return "\n".join(lines)
+    except Exception as e:
+        logger.error(f"GitHub contributors error: {e}")
+        return f"Failed to fetch contributors: {str(e)}"
+
+
+@mcp.tool(
+    annotations={
+        "readOnlyHint": False,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
+def send_email(to_email: str, subject: str, body: str, cc_email: str = "") -> str:
+    """Send an email via Gmail SMTP. Requires GMAIL_SENDER_EMAIL and GMAIL_APP_PASSWORD env vars.
+
+    Args:
+        to_email: Recipient email address.
+        subject: Email subject line.
+        body: Email body content (plain text or markdown).
+        cc_email: Optional CC email address.
+    """
+    import smtplib
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+
+    sender = os.getenv("GMAIL_SENDER_EMAIL", "").strip()
+    password = os.getenv("GMAIL_APP_PASSWORD", "").strip()
+
+    if not sender or not password:
+        return "Error: GMAIL_SENDER_EMAIL or GMAIL_APP_PASSWORD environment variable is not configured."
+
+    msg = MIMEMultipart("alternative")
+    msg["From"] = sender
+    msg["To"] = to_email
+    if cc_email and cc_email.strip():
+        msg["Cc"] = cc_email.strip()
+    msg["Subject"] = subject
+
+    msg.attach(MIMEText(body, "plain", "utf-8"))
+
+    try:
+        import markdown
+        html_body = markdown.markdown(body, extensions=["tables", "fenced_code"])
+        msg.attach(MIMEText(html_body, "html", "utf-8"))
+    except ImportError:
+        pass
+
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login(sender, password)
+
+        recipients = [to_email]
+        if cc_email and cc_email.strip():
+            recipients.extend([e.strip() for e in cc_email.split(",") if e.strip()])
+
+        server.sendmail(sender, recipients, msg.as_string())
+        server.quit()
+        return f"Email successfully sent to {to_email}"
+    except Exception as e:
+        logger.error(f"Email send error: {e}")
+        return f"Failed to send email: {str(e)}"
+
+
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": False,
+        "openWorldHint": True,
+    }
+)
+def read_emails(query: str = "UNSEEN", max_results: int = 5) -> str:
+    """Read emails from Gmail inbox using IMAP search. Requires GMAIL_SENDER_EMAIL and GMAIL_APP_PASSWORD env vars.
+
+    Args:
+        query: IMAP search query (e.g. 'UNSEEN', 'FROM "boss@company.com"', 'SINCE "01-Jan-2025"').
+        max_results: Maximum emails to return (default: 5, max: 10).
+    """
+    import imaplib
+    import email
+    from email.header import decode_header
+
+    sender = os.getenv("GMAIL_SENDER_EMAIL", "").strip()
+    password = os.getenv("GMAIL_APP_PASSWORD", "").strip()
+
+    if not sender or not password:
+        return "Error: GMAIL_SENDER_EMAIL or GMAIL_APP_PASSWORD environment variable is not configured."
+
+    capped = min(max(1, max_results), 10)
+
+    try:
+        mail = imaplib.IMAP4_SSL("imap.gmail.com")
+        mail.login(sender, password)
+        mail.select("inbox")
+
+        status, messages = mail.search(None, query)
+        if status != "OK":
+            return "No emails found or search failed."
+
+        email_ids = messages[0].split()
+        if not email_ids:
+            return "No emails found for the given query."
+
+        email_ids = email_ids[-capped:]
+        email_ids.reverse()
+
+        results = []
+        for e_id in email_ids:
+            res, msg_data = mail.fetch(e_id, "(RFC822)")
+            for response_part in msg_data:
+                if isinstance(response_part, tuple):
+                    msg = email.message_from_bytes(response_part[1])
+                    subj, encoding = decode_header(msg["Subject"])[0]
+                    if isinstance(subj, bytes):
+                        subj = subj.decode(encoding if encoding else "utf-8", errors="ignore")
+
+                    from_addr = msg.get("From")
+                    body_text = ""
+
+                    if msg.is_multipart():
+                        for part in msg.walk():
+                            if part.get_content_type() == "text/plain":
+                                try:
+                                    body_text = part.get_payload(decode=True).decode(errors="ignore")
+                                except Exception:
+                                    pass
+                                break
+                    else:
+                        try:
+                            body_text = msg.get_payload(decode=True).decode(errors="ignore")
+                        except Exception:
+                            pass
+
+                    results.append(f"**From:** {from_addr}\n**Subject:** {subj}\n**Snippet:** {body_text[:300]}...")
+
+        mail.logout()
+        return "\n\n---\n\n".join(results) if results else "No email content extracted."
+    except Exception as e:
+        logger.error(f"Read emails error: {e}")
+        return f"Failed to read emails: {str(e)}"
+
+
 # ==============================================================================
 # Entry Point
 # ==============================================================================
